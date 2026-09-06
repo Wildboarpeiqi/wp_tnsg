@@ -1,0 +1,9 @@
+| 字段名                            | 类型            | 说明                                                  |
+| ----------------------------------- | ----------------- | ------------------------------------------------------- |
+| `reason_title`                | Text            | 标题「Choose our four reasons」，默认值即此，可空隐藏 |
+| `reason_group`                | **Group** | reasons 数据组                                        |
+| ├ `reason_1_icon`            | Image → URL    | 第 1 组图标（转 WP 后填 SVG 路径）                    |
+| ├ `reason_1_title`           | Text            | 第 1 组短标题（如 10+）                               |
+| ├ `reason_1_desc`            | Textarea        | 第 1 组描述（如 Stock Warehouses）                    |
+| ├ `reason_2_icon/title/desc` | Group 子字段    | 第 2 组（Three-party Inspection Support）             |
+| ├ `reason_3_icon/title/desc` | Group 子字段    | 第 3 组（Large Order Preferential Policies）          |

@@ -1,0 +1,4 @@
+字段名	                类型	                 默认/说明	                用途
+news_banner_img	Image（返回 URL）	选一张 News 横幅图	News 详情页 banner 背景图，独立于 product 的 page_banner_img，后台可单独换
+news_banner_title	Text	NEWS	banner 大字标题（product 对应的是 page_banner_title；News 页不想显示 PRODUCTS 所以单独一个）
+news_related_title	Text	Related Posts	侧栏列表标题（不能复用 62 已有的 related_title，那个值是 "Related Products" 用于产品轮播，会重名冲突）

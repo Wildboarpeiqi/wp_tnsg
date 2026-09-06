@@ -1,0 +1,64 @@
+查清楚了，你说得对。首页 footer.php 里两个表单（`[fluentform id="1"]`、`[fluentform id="2"]`）都是**硬编码在模板里**的（`do_shortcode()` 直接输出，配 `shortcode_exists()` 判断），不是字段调用。证书也已经确认是 **certificate CPT**（首页证书轮播就是 `WP_Query(post_type='certificate')`，标题+特色图）。
+
+按这三点修订字段清单：
+
+---
+
+## 字段清单修订 v2
+
+### 变更摘要
+
+1. **表单不进字段**：删掉 `side_form_shortcode`、`quote_form_shortcode`。左栏 `[fluentform id="3"]`、底部 `[fluentform id="4"]` 直接**硬编码在 single-product.php**（与 footer.php 完全一致的做法）。
+2. **视频支持两种方式**：新增 `ws_video_embed`（Textarea，粘贴 YouTube 等 iframe/embed 代码）+ 保留 `ws_video_file`（File 上传 mp4）。代码判断：**有 embed 代码就用 embed，没有就用上传的文件**，任一有值就显示该区块。
+3. **证书改 CPT 轮播**：删掉 `ws_cert_imgs` Group 字段。证书区块 = `WP_Query(post_type='certificate')` 拉全部内容做轮播（标题+特色图，和首页一致），只保留 `ws_cert_title` 小标题字段。
+
+### 字段组 A：产品页公共字段（位置规则：**页面 == 62**）
+
+| 字段名称 | 类型 | 默认值 | 说明 |
+|---|---|---|---|
+| `page_banner_img` | Image（URL） | `(空)` | 内容页 Banner 背景图（产品页/列表页共用） |
+| `page_banner_title` | Text | `PRODUCTS` | Banner 大标题（保持 PRODUCTS，理由前面已说） |
+| `side_nav_title` | Text | `Navigation` | 左栏标题 |
+| `side_sub_text` | Textarea | `Order Now` | 左栏小标题/P 自由段（可空隐藏） |
+| `side_email_text` | Text | `jiucheng@jcforging.com` | 左栏蓝底邮箱（留空则复用 company_email） |
+| `ws_video_title` | Text | `Production Workshop Video` | 车间视频小标题 |
+| `ws_video_embed` | Textarea | `(空)` | 视频嵌入代码（YouTube iframe 等，**有值优先**） |
+| `ws_video_file` | File | `(空)` | 视频文件 mp4（embed 为空时用） |
+| `ws_video_poster` | Image（URL） | `(空)` | 视频封面（可选，仅文件模式生效） |
+| `ws_forging_title` | Text | `Forging workshop` | 锻造车间小标题 |
+| `ws_forging_imgs` | Group | `(空)` | 组内 `img_1` ~ `img_6`（空则隐藏） |
+| `ws_cnc_title` | Text | `CNC Machining Workshop` | CNC 车间小标题 |
+| `ws_cnc_imgs` | Group | `(空)` | 组内 `img_1` ~ `img_6` |
+| `ws_testing_title` | Text | `Testing equipment` | 检测设备小标题 |
+| `ws_testing_imgs` | Group | `(空)` | 组内 `img_1` ~ `img_6` |
+| `ws_cert_title` | Text | `Certificate` | 证书小标题（内容=**certificate CPT 轮播**，无需图片字段） |
+| `quote_title` | Text | `Get Your Free Quote Now!` | 底部询盘区块小标题（空则隐藏） |
+| `related_title` | Text | `Related Products` | 相关产品区块标题（可空隐藏） |
+| `btn_inquiry_text` | Text | `Inquiry` | 右栏按钮 1：平滑滚动到 `#quote`（底部 `[fluentform id="4"]`） |
+| `btn_related_text` | Text | `Related Products` | 右栏按钮 2：跳转当前产品所属分类列表页 |
+
+### 字段组 B：产品字段（位置规则：**文章类型 == product**）
+
+| 字段名称 | 类型 | 默认值 | 说明 |
+|---|---|---|---|
+| `product_gallery` | Group | `(空)` | 组内 `img_1` ~ `img_6`：主图未设特色图时用 `img_1`；缩略图取全部非空 |
+| `product_sort` | Number | `(空)` | 已存在，保留 |
+
+### 字段组 C：分类字段（位置规则：**分类法 == product_category**）
+
+| 字段名称 | 类型 | 默认值 | 说明 |
+|---|---|---|---|
+| `sort_order` | Number | `(空)` | 左栏分类排序：有值升序在前，没填按创建时间升序在后 |
+
+### 非字段项（代码实现）
+
+- 表单：左栏 `[fluentform id="3"]`、底部 `[fluentform id="4"]`，硬编码 + `shortcode_exists()` 判断（同 footer.php）
+- 证书轮播：`WP_Query(post_type='certificate')`，标题+特色图，与首页共用逻辑
+- 面包屑、左侧分类列表（sort_order 排序）、搜索、Related Products 轮播（当前分类下产品，排除自己）、缩略图 hover/点击切换、灯箱
+
+---
+
+第 4 点你留空了——是还有补充，还是先到这？确认字段清单没问题的话，下一步就可以开始做 `product-detail.html` 静态模板了。
+
+内容由 AI 生成，仅供参考。
+
