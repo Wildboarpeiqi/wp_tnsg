@@ -48,7 +48,8 @@
   display: flex;
   align-items: flex-start;
   gap: 3.5rem;
-  padding: 4.5rem 0 5rem;
+  /* 注意：横向必须保留 var(--pad)，切忌写成 padding: 4.5rem 0 5rem（覆盖 .container 横向留白） */
+  padding: 4.5rem var(--pad) 5rem;
 }
 .page-sidebar { flex: 0 0 38rem; min-width: 0; }
 .page-main { flex: 1 1 auto; min-width: 0; }

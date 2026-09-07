@@ -1,0 +1,366 @@
+/* ==========================================================================
+   About Us 页专属样式（about.html）
+   公共样式在 css/style.css + css/product-detail.css，本文件只写本页区块。
+   ========================================================================== */
+
+/* ---------- 公司介绍 INTRO（左文右图） ---------- */
+.about-intro { background: var(--themeColor3); }
+
+.intro-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6rem;
+  align-items: center;
+}
+
+.about-company {
+  font-family: var(--font-head);
+  font-size: 3rem;
+  font-weight: bold;
+  color: #101B4D;
+  line-height: 1.7;
+  margin: 0 4% 1.6rem 0;
+}
+
+/* 介绍正文：容器固定高度，内容超出下滑，不随文字拉高 */
+.intro-desc {
+  max-height: 38rem;
+  overflow-y: auto;
+  padding-right: 1rem;
+  font-size: 1.6rem;
+  line-height: 1.8;
+  color: var(--text-dark);
+}
+.intro-desc p + p { margin-top: 1.4rem; }
+.intro-desc::-webkit-scrollbar { width: 6px; }
+.intro-desc::-webkit-scrollbar-thumb { background: #c9d4e0; border-radius: 3px; }
+.intro-desc::-webkit-scrollbar-track { background: transparent; }
+
+/* 右侧媒体：16:9 固定容器（图片 / 视频均填满，加载前不塌陷） */
+.intro-media { min-width: 0; }
+.intro-media-inner {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 12px 32px rgba(16, 29, 95, 0.18);
+  background: #e9eef4;
+}
+.intro-media-img,
+.intro-media-video,
+.intro-media-video iframe,
+.intro-media-video video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  object-fit: cover;
+}
+
+/* ---------- CNC MACHINING（左轮播右文） ---------- */
+.cnc-section { background: var(--themeColor5); }
+
+/* 左列更宽（7fr）、右列文字收窄（3fr），整体区块更高 */
+.cnc-grid {
+  display: grid;
+  grid-template-columns: 7fr 3fr;
+  gap: 5rem;
+  align-items: stretch;
+  grid-auto-rows: 52rem;   /* 固定行高：刷新后模块高度不随字体/图片加载变化（防塌陷跳变） */
+}
+
+/* 左列轮播：一屏 3 张，一次动 1 张（JS 控制），图片直接展示无白卡片背景 */
+.cnc-slider {
+  position: relative;
+  min-width: 0;
+}
+.cnc-viewport {
+  overflow: hidden;
+}
+.cnc-track {
+  display: flex;
+  transition: transform 0.6s ease;
+}
+.cnc-slide {
+  flex: 0 0 33.3333%;
+  min-width: 0;
+  padding: 0 0.6rem;
+}
+.cnc-figure {
+  overflow: hidden;
+}
+.cnc-img img {
+  width: 100%;
+  aspect-ratio: 360 / 403;   /* 源站渲染尺寸 360×403（不含标题），竖图：图片是长的不是宽的 */
+  object-fit: cover;
+  display: block;
+}
+/* 蓝色底 + 白色标题（原站 rownum=3 的标题条样式） */
+.cnc-caption {
+  background: var(--themeColor1);
+  color: #fff;
+  text-align: center;
+  font-family: var(--font-head);
+  font-size: 1.5rem;
+  line-height: 1.4;
+  padding: 1rem 0.8rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* 左右切换箭头（图片两侧，垂直居中） */
+.cnc-arrow {
+  position: absolute;
+  top: 43%;
+  transform: translateY(-50%);
+  width: 44px;
+  height: 44px;
+  border: 0;
+  background: rgba(0, 0, 0, 0.4);
+  color: #fff;
+  font-size: 1.8rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  z-index: 6;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+.cnc-arrow:hover { background: var(--themeColor1); }
+.cnc-prev { left: 0.8rem; }
+.cnc-next { right: 0.8rem; }
+
+/* 轮播进度小圆点（位于图片标题下方、slider 底部，静态文档流占位；
+   右侧 Get Free Quote 按钮加等量 margin-bottom，保持与标题条底部对齐） */
+.cnc-dots {
+  display: flex;
+  justify-content: center;
+  gap: 0.8rem;
+  margin: 1.4rem 0 0;
+}
+.cnc-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  border: 0;
+  padding: 0;
+  background: #c3ccd8;
+  cursor: pointer;
+  transition: background 0.3s, transform 0.3s;
+}
+.cnc-dot.active { background: var(--themeColor1); transform: scale(1.25); }
+
+/* 右列：标题顶部对齐左图、描述中间固定高下滑、按钮贴底对齐左图底部 */
+.cnc-text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+}
+.cnc-title {
+  font-family: var(--font-head);
+  font-size: 2.6rem;
+  font-weight: bold;
+  color: #101B4D;
+  margin-bottom: 1.8rem;
+}
+.cnc-desc {
+  flex: 1 1 auto;        /* 撑满右列剩余高度（与左侧图片等高），文字区域拉长 */
+  min-height: 0;
+  overflow-y: auto;
+  padding-right: 1rem;
+  font-size: 1.6rem;
+  line-height: 1.8;
+  color: var(--text-dark);
+  margin-bottom: 2.6rem;
+}
+.cnc-desc::-webkit-scrollbar { width: 6px; }
+.cnc-desc::-webkit-scrollbar-thumb { background: #c9d4e0; border-radius: 3px; }
+.cnc-desc::-webkit-scrollbar-track { background: transparent; }
+.btn-quote { flex: none; align-self: flex-start; margin-top: auto; margin-bottom: 2.3rem; }   /* 按钮贴底；底部留出圆点区域高度，与标题条底部对齐 */
+
+/* ---------- CERTIFICATE 证书（desc 与下方轮播容器同宽） ---------- */
+.cert-desc {
+  max-width: none;
+  margin: 0 0 3.6rem;
+  text-align: center;
+  font-size: 1.6rem;
+  line-height: 1.9;
+  color: #555;
+}
+
+/* ---------- TESTING EQUIPMENT（左大图 + 右 2x2 缩略图窗口） ---------- */
+.test-section { background: var(--themeColor5); }
+
+.test-stage {
+  display: grid;
+  grid-template-columns: 6fr 5fr;   /* 大图列加宽，右列收窄 */
+  gap: 3.2rem;
+  align-items: stretch;
+}
+
+/* 左：大图（方形接近原站）+ 图下标题（无背景色，图片圆角展示不套白卡片） */
+.test-featured {
+  min-width: 0;
+  overflow: hidden;   /* 关键：裁掉轮播 track 的横向溢出，否则图片穿出叠层、盖住右侧按钮 */
+}
+.test-featured-track { display: flex; transition: transform 0.6s ease; }
+.test-featured-slide { flex: 0 0 100%; min-width: 0; }
+.test-featured .test-featured-slide img {   /* 选择器加前缀：覆盖通用 .test-img img 的 1:1 */
+  width: 100%;
+  aspect-ratio: 16 / 9;      /* 更扁：整体降低测试区块高度 */
+  object-fit: cover;
+  display: block;
+  border-radius: 12px;
+}
+.test-img img {
+  width: 100%;
+  aspect-ratio: 4 / 3;      /* 缩略图横向比例：配合 16:9 大图，整体更矮 */
+  object-fit: cover;
+  display: block;
+}
+.test-caption {
+  padding: 1.6rem 0 0.4rem;
+  background: transparent;      /* 标题在图片容器外、无背景颜色 */
+  color: var(--themeColor1);
+  font-family: var(--font-head);
+  font-size: 2.4rem;            /* 大图标题更大 */
+  font-weight: bold;
+  line-height: 1.4;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* 右：缩略图窗口（一行 2 张，JS 渲染）+ 底部左右箭头 */
+.test-side {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+}
+.test-thumbs-viewport {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: hidden;        /* 轮播带裁切：只显示 1 张 + 露一点下一张 */
+  display: flex;
+  align-items: flex-start; /* 缩略图顶部与大图顶部对齐 */
+}
+.test-thumbs-track {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  height: auto;
+  width: 100%;
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: flex-start;
+  gap: 1.6rem;
+  transition: transform 0.6s ease;   /* 轮播带滑动 */
+}
+.test-thumb {
+  min-width: 0;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  flex: 0 0 76%;   /* PC：一屏 1 张 + 露 24% 下一张 */
+}
+.test-thumb:hover { transform: translateY(-2px); }
+.test-thumb .test-img {
+  position: relative;
+  aspect-ratio: 4 / 3;      /* 横向比例：配合 16:9 大图，整体更矮 */
+  border-radius: 8px;
+  overflow: hidden;
+  border: 2px solid transparent;   /* 高亮改为图片边框，不再用白底卡片 */
+  transition: border-color 0.3s;
+}
+.test-thumb:hover .test-img { border-color: rgba(23, 42, 136, 0.4); }
+.test-thumb.active .test-img { border-color: var(--themeColor1); }
+.test-thumb .test-img img {
+  position: absolute;   /* 绝对定位：不贡献内容高度，行高由大图列决定 */
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.test-thumb-name {
+  flex: none;
+  padding: 1rem 0 0.2rem;
+  background: transparent;   /* 标题在图下、无背景色 */
+  font-size: 1.6rem;         /* 小图标题更大 */
+  font-weight: bold;
+  line-height: 1.4;
+  color: #333;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.test-thumb.active .test-thumb-name { color: var(--themeColor1); font-weight: bold; }
+
+/* 底部左右箭头：位于右侧缩略图区下方，与左侧大图底部对齐 */
+.test-controls {
+  flex: none;
+  display: flex;
+  gap: 1.2rem;
+  margin-top: 2.2rem;
+}
+.test-arrow {
+  width: 46px;
+  height: 46px;
+  border: 1px solid var(--themeColor1);
+  border-radius: 50%;
+  background: transparent;
+  color: var(--themeColor1);
+  font-size: 1.9rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+.test-arrow:hover { background: var(--themeColor1); color: #fff; }
+
+/* ---------- PC：CNC 左列图片跟随行高撑满 ----------
+   右侧 desc 拉长（flex:1 吃掉剩余空间）会让 grid 行高变高，
+   此时左列图片若固定 360/403 比例会在底部留白；改为图片 flex 撑满
+   （object-fit: cover 裁切），图片更高更满且无空白，按钮仍贴标题条底对齐。 */
+@media (min-width: 961px) {
+  .cnc-slider { display: flex; flex-direction: column; }
+  .cnc-viewport { flex: 1 1 auto; min-height: 0; }
+  .cnc-track { height: 100%; }
+  .cnc-slide { display: flex; flex-direction: column; }
+  .cnc-figure { flex: 1 1 auto; min-height: 0; display: flex; flex-direction: column; }
+  .cnc-img { flex: 1 1 auto; min-height: 0; display: flex; }
+  .cnc-img img { flex: 1 1 auto; min-height: 0; height: auto; aspect-ratio: auto; object-fit: cover; }
+}
+
+/* ---------- 移动端（≤960px 单列堆叠） ---------- */
+@media (max-width: 960px) {
+  .intro-grid, .cnc-grid, .test-stage { grid-template-columns: 1fr; gap: 3.2rem; }
+  .cnc-grid { grid-auto-rows: auto; }   /* 移动端行高随内容自适应 */
+  .about-company { font-size: 2.4rem; }
+  .cnc-title { font-size: 2.2rem; }
+  .cnc-arrow { top: 40%; }
+  .test-thumbs-track {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto;
+    gap: 1.2rem;
+  }
+  /* 移动端单列布局：右侧小图区独立成行；2 张并排，图片用相对定位 + 1:1 撑高，
+     track 高度自动由图片决定，不会塌陷 */
+  .test-thumbs-viewport { flex: none; overflow: visible; }
+  .test-thumbs-track { height: auto; }
+  .test-thumb { flex: none; }
+  .test-thumb .test-img { position: relative; }
+  .test-thumb .test-img img { position: static; height: auto; }
+  .test-caption { font-size: 2rem; }
+  .test-thumb-name { font-size: 1.4rem; }
+  .test-controls { margin-top: 1.6rem; }
+  /* 移动端隐藏轮播左右箭头：CNC 用手势左右滑动切换；证书同样只留手势（2026-09-06 用户要求） */
+  .cnc-arrow { display: none; }
+  .cert-prev, .cert-next { display: none; }
+}

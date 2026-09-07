@@ -1,0 +1,59 @@
+/* ==========================================================================
+   404 page stylesheet (404.html)
+   Page-specific styles only. Shared styles live in css/style.css (homepage).
+   ========================================================================== */
+
+/* ---------- 404 主体 ---------- */
+.nf {
+  background: var(--themeColor5, #F7F8FA);
+  padding: 10% 0 12%;
+  text-align: center;
+}
+.nf-inner { max-width: 76rem; }
+
+.nf-code {
+  font-family: var(--font-head);
+  font-size: 18rem;
+  font-weight: bold;
+  line-height: 1;
+  color: var(--themeColor1);
+  letter-spacing: 0.02em;
+  margin-bottom: 1.5rem;
+}
+
+.nf-title {
+  font-family: var(--font-head);
+  font-size: 3.2rem;
+  font-weight: bold;
+  color: #101B4D;
+  text-transform: uppercase;
+  margin-bottom: 1.6rem;
+}
+
+.nf-desc {
+  font-size: 1.8rem;
+  line-height: 1.8;
+  color: #5A6472;
+  margin: 0 auto 3.2rem;
+  max-width: 62rem;
+}
+
+.nf-actions {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1.6rem;
+  flex-wrap: wrap;
+}
+
+/* 浅灰底上的描边按钮：公共样式已提升至 style.css（.btn-outline），此处不再重复定义 */
+
+@media (max-width: 560px) {
+  .nf { padding: 18% 0 22%; }
+  .nf-code { font-size: 12rem; }
+  .nf-title { font-size: 2.6rem; }
+  .nf-desc { font-size: 1.6rem; }
+  .nf-actions { flex-direction: column; gap: 1.2rem; }
+  .nf-actions .btn-main,
+  .nf-actions .btn-outline { width: 100%; text-align: center; }
+}

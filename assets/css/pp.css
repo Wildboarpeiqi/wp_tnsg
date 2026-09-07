@@ -1,0 +1,56 @@
+/* ==========================================================================
+   Privacy Policy page stylesheet (privacy-policy.html)
+   Page-specific styles only. Shared styles live in css/style.css (homepage)
+   and css/product-detail.css (page-banner / breadcrumb).
+   正文排版与文章详情页 .article-content 视觉对齐（独立复制，不依赖 news-detail.css）。
+   ========================================================================== */
+
+.pp-page {
+  /* 注意：max-width 窄栏居中（正文阅读宽度）+ 横向必须保留 var(--pad)：
+     切忌写成 padding: 4.5rem 0 5.5rem，会覆盖 .container 的横向留白
+     （.container 的 padding: 0 var(--pad)），导致移动端内容左右贴边。 */
+  max-width: 88rem;
+  margin: 0 auto;
+  padding: 4.5rem var(--pad) 5.5rem;
+}
+
+.pp-title {
+  font-family: var(--font-head);
+  font-size: 3.2rem;
+  font-weight: bold;
+  color: #101B4D;
+  line-height: 1.4;
+  margin-bottom: 2.4rem;
+}
+
+/* ---------- 正文（对齐 .article-content） ---------- */
+.pp-content {
+  font-size: 1.65rem;
+  line-height: 1.9;
+  color: var(--text-dark);
+  word-break: break-word;
+}
+.pp-content > *:first-child { margin-top: 0; }
+.pp-content > *:last-child { margin-bottom: 0; }
+.pp-content p { margin: 0 0 1.6rem; }
+.pp-content h2,
+.pp-content h3,
+.pp-content h4 {
+  font-family: var(--font-head);
+  color: #000;
+  margin: 2.4rem 0 1.2rem;
+  line-height: 1.4;
+}
+.pp-content h2 { font-size: 2.2rem; }
+.pp-content h3 { font-size: 1.9rem; }
+/* 列表符号及缩进：与公共 style.css「编辑器正文排版」一致 */
+.pp-content ul,
+.pp-content ol { margin: 0 0 1.6rem; padding-left: 2.4rem; }
+.pp-content li { margin-bottom: 0.6rem; }
+.pp-content a { color: var(--themeColor1); text-decoration: underline; }
+.pp-content a:hover { color: var(--themeColor2); }
+
+@media (max-width: 560px) {
+  .pp-page { padding: 3.5rem var(--pad) 4.5rem; }
+  .pp-title { font-size: 2.6rem; }
+}

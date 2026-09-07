@@ -39,6 +39,16 @@
         var wasActive = s.classList.contains('hero-slide-active');
         s.classList.toggle('hero-slide-active', idx === current);
         s.classList.toggle('app-slide-active', idx === current);
+        // video slides: play the active one, pause / unload the rest
+        var vid = s.querySelector('.hero-video video');
+        var frame = s.querySelector('.hero-video iframe');
+        if (idx === current) {
+          if (vid) { var pp = vid.play(); if (pp && pp.catch) { pp.catch(function () {}); } }
+          if (frame && frame.dataset.src && !frame.getAttribute('src')) { frame.setAttribute('src', frame.dataset.src); }
+        } else {
+          if (vid) { try { vid.pause(); } catch (e) {} }
+          if (frame && frame.getAttribute('src')) { frame.dataset.src = frame.getAttribute('src'); frame.removeAttribute('src'); }
+        }
         // restart the entrance animation every time a slide becomes active
         if (!wasActive && idx === current) {
           var parts = s.querySelectorAll('.hero-company, .hero-title, .hero-desc, .hero-btns');
@@ -101,7 +111,28 @@
   /* ---------- Hero slider (full-width) ---------- */
   var heroRoot = $('#heroSlider');
   if (heroRoot) {
-    createSlider(heroRoot, { autoplay: false, interval: 4000 });
+    var heroApi = createSlider(heroRoot, { autoplay: false, interval: 4000 });
+
+    // hero 嵌入视频：iframe 无法用 object-fit，这里按容器比例放大到 cover 尺寸（居中、超出裁剪）
+    // 规则：视频按比例放大到"填满容器"，宽或高必然有一边超出，由 .hero-video 的 overflow:hidden 裁掉
+    function fitHeroVideos() {
+      $$('.hero-slide .hero-video iframe', heroRoot).forEach(function (frame) {
+        var wrap = frame.closest('.hero-video');
+        if (!wrap) return;
+        var cw = wrap.clientWidth, ch = wrap.clientHeight;
+        if (!cw || !ch) return;
+        var ratio = 16 / 9, bw, bh;
+        if (cw / ch > ratio) { bw = cw; bh = cw / ratio; }   // 容器更宽：宽撑满容器，高超出（上下裁剪）
+        else { bh = ch; bw = ch * ratio; }                    // 容器更高：高撑满容器，宽超出（左右裁剪）
+        frame.style.width = bw + 'px';
+        frame.style.height = bh + 'px';
+      });
+    }
+    fitHeroVideos();
+    window.addEventListener('resize', fitHeroVideos);
+
+    // 首屏初始化：让第一个 slide 的视频（如有）开始播放（无视频 slide 无副作用）
+    if (heroApi) { heroApi.goTo(0); }
   }
 
   /* ---------- Certificate carousel（逐张切换 + 无缝循环：像轮子一样永远循环） ----------

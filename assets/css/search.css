@@ -1,0 +1,158 @@
+/* ==========================================================================
+   Search results page stylesheet (search.html)
+   Page-specific styles only. Shared styles live in css/style.css (homepage)
+   and css/product-detail.css (page-banner / breadcrumb).
+   ========================================================================== */
+
+/* ---------- 结果区容器 ---------- */
+.search-page {
+  /* 居中文案窄栏 + 横向必须保留 var(--pad)：切忌写成 padding: 4.5rem 0 5.5rem（覆盖 .container 横向留白，移动端/桌面都左右贴边） */
+  max-width: 90rem;
+  margin: 0 auto;
+  padding: 4.5rem var(--pad) 5.5rem;
+}
+
+.search-count {
+  font-size: 1.6rem;
+  color: #5A6472;
+  margin-bottom: 2.4rem;
+}
+.search-count strong { color: var(--themeColor2); }
+
+/* ---------- 结果列表 ---------- */
+.search-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1.6rem;
+}
+
+.search-item {
+  background: #fff;
+  border: 1px solid #EAECF0;
+  border-radius: 6px;
+  padding: 2.6rem 2.8rem;
+  transition: box-shadow 0.3s ease, border-color 0.3s ease;
+}
+.search-item:hover {
+  border-color: var(--themeColor1);
+  box-shadow: 0 8px 24px rgba(16, 27, 77, 0.08);
+}
+
+.search-tag {
+  display: inline-block;
+  font-family: var(--font-head);
+  font-size: 1.2rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #fff;
+  background: var(--themeColor1);
+  border-radius: 3px;
+  padding: 0.35rem 1rem;
+  margin-bottom: 1rem;
+}
+
+.search-link { display: block; }
+.search-title {
+  font-family: var(--font-head);
+  font-size: 1.9rem;
+  font-weight: bold;
+  color: #101B4D;
+  line-height: 1.4;
+  margin-bottom: 0.8rem;
+  transition: color 0.3s ease;
+}
+.search-link:hover .search-title { color: var(--themeColor1); }
+
+.search-snippet {
+  font-size: 1.5rem;
+  line-height: 1.8;
+  color: #5A6472;
+}
+
+/* ---------- 无结果状态 ---------- */
+.search-empty {
+  text-align: center;
+  padding: 6rem 0 7rem;
+  background: var(--themeColor5, #F7F8FA);
+  border-radius: 6px;
+}
+.search-empty-title {
+  font-family: var(--font-head);
+  font-size: 2.4rem;
+  font-weight: bold;
+  color: #101B4D;
+  margin-bottom: 1.2rem;
+}
+.search-empty-desc {
+  font-size: 1.6rem;
+  line-height: 1.8;
+  color: #5A6472;
+  max-width: 56rem;
+  margin: 0 auto 2.6rem;
+}
+.search-empty-form {
+  max-width: 58rem;
+  margin: 0 auto;
+}
+.search-empty-form input {
+  flex: 1;
+  min-width: 0;
+  border: 1px solid #D9DEE7;
+  border-radius: 4px;
+  background: #fff;
+  font-family: var(--font-body);
+  font-size: 1.6rem;
+  color: var(--themeColor2);
+  padding: 1.5rem 1.8rem;
+  box-sizing: border-box;
+}
+.search-empty-form input:focus {
+  outline: none;
+  border-color: var(--themeColor1);
+}
+
+/* ---------- 分页：the_posts_pagination() 输出 .page-numbers（与 faq-list.css 一致） ---------- */
+.search-page .pagination { margin-top: 44px; }
+.search-page .nav-links {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.search-page .page-numbers {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 4rem;
+  height: 4rem;
+  padding: 0 1.6rem;
+  font-family: var(--font-head);
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: var(--themeColor2);
+  background: var(--themeColor3);
+  border: 1px solid #e3e8ef;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+}
+.search-page .page-numbers .arrow { margin: 0 4px; }
+.search-page .page-numbers:hover:not(.current):not(.dots) {
+  border-color: var(--themeColor1);
+  color: var(--themeColor1);
+}
+.search-page .page-numbers.current {
+  background: var(--themeColor1);
+  border-color: var(--themeColor1);
+  color: #fff;
+}
+
+@media (max-width: 560px) {
+  .search-page { padding: 3.5rem var(--pad) 4.5rem; }
+  .search-item { padding: 2rem 1.8rem; }
+  .search-empty { padding: 4.5rem 2rem; }
+}
