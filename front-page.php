@@ -50,10 +50,25 @@ get_header();
       $hc_dsc  = jc_get($hc_prefix . 'hero_' . $hc_i . '_desc', $hc_slide['default_desc']);
       $hc_alg  = jc_get($hc_prefix . 'hero_' . $hc_i . '_align', $hc_slide['default_align']);
       $hc_btn  = jc_link($hc_prefix . 'hero_' . $hc_i . '_btn', jc_page_url('about_us'), 'Learn More');
-      $hc_btn2 = jc_link($hc_prefix . 'hero_' . $hc_i . '_btn2', jc_page_url('contact-us'), 'Contact Us');
+      $hc_btn2 = jc_link($hc_prefix . 'hero_' . $hc_i . '_btn2', jc_page_url('contact_us'), 'Contact Us');
+      // 视频支持（2026-09-06）：hero_N_video_file（本地文件）优先，其次 hero_N_video_url（嵌入链接），都没有才用图片
+      $hc_vfile = jc_get($hc_prefix . 'hero_' . $hc_i . '_video_file', '');
+      $hc_vurl  = jc_get($hc_prefix . 'hero_' . $hc_i . '_video_url', '');
+      if (is_array($hc_vfile) && !empty($hc_vfile['url'])) { $hc_vfile = $hc_vfile['url']; }
+      $hc_video = ($hc_vfile !== '' && $hc_vfile !== null) ? 'file' : (($hc_vurl !== '' && $hc_vurl !== null) ? 'embed' : '');
       ?>
-      <div class="hero-slide<?php echo $hc_i === 1 ? ' hero-slide-active' : ''; ?>">
+      <div class="hero-slide<?php echo $hc_i === 1 ? ' hero-slide-active' : ''; ?><?php echo $hc_video !== '' ? ' hero-slide-has-video' : ''; ?>">
+        <?php if ($hc_video === 'file') : ?>
+        <div class="hero-video">
+          <video src="<?php echo esc_url($hc_vfile); ?>" muted loop playsinline preload="metadata"></video>
+        </div>
+        <?php elseif ($hc_video === 'embed') : ?>
+        <div class="hero-video">
+          <iframe data-src="<?php echo esc_url(jc_video_embed_url($hc_vurl)); ?>" frameborder="0" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>
+        </div>
+        <?php else : ?>
         <div class="hero-bg" style="background-image:url('<?php echo esc_url(is_string($hc_bg) && $hc_bg !== '' ? $hc_bg : get_template_directory_uri() . $hc_slide['default_bg']); ?>');"></div>
+        <?php endif; ?>
         <div class="hero-content<?php
           echo isset($hero_align_map[$hc_alg]) ? ' ' . esc_attr($hero_align_map[$hc_alg]) : '';
         ?>">
@@ -376,7 +391,7 @@ get_header();
       <div class="service-grid">
         <?php
         // CTA 联系卡：service_section > svc_cta_bg / svc_cta_text / svc_cta_link
-        $jc_cta = jc_link('service_section_svc_cta_link', jc_page_url('contact-us'), 'Contact Us');
+        $jc_cta = jc_link('service_section_svc_cta_link', jc_page_url('contact_us'), 'Contact Us');
         $jc_cta_bg = jc_img('service_section_svc_cta_bg', '/assets/images/service-bg.jpg');
         $jc_cta_text = jc_get('service_section_svc_cta_text', 'Please contact us as soon as possible for cooperation!');
         // 5 个服务卡：service_section > svc_1..svc_5（每个内含 svc_N_title / svc_N_desc / svc_N_link）

@@ -47,7 +47,7 @@ function jc_assets() {
         'jc-main',
         $theme_uri . '/assets/css/style.css',
         array(),
-        '1.0.3'   // 改 CSS 后递增版本号，强制浏览器刷新缓存（2026-09-05：正文列表符号 + 缩进 1.6rem）
+        '1.0.5'   // 改 CSS 后递增版本号，强制浏览器刷新缓存（2026-09-06：+ hero 视频媒体样式 .hero-video）
     );
 
     // 全站唯一公共 JS（滑块/计数器/菜单/弹窗，零依赖）
@@ -55,7 +55,7 @@ function jc_assets() {
         'jc-main',
         $theme_uri . '/assets/js/main.js',
         array(),
-        '1.0.2',
+        '1.0.4',   // 2026-09-06：修正嵌入视频 cover 尺寸计算（宽屏下不再左右留白）
         true      // 放在 </body> 前加载
     );
 
@@ -94,9 +94,9 @@ function jc_assets() {
         );
     }
 
-    // 文章详情页专属样式（single-post.php）+ FAQ 详情页（single-faq.php 版式与文章详情页一致，共用）
-    // 公共布局（banner/分栏/侧栏/表单）已在 style.css；这里只加载文章页专属 news-single.css
-    if (is_singular('post') || is_singular('faq')) {
+    // 文章详情页专属样式（single-post.php）+ FAQ 详情页（single-faq.php）+ Project 详情页（single-project.php）共用
+    // 三个详情页版式一致（banner/分栏/侧栏/表单），共用 news-single.css；公共布局已在 style.css
+    if (is_singular('post') || is_singular('faq') || is_singular('project')) {
         wp_enqueue_style(
             'jc-news-single',
             $theme_uri . '/assets/css/news-single.css',
@@ -126,6 +126,75 @@ function jc_assets() {
             '1.0.0'
         );
     }
+
+    // Project 列表页专属样式（archive-project.php 归档页；静态版无专属 JS，这里只加载样式）
+    if (is_post_type_archive('project')) {
+        wp_enqueue_style(
+            'jc-project-list',
+            $theme_uri . '/assets/css/project-list.css',
+            array('jc-main'),
+            '1.0.0'
+        );
+    }
+
+    // About Us 页专属样式 + 脚本（page-about_us.php，slug=about_us 自动匹配）
+    // 公共样式（header/footer/banner/轮播基础）已在 style.css + main.js，这里只加载页面专属部分
+    if (is_page('about_us')) {
+        wp_enqueue_style(
+            'jc-about',
+            $theme_uri . '/assets/css/about.css',
+            array('jc-main'),
+            '1.0.1'   // 2026-09-06：移动端 CNC 一屏 2 张 + 隐藏轮播箭头
+        );
+        wp_enqueue_script(
+            'jc-about',
+            $theme_uri . '/assets/js/about.js',
+            array('jc-main'),
+            '1.0.1',
+            true
+        );
+    }
+
+    // Contact Us 页专属样式（page-contact_us.php，slug=contact_us 自动匹配）
+    // 静态版无专属 JS（表单演示走 main.js 通用逻辑）；WP 端表单由 Fluent Forms 输出，故只加载 CSS
+    if (is_page('contact_us')) {
+        wp_enqueue_style(
+            'jc-contact',
+            $theme_uri . '/assets/css/contact.css',
+            array('jc-main'),
+            '1.0.1'   // 2026-09-06：PC 端表单宽松化（padding/gap 加大）
+        );
+    }
+
+    // 404 页专属样式（404.php，WP 标准错误页模板；纯静态无 JS）
+    if (is_404()) {
+        wp_enqueue_style(
+            'jc-404',
+            $theme_uri . '/assets/css/404.css',
+            array('jc-main'),
+            '1.0.0'
+        );
+    }
+
+    // 搜索结果页专属样式（search.php，WP 标准搜索模板；纯静态无 JS）
+    if (is_search()) {
+        wp_enqueue_style(
+            'jc-search',
+            $theme_uri . '/assets/css/search.css',
+            array('jc-main'),
+            '1.0.0'
+        );
+    }
+
+    // Privacy Policy 页专属样式（page-privacy_policy.php，slug=privacy_policy 自动匹配；纯静态无 JS）
+    if (is_page('privacy_policy')) {
+        wp_enqueue_style(
+            'jc-pp',
+            $theme_uri . '/assets/css/pp.css',
+            array('jc-main'),
+            '1.0.0'
+        );
+    }
 }
 add_action('wp_enqueue_scripts', 'jc_assets');
 
@@ -151,6 +220,40 @@ function jc_faq_archive_per_page($query) {
     }
 }
 add_action('pre_get_posts', 'jc_faq_archive_per_page');
+
+/* Project 归档页：每页 6 条（3 列 × 2 行，静态版约定；有多页时显示分页） */
+function jc_project_archive_per_page($query) {
+    if (is_admin() || !$query->is_main_query()) {
+        return;
+    }
+    if ($query->is_post_type_archive('project')) {
+        $query->set('posts_per_page', 6);
+    }
+}
+add_action('pre_get_posts', 'jc_project_archive_per_page');
+
+/* 搜索结果排序：产品优先 → 其他（页面等）→ 新闻/FAQ 最后（2026-09-06 用户需求）
+   ----------------------------------------------------------
+   规则：只影响前台主查询的搜索结果（?s=关键词）
+   1. product（产品）排最前
+   2. page（页面）等其他类型排中间
+   3. post（新闻）和 faq（FAQ）排最后
+   4. 同一类型内部按发布时间倒序（WP 默认）
+   实现：posts_orderby 过滤器，用 CASE 映射类型优先级；
+   以后新增类型未在 CASE 中列出 → 默认归入中间档（ELSE 2），无需改代码。 */
+function jc_search_orderby($orderby, $query) {
+    if (is_admin() || !$query->is_main_query() || !$query->is_search()) {
+        return $orderby;
+    }
+    global $wpdb;
+    return "CASE {$wpdb->posts}.post_type "
+         . "WHEN 'product' THEN 1 "
+         . "WHEN 'post' THEN 3 "
+         . "WHEN 'faq' THEN 4 "
+         . "ELSE 2 END ASC, "
+         . "{$wpdb->posts}.post_date DESC";
+}
+add_filter('posts_orderby', 'jc_search_orderby', 10, 2);
 
 /* =========================
    产品列表排序（archive 产品总页 / taxonomy 分类页 共用）
@@ -350,6 +453,26 @@ function jc_group($group, $path, $default = '') {
     return jc_get($group . '_' . $path, $default);
 }
 
+/* 视频嵌入链接转换（hero 轮播视频用，2026-09-06）
+   支持 YouTube（watch?v= / youtu.be/ / shorts/ / embed/）和 Vimeo，
+   自动转成 embed 格式并带上 autoplay+mute+loop 参数（背景视频静音自动播）；
+   其他链接原样返回（用户填的已是 embed 嵌入链接）。 */
+function jc_video_embed_url($url) {
+    // 兼容 Textarea/URL/Text 类型：清掉换行和多余空白（防止粘贴时带入杂字符）
+    $url = preg_replace('/\s+/', '', trim((string)$url));
+    if ($url === '') { return ''; }
+    // YouTube
+    if (preg_match('~(?:youtube\.com/(?:watch\?v=|embed/|shorts/)|youtu\.be/)([A-Za-z0-9_-]{6,})~', $url, $m)) {
+        $id = $m[1];
+        return 'https://www.youtube.com/embed/' . $id . '?autoplay=1&mute=1&playsinline=1&loop=1&playlist=' . $id;
+    }
+    // Vimeo
+    if (preg_match('~vimeo\.com/(?:video/)?(\d+)~', $url, $m)) {
+        return 'https://player.vimeo.com/video/' . $m[1] . '?autoplay=1&muted=1&loop=1';
+    }
+    return $url;
+}
+
 /* 读公共字段页 62（JC_GLOBAL_FIELD_ID）上的字段。
    详情页的 page_banner_*、ws_*、side_*、quote_*、related_*、btn_* 等全局字段都挂在 62 页，
    但 jc_is_global_key() 只把 company_ 前缀归 62，所以这些字段要用本函数读，避免误读首页。
@@ -510,6 +633,8 @@ function jc_icon($name) {
         'svc-shield'    => '<svg class="jc-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 11 11 13 15 9"/></svg>',
         'svc-factory'   => '<svg class="jc-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 20h20M4 20V9l5 3V9l5 3V9l5 3v8"/><path d="M9 20v-3h2v3M14 20v-3h2v3"/></svg>',
         'svc-badge'     => '<svg class="jc-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="6"/><path d="M8.5 13.5 7 22l5-3 5 3-1.5-8.5"/></svg>',
+        // Contact 页图标（与 mail/phone 同风格 stroke 图标）
+        'map-pin'       => '<svg class="jc-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>',
     );
     return isset($icons[$name]) ? $icons[$name] : '';
 }
@@ -587,7 +712,7 @@ function jc_default_menu() {
     echo '</ul></li>';
     echo '<li class="mainNavLi"><a href="' . esc_url(get_post_type_archive_link('faq')) . '" class="mainNavLiA"><p>FAQ</p></a></li>';
     echo '<li class="mainNavLi"><a href="' . esc_url(jc_page_url('news')) . '" class="mainNavLiA"><p>NEWS</p></a></li>';
-    echo '<li class="mainNavLi"><a href="' . esc_url(jc_page_url('contact-us')) . '" class="mainNavLiA"><p>CONTACT US</p></a></li>';
+    echo '<li class="mainNavLi"><a href="' . esc_url(jc_page_url('contact_us')) . '" class="mainNavLiA"><p>CONTACT US</p></a></li>';
     echo '<li class="mainNavLi nav-resources"><a href="#" class="mainNavLiA"><p>Resources</p></a></li>';
     echo '</ul>';
 }

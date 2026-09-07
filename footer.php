@@ -63,7 +63,7 @@
             <li><a href="<?php echo esc_url(jc_products_url()); ?>">PRODUCTS</a></li>
             <li><a href="<?php echo esc_url(jc_page_url('faq')); ?>">FAQ</a></li>
             <li><a href="<?php echo esc_url(jc_page_url('news')); ?>">NEWS</a></li>
-            <li><a href="<?php echo esc_url(jc_page_url('contact-us')); ?>">CONTACT US</a></li>
+            <li><a href="<?php echo esc_url(jc_page_url('contact_us')); ?>">CONTACT US</a></li>
             <li><a href="#" >Resources</a></li>
           </ul>
           <?php } ?>
@@ -122,7 +122,7 @@
     <div class="footer-bottom">
       <div class="container">
         <p>Copyright &copy; <?php echo esc_html(date('Y')); ?> <?php bloginfo('name'); ?></p>
-        <a href="<?php echo esc_url(jc_page_url('privacy-policy')); ?>" class="privacy-link">Privacy Policy</a>
+        <a href="<?php echo esc_url(jc_page_url('privacy_policy')); ?>" class="privacy-link">Privacy Policy</a>
       </div>
     </div>
   </footer>

@@ -1,0 +1,40 @@
+============================================================
+【本次更新 · 必须上传文件清单】  2026-09-06
+============================================================
+场景：404 / 搜索结果 / 隐私政策 三个页面转 WP + 联系页表单宽松化
+注意：以下文件【全部】都要上传覆盖，尤其 functions.php 不能漏！
+functions.php 是样式加载的开关，漏传 = 新页面样式全部不生效
+（页面只有裸排版，没有背景/布局/按钮样式）。
+
+对照路径：/www/wwwroot/你的站点/wp-content/themes/xiaobai-basic/
+（宝塔文件管理器里按同样的相对路径覆盖）
+
+  #  文件路径（相对主题目录）            大小    说明
+  ------------------------------------------------------------
+  1  functions.php                       40KB   ★最关键，上次遗漏！
+                                              CSS 加载总开关：is_404()→404.css、
+                                              is_search()→search.css、
+                                              is_page('privacy_policy')→pp.css，
+                                              另含 style.css 版本号 1.0.4（强制刷新缓存）
+  2  footer.php                          10KB   Privacy Policy 链接 slug 修正
+                                              （privacy-policy → privacy_policy）
+  3  assets/css/style.css                56KB   新增公共按钮 .btn-outline
+                                              （404 页 Contact Us 按钮 / 搜索无结果态按钮用）
+  4  404.php                             1KB    404 页模板（WP 标准错误页）
+  5  assets/css/404.css                  1.5KB  404 页专属样式
+  6  search.php                          4KB    搜索结果页模板（WP 标准搜索模板）
+  7  assets/css/search.css               3.8KB  搜索页专属样式（含分页/无结果态）
+  8  page-privacy_policy.php             3KB    隐私政策页模板（slug=privacy_policy 自动匹配）
+  9  assets/css/pp.css                   1.7KB  隐私政策页专属样式
+
+  ------------------------------------------------------------
+  可选（不传也不影响运行）：
+  - assets/css/contact.css  — 上次已传过的话这次不用再传；
+                             如果上次只传了模板没传 css，需要补传（联系页表单宽松化）
+  - ACF字段清单.md           — 文档，不用上传服务器
+
+上传后验证（记得 Ctrl+F5 强刷）：
+  1. 访问任意不存在的地址（如 /abc123） → 应看到大号 404 + 两个按钮
+  2. 顶部搜索框搜 "forging"            → 应看到带类型标签的结果列表
+  3. 后台新建页面 slug=privacy_policy 并贴内容 → footer 底部 Privacy Policy 链接可点
+============================================================

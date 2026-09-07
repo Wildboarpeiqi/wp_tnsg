@@ -22,7 +22,12 @@ $banner = '';
 if (function_exists('get_field') && $term && !is_wp_error($term)) {
     $banner = get_field('site_banner', 'category_' . $term->term_id);
 }
-if (is_array($banner) && !empty($banner['url'])) { $banner = $banner['url']; }
+// 兼容 ACF 三种返回格式：图片 ID / 数组 / URL 字符串（2026-09-06：返回 ID 时前端曾不显示）
+if (is_numeric($banner)) {
+    $banner = function_exists('wp_get_attachment_image_url') ? wp_get_attachment_image_url((int) $banner, 'full') : '';
+} elseif (is_array($banner) && !empty($banner['url'])) {
+    $banner = $banner['url'];
+}
 if (!$banner) { $banner = $theme_uri . '/assets/images/banner-news.jpg'; }
 
 // ---- 新闻分类（tab 用）：不卡 slug，列出所有分类（排除 WP 默认 Uncategorized），

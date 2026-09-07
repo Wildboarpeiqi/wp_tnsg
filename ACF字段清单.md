@@ -43,6 +43,10 @@
 | `hero_3_desc` | Textarea | `Primarily manufactures high-end automotive components and precision automotive forgings.` | |
 | `hero_3_align` | Text | `right` | |
 | `hero_3_btn` | Link | `Learn More → Products` | |
+| `hero_N_video_url` | URL / Text | `(空)` | **第 N 帧视频嵌入链接（可选）**：粘贴 YouTube / Vimeo 视频链接（watch?v= / youtu.be / vimeo.com 均可，自动转嵌入），或直接粘贴 iframe 嵌入链接。留空 = 用图片 |
+| `hero_N_video_file` | File（返回 URL） | `(空)` | **第 N 帧视频文件（可选）**：从媒体库选择/上传本地视频（mp4 等）。**优先级最高**：和嵌入链接都填了时用本地文件。留空 = 用图片或嵌入链接 |
+
+> **视频展示规则（2026-09-06）**：视频按 banner 区域尺寸 cover 填充——超出容器的部分自动裁剪、以容器中心为基准；带 0.7 暗化与图片底一致。轮播切到该帧才播放（本地文件静音循环 / 嵌入视频自动静音播放），切走自动暂停并停止加载。三帧可混用：图片帧、嵌入视频帧、本地视频帧互不影响。
 
 ## 三、Products 区块头部（内容本身来自「产品」CPT，见文末）
 
@@ -134,7 +138,7 @@
 | 产品 | 产品 → 新增产品 | 每篇设标题 + 特色图；首页自动取最新 8 个 |
 | **证书** | **证书 → 新增证书** | 每篇设标题 + 特色图（证书图）；首页证书轮播自动展示 |
 | 静态首页 | 设置 → 阅读 | 首页显示为**静态页面**，选"前台首页"页面 |
-| 联系页面 | 页面 → 新增 | slug 用 `contact-us`；About 用 `about_us`；FAQ 用 `faq`；News 用 `news`（代码按 slug 找链接） |
+| 联系页面 | 页面 → 新增 | slug 用 `contact_us`；About 用 `about_us`；FAQ 用 `faq`；News 用 `news`（代码按 slug 找链接） |
 
 > 钩子：`wp_head` 里预留了 GA4 统计代码位（functions.php 末尾注释块），拿到测量 ID 后启用。
 
@@ -326,3 +330,81 @@
 4. Impact testing machine
 5. Metallographic Analysis System
 6. Metallographic Polishing Machine – Notch Tester
+
+---
+
+## 十一、联系我们页（page-contact_us.php，2026-09-06 新增）
+
+**页面对应模板**：`page-contact_us.php`（WordPress 按 slug **`contact_us`** 自动匹配——注意是连字符，与文档「需要同时在后台配置的」第 137 行一致；若 slug 不同可在后台手动选模板 "Contact Us"）。CSS 已复制为 `assets/css/contact.css`，由 functions.php 在 `is_page('contact_us')` 时自动加载；**无专属 JS**（静态版表单演示走 main.js 通用逻辑，WP 端表单由 Fluent Forms 输出）。
+
+**静态版**：`E:\jingxiang\site\contact.html`（转 WP 时对照）。
+
+### A. Banner（你已建字段，无需新建）
+
+| 字段名称 | 类型 | 说明 |
+|---|---|---|
+| `site_banner` | Image | **你已建好**。联系页后台直接填背景图；标题 = 页面标题（Contact Us），面包屑自动 |
+
+### B. 字段组（位置规则：**页面 == Contact Us**，5 个字段已建）
+
+| 字段名称 | 类型 | 默认值 | 说明 |
+|---|---|---|---|
+| `contact_eyebrow` | Text | `Contact us` | 大标题上方小胶囊按钮文字 |
+| `contact_title` | Text | `Start a collaboration` | 主体区大标题 |
+| `contact_desc` | Textarea | Whether you have product inquiries... | 大标题下方副标题 |
+| `contact_form_note` | Textarea | Reach out via our contact form... | 表单上方引导语 |
+| `contact_map_embed` | Textarea | （英文版 Google 地图 iframe，见附录⑤） | 地图嵌入代码，**换地址改这里**（需带 `&hl=en` 保持英文版） |
+
+### C. 复用字段（无需新建）
+
+- 4 张联系卡的值 = **公共字段页 62**：`company_whatsapp` / `company_phone` / `company_email` / `company_address`（与 header/footer/弹窗同一套，改一处全站生效）
+- 电话显示自动格式化为 `+86 18596356103` 风格（纯数字字段 → 前台自动加 +86 空格）
+- 地图浮卡公司名 = 站点名称（设置 → 常规 → 站点标题）
+
+### D. 非字段项（代码已实现）
+
+- 表单：**Fluent Form ID 待用户创建后确认**——模板里当前占位 `[fluentform id="5"]`（顶部注释 ★★★ 处），创建后告诉我实际 ID 即可替换；未装 Fluent Forms 时显示静态兜底表单
+- 联系卡图标：内联 SVG（jc_icon('whatsapp'/'phone'/'mail'/'map-pin')，map-pin 为本页新增到 functions.php）
+- 地址卡点击打开 Google 地图定位；地图浮卡含公司名 + 电话 + 地址
+- 背景分两大块：标题区+联系卡 = 浅灰 #F7F8FA；表单+地图 = 白底（与静态版一致）
+- 不散架原则：字段没建/没填 → 回退静态默认内容
+
+### 附录⑤：contact_map_embed 默认值（英文版地图）
+
+> `<iframe src="https://maps.google.com/maps?ll=36.453677729319,116.03362175227&z=12&output=embed&hl=en" width="100%" height="100%" style="border:0;" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Liaocheng Jiucheng Auto Parts Co., Ltd. location" allowfullscreen></iframe>`
+
+
+---
+
+## 十二、404 / 搜索 / 隐私政策页（2026-09-06 新增）
+
+> 三个页面**全部零新增字段**：纯模板 + WP 内置机制，不需要在 ACF 后台加任何字段。
+
+| 页面 | 模板 | 触发方式 | 字段 |
+|---|---|---|---|
+| 404 错误页 | `404.php` | WP 标准模板：访问不存在的 URL 时自动调用 | 零字段 |
+| 搜索结果页 | `search.php` | WP 标准模板：/?s=关键词 自动调用 | 零字段（搜产品/新闻/FAQ/页面，CPT 默认参与搜索） |
+| 隐私政策页 | `page-privacy_policy.php` | slug=privacy_policy 自动匹配（备选：后台手动选模板 "Privacy Policy"） | 零字段 |
+
+### 需要你在后台做的（仅 1 项）
+
+- **新建"Privacy Policy"页面**：页面 → 新增 → 标题 Privacy Policy → **slug 用 `privacy_policy`**（下划线），把原站内容贴进正文编辑器（Intro / Collection / Use / Disclosure 结构，普通段落 + 列表即可，自动带正文排版）。
+- （可选）想让隐私政策页 banner 后台可换：把 `site_banner` 字段组的位置规则加上「页面 == Privacy Policy」。
+- 404 / 搜索页 banner 图固定用主题图 banner-news.jpg，无字段可配。
+
+### 模板对应关系
+
+| 模板 | 静态版 | 说明 |
+|---|---|---|
+| `404.php` | 404.html | 大号 404 + Back to Home / Contact Us 双按钮；样式 `assets/css/404.css`（is_404 条件加载） |
+| `search.php` | search.html | banner + 结果统计 + 类型标签（Product/News/FAQ/Page）+ 摘要 + 分页 + 无结果态（内联搜索框）；样式 `assets/css/search.css`（is_search 条件加载） |
+| `page-privacy_policy.php` | privacy-policy.html | banner（site_banner 兜底 banner-news.jpg）+ 正文 the_content；样式 `assets/css/pp.css`（is_page('privacy_policy') 条件加载） |
+
+> 注意：全站 footer 的 Privacy Policy 链接代码已统一指向 slug=privacy_policy（`jc_page_url('privacy_policy')`），页面建好后链接自动生效，无需改代码。
+
+### 搜索结果排序（2026-09-06 新增）
+
+functions.php 新增 `jc_search_orderby` 钩子（posts_orderby 过滤器）：
+搜索结果按类型排序 = **产品最前 → 其他（页面等）中间 → 新闻(post)/FAQ 最后**，同一类型内按发布时间倒序。
+以后新增 CPT 类型未在 CASE 中列出 → 自动归入中间档，无需改代码。
+说明：只需上传 functions.php 即生效；search.php 模板无需改动。

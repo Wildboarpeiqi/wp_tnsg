@@ -1,0 +1,4 @@
+字段名称	类型	默认值	说明
+project_banner_img	Image（返回 URL）	banner-news.jpg	列表页 + 详情页共用的 banner 背景图
+project_banner_title	Text	PROJECTS	banner 标题
+project_related_title	Text	Related Projects	详情页左侧"相关案例"标题
