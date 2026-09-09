@@ -620,6 +620,58 @@ function jc_wa_url() {
     return 'https://wa.me/' . $num;
 }
 
+/* =========================================================
+   Polylang：跨语言复制 / 同步不需要翻译的结构字段
+   ---------------------------------------------------------
+   product_sort = 产品排序
+   sort_order   = 分类排序
+
+   注意：
+   这里只同步结构数据。
+   标题、描述、产品参数、页面文案等翻译字段不要放进来。
+   ========================================================= */
+
+/**
+ * Product 的结构字段。
+ */
+function jc_pll_copy_post_metas($metas) {
+
+    // ACF 实际字段值
+    $metas[] = 'product_sort';
+
+    // ACF 保存的字段引用
+    $metas[] = '_product_sort';
+
+    return array_values(
+        array_unique($metas)
+    );
+}
+add_filter(
+    'pll_copy_post_metas',
+    'jc_pll_copy_post_metas'
+);
+
+
+/**
+ * Product Category 的结构字段。
+ */
+function jc_pll_copy_term_metas($metas) {
+
+    // ACF 实际字段值
+    $metas[] = 'sort_order';
+
+    // ACF 保存的字段引用
+    $metas[] = '_sort_order';
+
+    return array_values(
+        array_unique($metas)
+    );
+}
+add_filter(
+    'pll_copy_term_metas',
+    'jc_pll_copy_term_metas'
+);
+
 /* =========================
    4.6 字段调试工具（仅登录管理员可用）
    —— 前台地址后加 ?jc_debug=1 即可看到每个字段实际读到什么、从哪个页面读的。
