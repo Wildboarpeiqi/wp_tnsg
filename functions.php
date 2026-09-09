@@ -790,6 +790,38 @@ function jc_register_polylang_strings() {
         'news_pagination'       => 'News pagination',
         'no_news'               => 'No news has been published yet. Please check back later.',
         'no_category_articles'  => 'No articles in this category yet. Please check back later.',
+
+        // Footer / Global UI
+        'email_lower'           => 'email',
+        'email'                 => 'Email',
+        'whatsapp_footer'       => 'Whatsapp',
+        'whatsapp'              => 'WhatsApp',
+        'phone'                 => 'Phone',
+
+        'quick_links'           => 'Quick Links',
+        'product'               => 'Product',
+        'resources'             => 'Resources',
+        'privacy_policy'        => 'Privacy Policy',
+
+        'home'                  => 'Home',
+        'tel'                   => 'Tel',
+        'top'                   => 'top',
+
+        'submit'                => 'Submit',
+        'message_heading'       => 'Please give us a message',
+
+        // Fallback form
+        'placeholder_name'      => 'Please enter your name',
+        'placeholder_phone'     => 'Please enter your phone number',
+        'placeholder_email'     => 'Please enter your email',
+        'placeholder_company'   => 'Please enter your company name',
+        'placeholder_message'   => 'Please enter your message',
+
+        // Footer fallback menu
+        'about_us_upper'        => 'ABOUT US',
+        'products_upper'        => 'PRODUCTS',
+        'faq_upper'             => 'FAQ',
+        'contact_us_upper'      => 'CONTACT US',
     );
 
     foreach ($strings as $key => $text) {
