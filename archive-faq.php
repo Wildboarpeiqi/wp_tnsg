@@ -20,7 +20,7 @@ $theme_uri = get_template_directory_uri();
 
 // ---- Banner（62 页 faq_banner_img / faq_banner_title，与产品列表页 page_banner_* 同模式）----
 $banner_img   = jc_g62('faq_banner_img', $theme_uri . '/assets/images/banner-news.jpg');
-$banner_title = jc_g62('faq_banner_title', 'FAQ');
+$banner_title = jc_g62('faq_banner_title',jc_t('FAQ'));
 ?>
 
 <!-- ===================== PAGE BANNER（栏目页 banner：图 + 标题 + 面包屑） ===================== -->
@@ -28,7 +28,7 @@ $banner_title = jc_g62('faq_banner_title', 'FAQ');
   <div class="page-banner-inner">
     <div class="page-banner-title"><?php echo esc_html($banner_title); ?></div>
     <div class="breadcrumb">
-      <a href="<?php echo esc_url(jc_home_url()); ?>">HOME</a> &gt;
+      <a href="<?php echo esc_url(jc_home_url()); ?>"><?php echo esc_html(jc_t('HOME')); ?></a> &gt;
       <span><?php echo esc_html($banner_title); ?></span>
     </div>
   </div>
@@ -47,7 +47,7 @@ $banner_title = jc_g62('faq_banner_title', 'FAQ');
             <div class="faq-card-body">
               <h3 class="faq-card-title"><?php the_title(); ?></h3>
               <p class="faq-card-desc"><?php echo esc_html(get_the_excerpt()); ?></p>
-              <span class="faq-card-more">Read More</span>
+              <span class="faq-card-more"><?php echo esc_html(jc_t('Read More')); ?></span>
             </div>
           </a>
         </li>
@@ -59,16 +59,16 @@ $banner_title = jc_g62('faq_banner_title', 'FAQ');
     the_posts_pagination(array(
         'mid_size'  => 2,
         'end_size'  => 1,
-        'prev_text' => '<span class="arrow">&lt;</span>Previous',
-        'next_text' => 'Next<span class="arrow">&gt;</span>',
-        'screen_reader_text' => 'FAQ pagination',
+        'prev_text' => '<span class="arrow">&lt;</span>' . esc_html(jc_t('Previous')),
+        'next_text' => esc_html(jc_t('Next')) . '<span class="arrow">&gt;</span>',
+        'screen_reader_text' => jc_t('FAQ pagination'),
     ));
     ?>
   <?php else : ?>
     <!-- 暂无内容（兜底提示，不发 404） -->
     <ul class="faq-grid">
       <li class="faq-card" style="grid-column:1/-1;text-align:center;padding:4rem 2rem;">
-        <p style="font-size:1.6rem;color:#666;">No questions published yet. Please check back later.</p>
+        <p style="font-size:1.6rem;color:#666;"><?php echo esc_html(jc_t('No questions published yet. Please check back later.')); ?></p>
       </li>
     </ul>
   <?php endif; ?>

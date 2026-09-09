@@ -847,6 +847,25 @@ function jc_register_polylang_strings() {
         'previous_products'      => 'Previous products',
         'next_products'          => 'Next products',
         'video_not_supported'    => 'Your browser does not support the video tag.',
+
+        // FAQ / Project / Post UI
+        'projects_upper'          => 'PROJECTS',
+
+        'faq_pagination'          => 'FAQ pagination',
+        'projects_pagination'     => 'Projects pagination',
+
+        'no_questions'            => 'No questions published yet. Please check back later.',
+        'no_projects'             => 'No projects published yet. Please check back later.',
+
+        'time'                    => 'Time:',
+        'previous_page'           => 'Previous page',
+        'next_page'               => 'Next page',
+        'already_first'           => 'Already the first',
+        'already_last'            => 'Already the last',
+
+        'faq_navigation'          => 'FAQ navigation',
+        'project_navigation'      => 'Project navigation',
+        'post_navigation'         => 'Post navigation',
     );
 
     foreach ($strings as $key => $text) {
