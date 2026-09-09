@@ -77,7 +77,7 @@ $banner_title = jc_g62('page_banner_title', 'PRODUCTS');
       <!-- reasons 区块（空标题则整块隐藏；共 3 组，icon/title/desc 三项全空则跳过该组） -->
       <?php
       $reason_title = jc_g62('reason_title', '');
-      $rg = function_exists('get_field') ? get_field('reason_group', JC_GLOBAL_FIELD_ID) : null;
+      $rg = function_exists('get_field') ? get_field('reason_group', jc_global_field_id()) : null;
       $rg = is_array($rg) ? $rg : array();
       if ($reason_title !== '') : ?>
         <div class="side-reasons">

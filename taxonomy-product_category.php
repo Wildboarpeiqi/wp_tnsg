@@ -41,7 +41,7 @@ $banner_title = ($cur_term && !is_wp_error($cur_term) && !empty($cur_term->name)
 
 // ---- reasons 字段（62 页 reason_title / reason_group）----
 $reason_title = jc_g62('reason_title', '');
-$reason_group = function_exists('get_field') ? get_field('reason_group', JC_GLOBAL_FIELD_ID) : null;
+$reason_group = function_exists('get_field') ? get_field('reason_group', jc_global_field_id()) : null;
 ?>
 
 <!-- ===================== PAGE BANNER ===================== -->

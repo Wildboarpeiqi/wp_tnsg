@@ -137,9 +137,9 @@ function jc_assets() {
         );
     }
 
-    // About Us 页专属样式 + 脚本（page-about_us.php，slug=about_us 自动匹配）
+    // About Us 页专属样式 + 脚本（page-about_us.php，使用 page-about_us.php 页面模板）
     // 公共样式（header/footer/banner/轮播基础）已在 style.css + main.js，这里只加载页面专属部分
-    if (is_page('about_us')) {
+    if (is_page_template('page-about_us.php')) {
         wp_enqueue_style(
             'jc-about',
             $theme_uri . '/assets/css/about.css',
@@ -157,7 +157,7 @@ function jc_assets() {
 
     // Contact Us 页专属样式（page-contact_us.php，slug=contact_us 自动匹配）
     // 静态版无专属 JS（表单演示走 main.js 通用逻辑）；WP 端表单由 Fluent Forms 输出，故只加载 CSS
-    if (is_page('contact_us')) {
+    if (is_page_template('page-contact_us.php')) {
         wp_enqueue_style(
             'jc-contact',
             $theme_uri . '/assets/css/contact.css',
@@ -187,7 +187,7 @@ function jc_assets() {
     }
 
     // Privacy Policy 页专属样式（page-privacy_policy.php，slug=privacy_policy 自动匹配；纯静态无 JS）
-    if (is_page('privacy_policy')) {
+    if (is_page_template('page-privacy_policy.php')) {
         wp_enqueue_style(
             'jc-pp',
             $theme_uri . '/assets/css/pp.css',
@@ -633,7 +633,7 @@ function jc_debug_panel() {
         return;
     }
     $front = jc_front_id();
-    $global = JC_GLOBAL_FIELD_ID;
+    $global = jc_global_field_id();
     echo '<style>#jc-debug{position:fixed;right:10px;bottom:10px;z-index:99999;background:#111;color:#0f0;font:11px/1.5 Consolas,monospace;padding:10px;max-width:520px;max-height:70vh;overflow:auto;border:1px solid #0f0;white-space:pre-wrap;}</style>';
     echo '<div id="jc-debug">';
     echo '<b>[JC 字段调试]</b><br>';

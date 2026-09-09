@@ -1,5 +1,7 @@
 <?php
 /**
+ * Template Name: About Us
+ *
  * page-about_us.php — 关于我们页
  * WordPress 按页面 slug = about_us 自动匹配本模板（后台无需手动选模板）。
  * 静态版对照：E:\jingxiang\site\about.html
@@ -37,7 +39,7 @@ $pf = function ($key, $default = '') use ($page_id, $pimg) {
 };
 
 /* 公司名：优先公共字段页 62 的 about_company，其次首页 About 区块，最后硬编码兜底 */
-$about_company = function_exists('get_field') ? get_field('about_company', JC_GLOBAL_FIELD_ID) : '';
+$about_company = function_exists('get_field') ? get_field('about_company', jc_global_field_id()) : '';
 if ($about_company === '' || $about_company === null || $about_company === false) {
     $about_company = jc_get('about_section_about_company', '');
 }
