@@ -10,7 +10,7 @@
   <footer id="SITE_FOOTER" class="no-response">
     <div class="container footer-top">
       <div class="footer-logo">
-        <a href="<?php echo esc_url(home_url('/')); ?>" title="HOME" class="footer-logo-link">
+        <a href="<?php echo esc_url(jc_home_url()); ?>" title="HOME" class="footer-logo-link">
           <?php if (function_exists('the_custom_logo') && has_custom_logo()) {
               the_custom_logo();
           } else { ?>
@@ -58,7 +58,7 @@
               ));
           } else { ?>
           <ul>
-            <li><a href="<?php echo esc_url(home_url('/')); ?>">HOME</a></li>
+            <li><a href="<?php echo esc_url(jc_home_url()); ?>">HOME</a></li>
             <li><a href="<?php echo esc_url(jc_page_url('about_us')); ?>">ABOUT US</a></li>
             <li><a href="<?php echo esc_url(jc_products_url()); ?>">PRODUCTS</a></li>
             <li><a href="<?php echo esc_url(jc_page_url('faq')); ?>">FAQ</a></li>
@@ -129,7 +129,7 @@
 
   <!-- ===================== MOBILE BOTTOM BAR ===================== -->
   <div class="mobile-bottom-bar">
-    <a href="<?php echo esc_url(home_url('/')); ?>" class="mb-btn"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11.5 12 4l9 7.5"/><path d="M5.5 10.5V20h13v-9.5"/></svg><span>Home</span></a>
+    <a href="<?php echo esc_url(jc_home_url()); ?>" class="mb-btn"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11.5 12 4l9 7.5"/><path d="M5.5 10.5V20h13v-9.5"/></svg><span>Home</span></a>
     <a href="mailto:<?php echo esc_attr(jc_get('company_email', 'jiucheng@jcforging.com')); ?>" class="mb-btn"><?php echo jc_icon('mail'); ?><span>Email</span></a>
     <a href="<?php echo esc_url(jc_wa_url()); ?>" class="mb-btn"><?php echo jc_icon('whatsapp'); ?><span>WhatsApp</span></a>
   </div>

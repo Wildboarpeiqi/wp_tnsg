@@ -21,7 +21,7 @@ $theme_uri = get_template_directory_uri();
 // ---- 文章页（posts page）ID：后台「设置→阅读→文章页」指定；未设置时标题/链接兜底 ----
 $posts_page_id = (int) get_option('page_for_posts');
 $news_title    = $posts_page_id ? get_the_title($posts_page_id) : 'NEWS';
-$news_url      = $posts_page_id ? get_permalink($posts_page_id) : home_url('/');
+$news_url      = $posts_page_id ? get_permalink($posts_page_id) : jc_home_url();
 
 // ---- Banner 背景图：News 页（posts page）的 site_banner 字段，空则兜底主题图 ----
 $banner = '';
@@ -56,7 +56,7 @@ usort($news_cats, function ($a, $b) use ($preferred) {
   <div class="page-banner-inner">
     <div class="page-banner-title"><?php echo esc_html($news_title); ?></div>
     <div class="breadcrumb">
-      <a href="<?php echo esc_url(home_url('/')); ?>">HOME</a> &gt;
+      <a href="<?php echo esc_url(jc_home_url()); ?>">HOME</a> &gt;
       <span><?php echo esc_html($news_title); ?></span>
     </div>
   </div>

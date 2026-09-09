@@ -662,13 +662,13 @@ function jc_debug_panel() {
                 }
             }
             // 该组实际匹配哪些页面
-            $m39 = acf_get_field_groups(array('post_id' => 39));
-            $m62 = acf_get_field_groups(array('post_id' => 62));
+            $$m39 = acf_get_field_groups(array('post_id' => $front));
+            $m62 = acf_get_field_groups(array('post_id' => $global));
             $in39 = false;
             foreach ($m39 as $mg) { if ($mg['key'] === $g['key']) { $in39 = true; } }
             $in62 = false;
             foreach ($m62 as $mg) { if ($mg['key'] === $g['key']) { $in62 = true; } }
-            echo '   · 匹配 HOME(39): ' . ($in39 ? '✓是' : '✗否') . ' | 匹配公共页(62): ' . ($in62 ? '✓是' : '✗否') . '<br>';
+            echo '   · 匹配 HOME(' . $front . '): ' . ($in39 ? '✓是' : '✗否') . ' | 匹配公共页(' . $global . '): ' . ($in62 ? '✓是' : '✗否') . '<br>';
             $fields = function_exists('acf_get_fields') ? acf_get_fields($g) : array();
             if ($fields) {
                 echo '   · 字段明细 (含类型/子字段):<br>';
@@ -685,7 +685,7 @@ function jc_debug_panel() {
                     }
                     // 首页相关组：打印实际值
                     if ($g['key'] === 'group_6a9137e7bddeb') {
-                        $fv = function_exists('get_field') ? get_field($f['name'], 39) : '';
+                        $fv = function_exists('get_field') ? get_field($f['name'], $front) : '';
                         echo '  ★值: ' . (is_scalar($fv) ? var_export($fv, true) : json_encode($fv, JSON_UNESCAPED_UNICODE));
                     }
                     echo '<br>';

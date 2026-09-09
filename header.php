@@ -18,7 +18,7 @@
   <!-- ===================== HEADER ===================== -->
   <header id="SITE_HEADER" class="no-response previewHead">
     <div class="container header-bar">
-      <a href="<?php echo esc_url(home_url('/')); ?>" class="logo" title="HOME">
+      <a href="<?php echo esc_url(jc_home_url()); ?>" class="logo" title="HOME">
         <?php if (function_exists('the_custom_logo') && has_custom_logo()) {
             the_custom_logo();
         } else { ?>

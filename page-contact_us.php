@@ -71,7 +71,7 @@ $banner_title = get_the_title();
     <div class="page-banner-inner">
       <div class="page-banner-title"><?php echo esc_html($banner_title); ?></div>
       <div class="breadcrumb">
-        <a href="<?php echo esc_url(home_url('/')); ?>">HOME</a> &gt;
+        <a href="<?php echo esc_url(jc_home_url()); ?>">HOME</a> &gt;
         <span><?php echo esc_html($banner_title); ?></span>
       </div>
     </div>

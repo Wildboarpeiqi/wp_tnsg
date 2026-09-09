@@ -51,7 +51,7 @@ usort($news_cats, function ($a, $b) use ($preferred) {
 
 // 面包屑里 NEWS 链接：文章页（posts page），没有则回退首页
 $posts_page_id = (int) get_option('page_for_posts');
-$news_url      = $posts_page_id ? get_permalink($posts_page_id) : home_url('/');
+$news_url      = $posts_page_id ? get_permalink($posts_page_id) : jc_home_url();
 $news_label    = $posts_page_id ? get_the_title($posts_page_id) : 'NEWS';
 ?>
 
@@ -60,7 +60,7 @@ $news_label    = $posts_page_id ? get_the_title($posts_page_id) : 'NEWS';
   <div class="page-banner-inner">
     <div class="page-banner-title"><?php single_cat_title(); ?></div>
     <div class="breadcrumb">
-      <a href="<?php echo esc_url(home_url('/')); ?>">HOME</a> &gt;
+      <a href="<?php echo esc_url(jc_home_url()); ?>">HOME</a> &gt;
       <a href="<?php echo esc_url($news_url); ?>"><?php echo esc_html($news_label); ?></a> &gt;
       <span><?php single_cat_title(); ?></span>
     </div>

@@ -65,7 +65,7 @@ $banner_img = jc_g62('page_banner_img', $theme_uri . '/assets/images/banner-prod
   <div class="page-banner-inner">
     <div class="page-banner-title"><?php echo esc_html(jc_g62('page_banner_title', 'PRODUCTS')); ?></div>
     <div class="breadcrumb">
-      <a href="<?php echo esc_url(home_url('/')); ?>">HOME</a> &gt;
+      <a href="<?php echo esc_url(jc_home_url()); ?>">HOME</a> &gt;
       <a href="<?php echo esc_url(jc_products_url()); ?>">PRODUCTS</a> &gt;
       <?php if ($cur_cat) : ?><a href="<?php echo esc_url(get_term_link($cur_cat)); ?>"><?php echo esc_html($cur_cat->name); ?></a> &gt;<?php endif; ?>
       <span><?php echo esc_html($post_title); ?></span>
@@ -82,7 +82,7 @@ $banner_img = jc_g62('page_banner_img', $theme_uri . '/assets/images/banner-prod
       <h3 class="side-title"><?php echo esc_html(jc_g62('side_nav_title', 'Navigation')); ?></h3>
 
       <!-- 搜索栏 -->
-      <form class="side-search" action="<?php echo esc_url(home_url('/')); ?>" method="get" role="search">
+      <form class="side-search" action="<?php echo esc_url(jc_home_url()); ?>" method="get" role="search">
         <input type="text" name="s" placeholder="Search starts here" autocomplete="off">
         <button type="submit" aria-label="Search"><?php echo jc_icon('search'); ?></button>
       </form>

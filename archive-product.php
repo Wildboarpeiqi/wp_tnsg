@@ -47,7 +47,7 @@ $banner_title = jc_g62('page_banner_title', 'PRODUCTS');
   <div class="page-banner-inner">
     <div class="page-banner-title"><?php echo esc_html($banner_title); ?></div>
     <div class="breadcrumb">
-      <a href="<?php echo esc_url(home_url('/')); ?>">HOME</a> &gt;
+      <a href="<?php echo esc_url(jc_home_url()); ?>">HOME</a> &gt;
       <span><?php echo esc_html($banner_title); ?></span>
     </div>
   </div>
@@ -62,7 +62,7 @@ $banner_title = jc_g62('page_banner_title', 'PRODUCTS');
       <h3 class="side-title"><?php echo esc_html(jc_g62('side_nav_title', 'Navigation')); ?></h3>
 
       <!-- 搜索栏 -->
-      <form class="side-search" action="<?php echo esc_url(home_url('/')); ?>" method="get" role="search">
+      <form class="side-search" action="<?php echo esc_url(jc_home_url()); ?>" method="get" role="search">
         <input type="text" name="s" placeholder="Search starts here" autocomplete="off">
         <button type="submit" aria-label="Search"><?php echo jc_icon('search'); ?></button>
       </form>

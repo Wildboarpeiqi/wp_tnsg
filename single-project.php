@@ -40,7 +40,7 @@ $related_query = new WP_Query(array(
   <div class="page-banner-inner">
     <div class="page-banner-title"><?php echo esc_html(jc_g62('project_banner_title', 'PROJECTS')); ?></div>
     <div class="breadcrumb">
-      <a href="<?php echo esc_url(home_url('/')); ?>">HOME</a> &gt;
+      <a href="<?php echo esc_url(jc_home_url()); ?>">HOME</a> &gt;
       <a href="<?php echo esc_url(get_post_type_archive_link('project')); ?>"><?php echo esc_html(jc_g62('project_banner_title', 'PROJECTS')); ?></a> &gt;
       <span><?php echo esc_html(get_the_title()); ?></span>
     </div>

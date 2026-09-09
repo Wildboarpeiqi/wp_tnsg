@@ -24,7 +24,7 @@ $query_txt = get_search_query();
   <div class="page-banner-inner">
     <div class="page-banner-title">Search Results</div>
     <div class="breadcrumb">
-      <a href="<?php echo esc_url(home_url('/')); ?>">HOME</a> &gt;
+      <a href="<?php echo esc_url(jc_home_url()); ?>">HOME</a> &gt;
       <span>Search</span>
     </div>
   </div>
@@ -81,11 +81,11 @@ $query_txt = get_search_query();
     <div class="search-empty">
       <h3 class="search-empty-title">No results found</h3>
       <p class="search-empty-desc">Sorry, nothing matched &ldquo;<?php echo esc_html($query_txt); ?>&rdquo;. Please try different keywords, or contact us directly for product information.</p>
-      <form role="search" method="get" class="search-form search-empty-form" action="<?php echo esc_url(home_url('/')); ?>">
+      <form role="search" method="get" class="search-form search-empty-form" action="<?php echo esc_url(jc_home_url()); ?>">
         <input type="text" name="s" placeholder="Search starts here..." value="<?php echo esc_attr($query_txt); ?>">
         <button type="submit" class="btn-main">Search</button>
       </form>
-      <p style="margin-top:2rem;"><a href="<?php echo esc_url(home_url('/')); ?>" class="btn-outline">Back to Home</a></p>
+      <p style="margin-top:2rem;"><a href="<?php echo esc_url(jc_home_url()); ?>" class="btn-outline">Back to Home</a></p>
     </div>
 
   <?php endif; ?>

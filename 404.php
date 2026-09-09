@@ -18,7 +18,7 @@ get_header();
     <h1 class="nf-title">Page Not Found</h1>
     <p class="nf-desc">The page you are looking for might have been removed, had its name changed, or is temporarily unavailable. Please return to the homepage or contact us for assistance.</p>
     <div class="nf-actions">
-      <a href="<?php echo esc_url(home_url('/')); ?>" class="btn-main">Back to Home</a>
+      <a href="<?php echo esc_url(jc_home_url()); ?>" class="btn-main">Back to Home</a>
       <a href="<?php echo esc_url(jc_page_url('contact_us')); ?>" class="btn-outline">Contact Us</a>
     </div>
   </div>
