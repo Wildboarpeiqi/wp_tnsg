@@ -608,6 +608,86 @@ function jc_posts_page_id() {
     return jc_translate_post_id($id);
 }
 
+/**
+ * 获取当前语言的 News 分类，并按 ACF sort_order 排序。
+ *
+ * 规则：
+ * 1. Polylang 自动过滤为当前语言分类
+ * 2. 排除默认 Uncategorized
+ * 3. sort_order 数字越小越靠前
+ * 4. 没填 sort_order 的分类排到最后
+ * 5. 相同排序值时按分类名称排序
+ */
+function jc_get_sorted_news_categories() {
+
+    $default_category_id = (int) get_option('default_category');
+
+    $exclude = array();
+
+    if ($default_category_id > 0) {
+
+        $exclude[] = $default_category_id;
+
+        // 如果默认分类存在当前语言翻译，也一起排除
+        if (function_exists('pll_get_term')) {
+
+            $translated_default_id = pll_get_term(
+                $default_category_id
+            );
+
+            if ($translated_default_id) {
+                $exclude[] = (int) $translated_default_id;
+            }
+        }
+    }
+
+    $news_cats = get_terms(array(
+        'taxonomy'   => 'category',
+        'hide_empty' => false,
+        'exclude'    => array_unique($exclude),
+    ));
+
+    if (is_wp_error($news_cats)) {
+        return array();
+    }
+
+    usort($news_cats, function ($a, $b) {
+
+        $a_order = get_term_meta(
+            $a->term_id,
+            'sort_order',
+            true
+        );
+
+        $b_order = get_term_meta(
+            $b->term_id,
+            'sort_order',
+            true
+        );
+
+        $a_order = (
+            $a_order !== ''
+            && is_numeric($a_order)
+        ) ? (int) $a_order : PHP_INT_MAX;
+
+        $b_order = (
+            $b_order !== ''
+            && is_numeric($b_order)
+        ) ? (int) $b_order : PHP_INT_MAX;
+
+        if ($a_order !== $b_order) {
+            return $a_order <=> $b_order;
+        }
+
+        return strcasecmp(
+            $a->name,
+            $b->name
+        );
+    });
+
+    return $news_cats;
+}
+
 /* 产品归档链接（CPT 已注册即有效） */
 function jc_products_url() {
     $u = get_post_type_archive_link('product');
