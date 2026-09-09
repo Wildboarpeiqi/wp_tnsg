@@ -386,13 +386,53 @@ add_filter('body_class', 'jc_body_class');
 if (!defined('JC_GLOBAL_FIELD_ID')) {
     define('JC_GLOBAL_FIELD_ID', 62);
 }
+/**
+ * 根据当前语言取得某篇 Post / Page 的对应翻译 ID。
+ *
+ * - Polylang 未启用：返回原 ID
+ * - Polylang 已启用且存在当前语言翻译：返回翻译 ID
+ * - 当前语言没有对应翻译：返回原 ID
+ */
+function jc_translate_post_id($post_id) {
+
+    $post_id = (int) $post_id;
+
+    if ($post_id <= 0) {
+        return 0;
+    }
+
+    if (function_exists('pll_get_post')) {
+
+        $translated_id = pll_get_post($post_id);
+
+        if ($translated_id) {
+            return (int) $translated_id;
+        }
+    }
+
+    return $post_id;
+}
+
+/**
+ * 当前语言对应的全局公共字段页 ID。
+ *
+ * JC_GLOBAL_FIELD_ID 始终保存默认语言公共字段页的基准 ID，
+ * 具体读取时根据 Polylang 当前语言自动取得对应翻译页。
+ */
+function jc_global_field_id() {
+
+    return jc_translate_post_id(
+        JC_GLOBAL_FIELD_ID
+    );
+}
+
 
 /* 当前前台首页 ID（静态首页=该页面；博客列表首页=0 时退回当前 ID）
    更健壮的探测：静态首页未设置时，遍历页面找 slug=home 或第一个页面 */
 function jc_front_id() {
     $id = (int) get_option('page_on_front');
     if ($id > 0) {
-        return $id;
+        return jc_translate_post_id($id);
     }
     // 静态首页未设置：找 slug 为 home 的页面
     $home = get_page_by_path('home');
@@ -414,7 +454,7 @@ function jc_is_global_key($key) {
 
 /* 字段所属的对象 ID：公共字段用全局页（62），其他用首页 */
 function jc_field_id($key) {
-    return jc_is_global_key($key) ? JC_GLOBAL_FIELD_ID : jc_front_id();
+    return jc_is_global_key($key) ? jc_global_field_id() : jc_front_id();
 }
 
 /* 取文本/选择类字段，空则返回兜底值
@@ -482,26 +522,90 @@ function jc_video_embed_url($url) {
      $imgs = jc_g62('ws_forging_imgs')                               → 整个 Group 数组（foreach 遍历）
  */
 function jc_g62($key, $path_or_default = '', $default = null) {
+
+    // 取得当前语言对应的公共字段页 ID
+    $global_id = jc_global_field_id();
+
     if (!function_exists('get_field')) {
         return $default !== null ? $default : '';
     }
+
     if (func_num_args() >= 3) {
-        // jc_g62('ws_forging_imgs', 'img_1', '默认') —— Group 内子字段
-        $real = get_field($key . '_' . $path_or_default, JC_GLOBAL_FIELD_ID);
-        return ($real !== null && $real !== '' && $real !== false) ? $real : $default;
+
+        // jc_g62('ws_forging_imgs', 'img_1', '默认')
+        $real = get_field(
+            $key . '_' . $path_or_default,
+            $global_id
+        );
+
+        return (
+            $real !== null
+            && $real !== ''
+            && $real !== false
+        ) ? $real : $default;
     }
-    // jc_g62('ws_video_title', '默认') 或 jc_g62('ws_forging_imgs')
-    $v = get_field($key, JC_GLOBAL_FIELD_ID);
-    if ($v !== null && $v !== '' && $v !== false) {
-        return $v; // 可能是数组（Group）或标量
+
+    // jc_g62('ws_video_title', '默认')
+    // jc_g62('ws_forging_imgs')
+    $v = get_field(
+        $key,
+        $global_id
+    );
+
+    if (
+        $v !== null
+        && $v !== ''
+        && $v !== false
+    ) {
+        return $v;
     }
-    return $path_or_default; // 兜底默认值
+
+    return $path_or_default;
+}
+
+/* 当前语言首页链接 */
+function jc_home_url() {
+
+    if (function_exists('pll_home_url')) {
+
+        $url = pll_home_url();
+
+        if ($url) {
+            return $url;
+        }
+    }
+
+    return home_url('/');
 }
 
 /* 按页面 slug 取页面链接（页面还没建时返回 #，前台不出现 404 死链） */
 function jc_page_url($slug) {
+
     $page = get_page_by_path($slug);
-    return $page ? get_permalink($page) : '#';
+
+    if (!$page) {
+        return '#';
+    }
+
+    $page_id = jc_translate_post_id(
+        $page->ID
+    );
+
+    return get_permalink($page_id);
+}
+
+/**
+ * 当前语言对应的 WordPress Posts Page ID。
+ */
+function jc_posts_page_id() {
+
+    $id = (int) get_option('page_for_posts');
+
+    if ($id <= 0) {
+        return 0;
+    }
+
+    return jc_translate_post_id($id);
 }
 
 /* 产品归档链接（CPT 已注册即有效） */
