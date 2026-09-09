@@ -35,6 +35,7 @@ if (!$banner) { $banner = $theme_uri . '/assets/images/banner-news.jpg'; }
 // 建了就能显示；顺序优先 product-knowledge / buying-guide / industry-news（静态版顺序），
 // 其余分类按名称排后面。 ----后面改了，代码都删了，前面说的没用了。
 $news_cats = jc_get_sorted_news_categories();
+?>
 
 <!-- ===================== PAGE BANNER（栏目页 banner：图 + 标题 + 面包屑） ===================== -->
 <section class="page-banner" style="background-image:url('<?php echo esc_url($banner); ?>');">

@@ -794,7 +794,7 @@ function jc_debug_panel() {
                 }
             }
             // 该组实际匹配哪些页面
-            $$m39 = acf_get_field_groups(array('post_id' => $front));
+            $m39 = acf_get_field_groups(array('post_id' => $front));
             $m62 = acf_get_field_groups(array('post_id' => $global));
             $in39 = false;
             foreach ($m39 as $mg) { if ($mg['key'] === $g['key']) { $in39 = true; } }
