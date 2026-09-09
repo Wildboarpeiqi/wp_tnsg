@@ -92,7 +92,11 @@ $banner_title = get_the_title();
           <?php elseif ($intro_file !== '') : ?>
             <div class="intro-media-video"><video controls preload="none" poster="<?php echo esc_url($intro_img); ?>"><source src="<?php echo esc_url($intro_file); ?>" type="video/mp4"><?php echo esc_html(jc_t('Your browser does not support the video tag.'));?></video></div>
           <?php else : ?>
-            <img src="<?php echo esc_url($intro_img); ?>" alt="<?php echo esc_attr($about_company . ' ' . jc_t('factory')); ?>"class="intro-media-img">
+            <img
+              src="<?php echo esc_url($intro_img); ?>"
+              alt="<?php echo esc_attr($about_company . ' ' . jc_t('factory')); ?>"
+              class="intro-media-img"
+            >
           <?php endif; ?>
         </div>
       </div>
