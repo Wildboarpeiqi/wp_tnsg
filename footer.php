@@ -211,7 +211,7 @@
       <div class="contact-modal-right">
         <h3 class="contact-modal-company"><?php echo esc_html(jc_get('homepage_slides_hero_company', get_bloginfo('name'))); ?></h3>
         <a class="contact-modal-link" href="tel:+<?php echo esc_attr(preg_replace('/\D+/', '', jc_get('company_phone', '8618596356103'))); ?>"><?php echo jc_icon('phone'); ?><span><?php echo esc_html(jc_t('Phone')); ?> ：<?php echo esc_html('+' . preg_replace('/\D+/', '', jc_get('company_phone', '8618596356103'))); ?></span></a>
-        <a class="contact-modal-link" href="<?php echo esc_url(jc_wa_url()); ?>" target="_blank" rel="noopener"><?php echo jc_icon('whatsapp'); ?><span><?php echo esc_html(jc_t('WhatsApp')); ?> ：<?php echo esc_html('+' . preg_replace('/\D+/', '', jc_get('company_phone', '8618596356103'))); ?></span></a>
+        <a class="contact-modal-link" href="<?php echo esc_url(jc_wa_url()); ?>" target="_blank" rel="noopener"><?php echo jc_icon('whatsapp'); ?><span><?php echo esc_html(jc_t('WhatsApp')); ?> ：<?php echo esc_html('+' . preg_replace('/\D+/', '', jc_get('company_whatsapp', '8618596356103'))); ?></span></a>
         <a class="contact-modal-link" href="mailto:<?php echo esc_attr(jc_get('company_email', 'jiucheng@jcforging.com')); ?>"><?php echo jc_icon('mail'); ?><span><?php echo esc_html(jc_t('Email')); ?> ：<?php echo esc_html(jc_get('company_email', 'jiucheng@jcforging.com')); ?></span></a>
       </div>
     </div>
