@@ -18,7 +18,7 @@
   <!-- ===================== HEADER ===================== -->
   <header id="SITE_HEADER" class="no-response previewHead">
     <div class="container header-bar">
-      <a href="<?php echo esc_url(jc_home_url()); ?>" class="logo" title="HOME">
+      <a href="<?php echo esc_url(jc_home_url()); ?>" class="logo" title="<?php echo esc_attr(jc_t('HOME')); ?>">
         <?php if (function_exists('the_custom_logo') && has_custom_logo()) {
             the_custom_logo();
         } else { ?>
@@ -26,12 +26,12 @@
         <?php } ?>
       </a>
 
-      <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation" aria-expanded="false" aria-controls="mainNav">
+      <button class="nav-toggle" id="navToggle" aria-label="<?php echo esc_attr(jc_t('Toggle navigation')); ?>" aria-expanded="false" aria-controls="mainNav">
         <span></span><span></span><span></span>
       </button>
 
-      <nav class="nav" aria-label="Main navigation">
-        <button class="nav-close" id="navClose" aria-label="Close navigation"><span></span><span></span></button>
+      <nav class="nav" aria-label="<?php echo esc_attr(jc_t('Main navigation')); ?>">
+        <button class="nav-close" id="navClose" aria-label="<?php echo esc_attr(jc_t('Close navigation')); ?>"><span></span><span></span></button>
         <?php
         if (has_nav_menu('primary_menu')) {
             wp_nav_menu(array(
@@ -49,9 +49,9 @@
       </nav>
 
       <div class="header-actions">
-        <button class="search-btn" id="searchOpen" aria-label="Search"><?php echo jc_icon('search'); ?></button>
+        <button class="search-btn" id="searchOpen" aria-label="<?php echo esc_attr(jc_t('Search')); ?>"><?php echo jc_icon('search'); ?></button>
         <a href="<?php echo esc_url(jc_wa_url()); ?>" class="header-wa" title="WhatsApp" aria-label="WhatsApp"><?php echo jc_icon('whatsapp'); ?></a>
-        <a href="#" class="btn-contact" data-lightbox="contactModal" title="Contact Us">Contact Us</a>
+        <a href="#" class="btn-contact" data-lightbox="contactModal" title="<?php echo esc_attr(jc_t('Contact Us')); ?>"><?php echo esc_html(jc_t('Contact Us')); ?></a>
 <?php
 $jc_languages = array();
 
@@ -106,7 +106,7 @@ if ($jc_current_language) {
 
   <button
     class="lang-btn"
-    aria-label="Language"
+    aria-label="<?php echo esc_attr(jc_t('Language')); ?>"
     aria-haspopup="true"
   >
     <?php if ($jc_current_language && $jc_current_flag) : ?>

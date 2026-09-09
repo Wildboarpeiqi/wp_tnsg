@@ -751,7 +751,75 @@ add_filter(
     'pll_copy_term_metas',
     'jc_pll_copy_term_metas'
 );
+/* =========================================================
+   Polylang：主题固定 UI 文案
+   ---------------------------------------------------------
+   这里仅放 PHP 模板中固定出现的界面文字。
+   ACF 内容、文章标题、产品标题、分类名称等不放这里。
+   ========================================================= */
 
+/**
+ * 注册主题固定 UI 文案到 Polylang 后台。
+ */
+function jc_register_polylang_strings() {
+
+    if (!function_exists('pll_register_string')) {
+        return;
+    }
+
+    $strings = array(
+
+        // Header
+        'home_upper'            => 'HOME',
+        'contact_us'            => 'Contact Us',
+        'search'                => 'Search',
+        'close'                 => 'Close',
+        'language'              => 'Language',
+        'toggle_navigation'     => 'Toggle navigation',
+        'main_navigation'       => 'Main navigation',
+        'close_navigation'      => 'Close navigation',
+
+        // Search
+        'search_placeholder'    => 'Search starts here...',
+
+        // News
+        'news_upper'            => 'NEWS',
+        'all'                   => 'All',
+        'read_more'             => 'Read More',
+        'news_categories'       => 'News categories',
+        'news_pagination'       => 'News pagination',
+        'no_news'               => 'No news has been published yet. Please check back later.',
+        'no_category_articles'  => 'No articles in this category yet. Please check back later.',
+    );
+
+    foreach ($strings as $key => $text) {
+
+        pll_register_string(
+            'jc_' . $key,
+            $text,
+            'TNSG Theme'
+        );
+    }
+}
+add_action(
+    'admin_init',
+    'jc_register_polylang_strings'
+);
+
+
+/**
+ * 输出当前语言对应的主题固定 UI 文案。
+ *
+ * Polylang 未启用时直接返回英文原文。
+ */
+function jc_t($text) {
+
+    if (function_exists('pll__')) {
+        return pll__($text);
+    }
+
+    return $text;
+}
 /* =========================
    4.6 字段调试工具（仅登录管理员可用）
    —— 前台地址后加 ?jc_debug=1 即可看到每个字段实际读到什么、从哪个页面读的。

@@ -20,7 +20,7 @@ $theme_uri = get_template_directory_uri();
 
 // ---- 文章页（posts page）ID：后台「设置→阅读→文章页」指定；未设置时标题/链接兜底 ----
 $posts_page_id = jc_posts_page_id();
-$news_title    = $posts_page_id ? get_the_title($posts_page_id) : 'NEWS';
+$news_title = $posts_page_id ? get_the_title($posts_page_id) : jc_t('NEWS');
 $news_url      = $posts_page_id ? get_permalink($posts_page_id) : jc_home_url();
 
 // ---- Banner 背景图：News 页（posts page）的 site_banner 字段，空则兜底主题图 ----
@@ -42,7 +42,7 @@ $news_cats = jc_get_sorted_news_categories();
   <div class="page-banner-inner">
     <div class="page-banner-title"><?php echo esc_html($news_title); ?></div>
     <div class="breadcrumb">
-      <a href="<?php echo esc_url(jc_home_url()); ?>">HOME</a> &gt;
+      <a href="<?php echo esc_url(jc_home_url()); ?>"><?php echo esc_html(jc_t('HOME')); ?></a> &gt;
       <span><?php echo esc_html($news_title); ?></span>
     </div>
   </div>
@@ -52,8 +52,14 @@ $news_cats = jc_get_sorted_news_categories();
 <div class="container news-page">
 
   <!-- 分类 Tab（WP：All → 本页 /news/，其余 → category-{slug} 归档；当前页高亮） -->
-  <div class="news-tabs" role="tablist" aria-label="News categories">
-    <a class="news-tab active" href="<?php echo esc_url($news_url); ?>">All</a>
+<div
+  class="news-tabs"
+  role="tablist"
+  aria-label="<?php echo esc_attr(jc_t('News categories')); ?>"
+>
+  <a class="news-tab active" href="<?php echo esc_url($news_url); ?>">
+    <?php echo esc_html(jc_t('All')); ?>
+  </a>
     <?php foreach ($news_cats as $cat) : ?>
       <a class="news-tab" href="<?php echo esc_url(get_term_link($cat)); ?>"><?php echo esc_html($cat->name); ?></a>
     <?php endforeach; ?>
@@ -77,14 +83,14 @@ $news_cats = jc_get_sorted_news_categories();
             <div class="news-card-thumb"><img loading="lazy" src="<?php echo esc_url($thumb); ?>" alt="<?php echo esc_attr(get_the_title()); ?>"></div>
             <div class="news-card-body">
               <div class="news-card-meta">
-                <time datetime="<?php echo esc_attr(get_the_time('Y-m-d')); ?>"><?php echo esc_html(date('M j, Y', get_the_time('U'))); ?></time>
+                <time datetime="<?php echo esc_attr(get_the_time('Y-m-d')); ?>"><?php echo esc_html(get_the_date()); ?></time>
                 <?php if ($first_cat) : ?>
                   <span class="news-card-cat"><?php echo esc_html($first_cat->name); ?></span>
                 <?php endif; ?>
               </div>
               <h3 class="news-card-title"><?php the_title(); ?></h3>
               <p class="news-card-desc"><?php echo esc_html(get_the_excerpt()); ?></p>
-              <span class="news-card-more">Read More &rarr;</span>
+              <span class="news-card-more"><?php echo esc_html(jc_t('Read More')); ?> &rarr;</span>
             </div>
           </a>
         </li>
@@ -98,14 +104,14 @@ $news_cats = jc_get_sorted_news_categories();
         'end_size'  => 1,
         'prev_text' => jc_icon('arrow-left'),
         'next_text' => jc_icon('arrow-right'),
-        'screen_reader_text' => 'News pagination',
+        'screen_reader_text' => jc_t('News pagination'),
     ));
     ?>
   <?php else : ?>
     <!-- 暂无文章（兜底提示，不发 404） -->
     <ul class="news-grid" id="newsGrid">
       <li class="news-card" style="grid-column:1/-1;text-align:center;padding:4rem 2rem;">
-        <p style="font-size:1.6rem;color:#666;">No news has been published yet. Please check back later.</p>
+        <p style="font-size:1.6rem;color:#666;"><?php echo esc_html(jc_t('No news has been published yet. Please check back later.')); ?></p>
       </li>
     </ul>
   <?php endif; ?>

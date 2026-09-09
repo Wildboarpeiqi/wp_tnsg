@@ -8,10 +8,29 @@
 ?>
 <div class="modal" id="searchModal" aria-hidden="true">
   <div class="modal-box search-modal">
-    <button class="modal-close" data-close="searchModal" aria-label="Close">&times;</button>
-    <form role="search" method="get" class="search-form" action="<?php echo esc_url(jc_home_url()); ?>">
-      <input type="text" name="s" placeholder="Search starts here...">
-      <button type="submit" class="btn-main">Search</button>
-    </form>
+<button
+  class="modal-close"
+  data-close="searchModal"
+  aria-label="<?php echo esc_attr(jc_t('Close')); ?>"
+>
+  &times;
+</button>
+
+<form
+  role="search"
+  method="get"
+  class="search-form"
+  action="<?php echo esc_url(jc_home_url()); ?>"
+>
+  <input
+    type="text"
+    name="s"
+    placeholder="<?php echo esc_attr(jc_t('Search starts here...')); ?>"
+  >
+
+  <button type="submit" class="btn-main">
+    <?php echo esc_html(jc_t('Search')); ?>
+  </button>
+</form>
   </div>
 </div>
