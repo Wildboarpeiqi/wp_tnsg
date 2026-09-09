@@ -1846,7 +1846,7 @@ body.hero-ready .hero-slide-active .hero-btns {
   position: relative;
   background-size: cover;
   background-position: center;
-  padding: 9rem 0 8rem;
+  padding: 13rem 0 12rem;
   text-align: center;
   color: var(--themeColor3);
 }
@@ -1860,7 +1860,7 @@ body.hero-ready .hero-slide-active .hero-btns {
 .page-banner-title {
   font-family: var(--font-head);
   font-weight: bold;
-  font-size: 4rem;
+  font-size: 5rem;
   line-height: 1.7;
   color: var(--themeColor3);
   text-transform: uppercase;
@@ -1980,4 +1980,6 @@ body.hero-ready .hero-slide-active .hero-btns {
     white-space: normal; overflow: visible; line-height: 1.8;
   }
   .page-wrap { padding-bottom: 6rem; }
+  .page-banner { padding: 9rem 0 8rem; }
+  .page-banner-title { font-size: 4rem; }
 }

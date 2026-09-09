@@ -9,7 +9,7 @@
   position: relative;
   background-size: cover;
   background-position: center;
-  padding: 9rem 0 8rem;
+  padding: 13rem 0 12rem;
   text-align: center;
   color: var(--themeColor3);
 }
@@ -23,7 +23,7 @@
 .page-banner-title {
   font-family: var(--font-head);
   font-weight: bold;
-  font-size: 4rem;
+  font-size: 5rem;
   line-height: 1.7;
   color: var(--themeColor3);
   text-transform: uppercase;
@@ -754,6 +754,8 @@
     display: flex; flex-wrap: wrap; justify-content: center; gap: 0 0.3rem;
     white-space: normal; overflow: visible; line-height: 1.8;
   }
+  .page-banner { padding: 9rem 0 8rem; }
+  .page-banner-title { font-size: 4rem; }
   /* 需求2：区块标题可换行但必须完整展示（允许到 2 行） */
   .detail-title { font-size: 2.1rem; line-height: 1.5; white-space: normal; overflow: visible; text-overflow: clip; }
   .detail-title .detail-mark { vertical-align: middle; transform: translateY(-0.15rem); }
