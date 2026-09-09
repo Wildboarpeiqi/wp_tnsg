@@ -64,7 +64,7 @@ $banner_title = jc_g62('page_banner_title', jc_t('PRODUCTS'));
       <!-- 搜索栏 -->
       <form class="side-search" action="<?php echo esc_url(jc_home_url()); ?>" method="get" role="search">
         <input type="text" name="s" placeholder="<?php echo esc_attr(jc_t('Search starts here')); ?>"autocomplete="off">
-        <button type="submit" aria-label="<?php echo esc_attr(jc_t('Search')); ?>"></button>
+        <button type="submit" aria-label="<?php echo esc_attr(jc_t('Search')); ?>"><?php echo jc_icon('search'); ?></button>
       </form>
 
       <!-- product_category 分类列表（sort_order 升序） -->

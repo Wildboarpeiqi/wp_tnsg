@@ -831,10 +831,12 @@ function jc_register_polylang_strings() {
         'company'                => 'Company',
         'message'                => 'Message',
         'company_name'           => 'Company Name',
-
         'all_categories'         => 'All Categories',
         'product_parameters'     => 'Product Parameters',
         'learn_more'             => 'Learn More',
+        'previous'             => 'Previous',
+        'next'                 => 'Next',
+        'products_pagination'  => 'Products pagination',
 
         // Product accessibility
         'previous_thumbnails'    => 'Previous thumbnails',
@@ -1130,12 +1132,12 @@ function jc_product_pagination($total = 0, $current = 0) {
         'type'      => 'array',
         'mid_size'  => 2,
         'end_size'  => 1,
-        'prev_text' => '<span class="arrow">&lt;</span>Previous',
-        'next_text' => 'Next<span class="arrow">&gt;</span>',
+        'prev_text' => '<span class="arrow">&lt;</span>' . esc_html(jc_t('Previous')),
+        'next_text' => esc_html(jc_t('Next')) . '<span class="arrow">&gt;</span>',
     ));
     if (!$pages) { return; }
 
-    echo '<nav class="pl-pagination" aria-label="Products pagination">';
+    echo '<nav class="pl-pagination" aria-label="' .esc_attr(jc_t('Products pagination')) .'">';
     echo '<ul class="pageBtnCon">';
 
     foreach ($pages as $page) {

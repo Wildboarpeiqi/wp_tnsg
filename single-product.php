@@ -65,8 +65,8 @@ $banner_img = jc_g62('page_banner_img', $theme_uri . '/assets/images/banner-prod
   <div class="page-banner-inner">
     <div class="page-banner-title"><?php echo esc_html(jc_g62('page_banner_title', jc_t('PRODUCTS'))); ?></div>
     <div class="breadcrumb">
-      <a href="<?php echo esc_url(jc_home_url()); ?>">jc_t('HOME')</a> &gt;
-      <a href="<?php echo esc_url(jc_products_url()); ?>">jc_t('PRODUCTS')</a> &gt;
+      <a href="<?php echo esc_url(jc_home_url()); ?>"><?php echo esc_html(jc_t('HOME')); ?></a> &gt;
+      <a href="<?php echo esc_url(jc_products_url()); ?>"><?php echo esc_html(jc_t('PRODUCTS')); ?></a> &gt;
       <?php if ($cur_cat) : ?><a href="<?php echo esc_url(get_term_link($cur_cat)); ?>"><?php echo esc_html($cur_cat->name); ?></a> &gt;<?php endif; ?>
       <span><?php echo esc_html($post_title); ?></span>
     </div>
