@@ -45,7 +45,7 @@ $related_query = new WP_Query(array(
     <div class="page-banner-title"><?php echo esc_html(jc_g62('news_banner_title', jc_t('NEWS'))); ?></div>
     <div class="breadcrumb">
       <a href="<?php echo esc_url(jc_home_url()); ?>"><?php echo esc_html(jc_t('HOME')); ?></a> &gt;
-      <a href="<?php echo esc_url(jc_page_url('news')); ?>"><?php echo esc_html(jc_t('NEWS')); ?></a> &gt;
+      <a href="<?php echo esc_url($news_url); ?>"><?php echo esc_html(jc_t('NEWS')); ?></a> &gt;
       <span><?php echo esc_html(get_the_title()); ?></span>
     </div>
   </div>
