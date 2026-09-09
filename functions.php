@@ -866,6 +866,35 @@ function jc_register_polylang_strings() {
         'faq_navigation'          => 'FAQ navigation',
         'project_navigation'      => 'Project navigation',
         'post_navigation'         => 'Post navigation',
+
+        // System / Page UI
+        'search_results'         => 'Search Results',
+        'news'                   => 'News',
+        'page'                   => 'Page',
+        'search_pagination'      => 'Search pagination',
+
+        'result_found_one'       => '%1$s result found for “%2$s”',
+        'result_found_many'      => '%1$s results found for “%2$s”',
+
+        'no_results'             => 'No results found',
+        'no_results_desc'        => 'Sorry, nothing matched “%s”. Please try different keywords, or contact us directly for product information.',
+        'back_home'              => 'Back to Home',
+
+        'page_not_found'         => 'Page Not Found',
+        'page_not_found_desc'    => 'The page you are looking for might have been removed, had its name changed, or is temporarily unavailable. Please return to the homepage or contact us for assistance.',
+
+        'address'                => 'Address',
+
+        // About UI
+        'previous_slide'         => 'Previous slide',
+        'next_slide'             => 'Next slide',
+        'slide_pages'            => 'Slide pages',
+        'cnc_workshop'           => 'CNC Machining Workshop',
+        'previous_equipment'     => 'Previous equipment',
+        'next_equipment'         => 'Next equipment',
+        'our_service'            => 'Our service',
+        'certificate'            => 'Certificate',
+        'factory'                => 'factory',
     );
 
     foreach ($strings as $key => $text) {

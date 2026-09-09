@@ -15,11 +15,11 @@ get_header();
 <section class="nf">
   <div class="container nf-inner">
     <div class="nf-code">404</div>
-    <h1 class="nf-title">Page Not Found</h1>
-    <p class="nf-desc">The page you are looking for might have been removed, had its name changed, or is temporarily unavailable. Please return to the homepage or contact us for assistance.</p>
+    <h1 class="nf-title"><?php echo esc_html(jc_t('Page Not Found')); ?></h1>
+    <p class="nf-desc"><?php echo esc_html(jc_t('The page you are looking for might have been removed, had its name changed, or is temporarily unavailable. Please return to the homepage or contact us for assistance.')); ?></p>
     <div class="nf-actions">
-      <a href="<?php echo esc_url(jc_home_url()); ?>" class="btn-main">Back to Home</a>
-      <a href="<?php echo esc_url(jc_page_url('contact_us')); ?>" class="btn-outline">Contact Us</a>
+      <a href="<?php echo esc_url(jc_home_url()); ?>" class="btn-main"><?php echo esc_html(jc_t('Back to Home')); ?></a>
+      <a href="<?php echo esc_url(jc_page_url('contact_us')); ?>" class="btn-outline"><?php echo esc_html(jc_t('Contact Us')); ?></a>
     </div>
   </div>
 </section>

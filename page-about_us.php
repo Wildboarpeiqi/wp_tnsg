@@ -58,7 +58,7 @@ $banner_title = get_the_title();
     <div class="page-banner-inner">
       <div class="page-banner-title"><?php echo esc_html($banner_title); ?></div>
       <div class="breadcrumb">
-        <a href="<?php echo esc_url(jc_home_url()); ?>">HOME</a> &gt;
+        <a href="<?php echo esc_url(jc_home_url()); ?>"><?php echo esc_html(jc_t('HOME')); ?></a> &gt;
         <span><?php echo esc_html($banner_title); ?></span>
       </div>
     </div>
@@ -90,7 +90,7 @@ $banner_title = get_the_title();
           <?php if ($intro_embed !== '') : ?>
             <div class="intro-media-video"><?php echo $intro_embed; // 已信任的 embed 代码（ACF textarea 后台） ?></div>
           <?php elseif ($intro_file !== '') : ?>
-            <div class="intro-media-video"><video controls preload="none" poster="<?php echo esc_url($intro_img); ?>"><source src="<?php echo esc_url($intro_file); ?>" type="video/mp4"><?php esc_html_e('Your browser does not support the video tag.', 'northforging'); ?></video></div>
+            <div class="intro-media-video"><video controls preload="none" poster="<?php echo esc_url($intro_img); ?>"><source src="<?php echo esc_url($intro_file); ?>" type="video/mp4"><?php echo esc_html(jc_t('Your browser does not support the video tag.'));?></video></div>
           <?php else : ?>
             <img src="<?php echo esc_url($intro_img); ?>" alt="<?php echo esc_attr($about_company); ?> factory" class="intro-media-img">
           <?php endif; ?>
@@ -132,16 +132,16 @@ $banner_title = get_the_title();
             ?>
             <div class="cnc-slide">
               <figure class="cnc-figure">
-                <div class="cnc-img"><img loading="lazy" src="<?php echo esc_url($img); ?>" alt="CNC Machining Workshop"></div>
-                <figcaption class="cnc-caption">CNC Machining Workshop</figcaption>
+                <div class="cnc-img"><img loading="lazy" src="<?php echo esc_url($img); ?>" alt="<?php echo esc_attr(jc_t('CNC Machining Workshop')); ?>"></div>
+                <figcaption class="cnc-caption"><?php echo esc_html(jc_t('CNC Machining Workshop')); ?></figcaption>
               </figure>
             </div>
             <?php endfor; ?>
           </div>
         </div>
-        <button class="cnc-arrow cnc-prev" aria-label="Previous slide"><?php echo jc_icon('arrow-left'); ?></button>
-        <button class="cnc-arrow cnc-next" aria-label="Next slide"><?php echo jc_icon('arrow-right'); ?></button>
-        <div class="cnc-dots" id="cncDots" aria-label="Slide pages"></div>
+        <button class="cnc-arrow cnc-prev" aria-label="<?php echo esc_attr(jc_t('Previous slide')); ?>"><?php echo jc_icon('arrow-left'); ?></button>
+        <button class="cnc-arrow cnc-next" aria-label="<?php echo esc_attr(jc_t('Next slide')); ?>"><?php echo jc_icon('arrow-right'); ?></button>
+        <div class="cnc-dots" id="cncDots" aria-label="<?php echo esc_attr(jc_t('Slide pages')); ?>"></div>
       </div>
 
       <!-- 右列：标题 + 段落（固定高度下滑）+ 询盘按钮 -->
@@ -197,13 +197,13 @@ $banner_title = get_the_title();
                   '/assets/images/certs/cert-license-2.jpg',
               );
               foreach ($jc_certs as $jc_c) {
-                  echo '<figure class="cert-item"><img loading="lazy" src="' . esc_url($theme_uri . $jc_c) . '" alt="Certificate"></figure>';
+                  echo '<figure class="cert-item"><img loading="lazy" src="' . esc_url($theme_uri . $jc_c) . '" alt="<?php echo esc_attr(jc_t('Certificate')); ?>"></figure>';
               }
           }
           ?>
         </div>
-        <button class="slider-arrow cert-prev" aria-label="Previous"><?php echo jc_icon('arrow-left'); ?></button>
-        <button class="slider-arrow cert-next" aria-label="Next"><?php echo jc_icon('arrow-right'); ?></button>
+        <button class="slider-arrow cert-prev" aria-label="<?php echo esc_attr(jc_t('Previous')); ?>"><?php echo jc_icon('arrow-left'); ?></button>
+        <button class="slider-arrow cert-next" aria-label="<?php echo esc_attr(jc_t('Next')); ?>"><?php echo jc_icon('arrow-right'); ?></button>
       </div>
     </div>
   </section>
@@ -252,8 +252,8 @@ $banner_title = get_the_title();
             <ul class="test-thumbs-track" id="testThumbs"></ul>
           </div>
           <div class="test-controls">
-            <button class="test-arrow test-prev" aria-label="Previous equipment"><?php echo jc_icon('arrow-left'); ?></button>
-            <button class="test-arrow test-next" aria-label="Next equipment"><?php echo jc_icon('arrow-right'); ?></button>
+            <button class="test-arrow test-prev" aria-label="<?php echo esc_attr(jc_t('Previous equipment')); ?>"><?php echo jc_icon('arrow-left'); ?></button>
+            <button class="test-arrow test-next" aria-label="<?php echo esc_attr(jc_t('Next equipment')); ?>"><?php echo jc_icon('arrow-right'); ?></button>
           </div>
         </div>
       </div>
@@ -264,7 +264,7 @@ $banner_title = get_the_title();
   <section class="service section" id="service">
     <div class="container">
       <div class="section-head center">
-        <h2 class="section-title" style="color:#101B4D;">Our service</h2>
+        <h2 class="section-title" style="color:#101B4D;"><?php echo esc_html(jc_t('Our service')); ?></h2>
         <p class="section-sub"><?php echo esc_html($about_company); ?></p>
       </div>
       <div class="service-grid">

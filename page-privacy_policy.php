@@ -45,7 +45,7 @@ $banner_img = $pf('site_banner', $theme_uri . '/assets/images/banner-news.jpg');
   <div class="page-banner-inner">
     <div class="page-banner-title"><?php the_title(); ?></div>
     <div class="breadcrumb">
-      <a href="<?php echo esc_url(jc_home_url()); ?>">HOME</a> &gt;
+      <a href="<?php echo esc_url(jc_home_url()); ?>"><?php echo esc_html(jc_t('HOME')); ?></a> &gt;
       <span><?php the_title(); ?></span>
     </div>
   </div>

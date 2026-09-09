@@ -71,7 +71,7 @@ $banner_title = get_the_title();
     <div class="page-banner-inner">
       <div class="page-banner-title"><?php echo esc_html($banner_title); ?></div>
       <div class="breadcrumb">
-        <a href="<?php echo esc_url(jc_home_url()); ?>">HOME</a> &gt;
+        <a href="<?php echo esc_url(jc_home_url()); ?>"><?php echo esc_html(jc_t('HOME')); ?></a> &gt;
         <span><?php echo esc_html($banner_title); ?></span>
       </div>
     </div>
@@ -98,28 +98,28 @@ $banner_title = get_the_title();
       <!-- WhatsApp -->
       <a class="contact-card" href="<?php echo esc_url(jc_wa_url()); ?>" target="_blank" rel="noopener">
         <span class="contact-card-icon"><?php echo jc_icon('whatsapp'); ?></span>
-        <span class="contact-card-name">WhatsApp</span>
+        <span class="contact-card-name"><?php echo esc_html(jc_t('WhatsApp')); ?></span>
         <span class="contact-card-value"><?php echo esc_html($wa_display); ?></span>
       </a>
 
       <!-- Phone -->
       <a class="contact-card" href="<?php echo esc_url($phone_link); ?>">
         <span class="contact-card-icon"><?php echo jc_icon('phone'); ?></span>
-        <span class="contact-card-name">Phone</span>
+        <span class="contact-card-name"><?php echo esc_html(jc_t('Phone')); ?></span>
         <span class="contact-card-value"><?php echo esc_html($phone_display); ?></span>
       </a>
 
       <!-- Email -->
       <a class="contact-card" href="mailto:<?php echo esc_attr($email); ?>">
         <span class="contact-card-icon"><?php echo jc_icon('mail'); ?></span>
-        <span class="contact-card-name">Email</span>
+        <span class="contact-card-name"><?php echo esc_html(jc_t('Email')); ?></span>
         <span class="contact-card-value"><?php echo esc_html($email); ?></span>
       </a>
 
       <!-- Address（点击打开 Google 地图定位） -->
       <a class="contact-card" href="https://www.google.com/maps/search/?api=1&amp;query=<?php echo esc_attr(rawurlencode($address)); ?>" target="_blank" rel="noopener">
         <span class="contact-card-icon"><?php echo jc_icon('map-pin'); ?></span>
-        <span class="contact-card-name">Address</span>
+        <span class="contact-card-name"><?php echo esc_html(jc_t('Address')); ?></span>
         <span class="contact-card-value"><?php echo esc_html($address); ?></span>
       </a>
 
@@ -147,12 +147,12 @@ $banner_title = get_the_title();
         <!-- Fluent Forms 未启用时的兜底表单 -->
         <form id="contactForm" class="contact-form" action="#" method="post">
           <div class="form-row">
-            <input type="text" name="name" placeholder="Name" autocomplete="name">
-            <input type="tel" name="phone" placeholder="Phone" autocomplete="tel">
+            <input type="text" name="name" placeholder="<?php echo esc_attr(jc_t('Name')); ?>" autocomplete="name">
+            <input type="tel" name="phone" placeholder="<?php echo esc_attr(jc_t('Phone')); ?>" autocomplete="tel">
           </div>
-          <input type="email" name="email" placeholder="Email" required autocomplete="email">
-          <textarea name="message" rows="5" placeholder="Message" required></textarea>
-          <button type="submit" class="btn-main contact-submit">Submit</button>
+          <input type="email" name="email" placeholder="<?php echo esc_attr(jc_t('Email')); ?>" required autocomplete="email">
+          <textarea name="message" rows="5" placeholder="<?php echo esc_attr(jc_t('Message')); ?>" required></textarea>
+          <button type="submit" class="btn-main contact-submit"><?php echo esc_html(jc_t('Submit')); ?></button>
         </form>
         <?php } ?>
       </div>
