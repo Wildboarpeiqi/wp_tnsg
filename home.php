@@ -19,7 +19,7 @@ get_header();
 $theme_uri = get_template_directory_uri();
 
 // ---- 文章页（posts page）ID：后台「设置→阅读→文章页」指定；未设置时标题/链接兜底 ----
-$posts_page_id = (int) get_option('page_for_posts');
+$posts_page_id = jc_posts_page_id();
 $news_title    = $posts_page_id ? get_the_title($posts_page_id) : 'NEWS';
 $news_url      = $posts_page_id ? get_permalink($posts_page_id) : jc_home_url();
 

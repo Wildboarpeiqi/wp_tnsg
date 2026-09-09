@@ -50,7 +50,7 @@ usort($news_cats, function ($a, $b) use ($preferred) {
 });
 
 // 面包屑里 NEWS 链接：文章页（posts page），没有则回退首页
-$posts_page_id = (int) get_option('page_for_posts');
+$posts_page_id = jc_posts_page_id();
 $news_url      = $posts_page_id ? get_permalink($posts_page_id) : jc_home_url();
 $news_label    = $posts_page_id ? get_the_title($posts_page_id) : 'NEWS';
 ?>
