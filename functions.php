@@ -822,6 +822,29 @@ function jc_register_polylang_strings() {
         'products_upper'        => 'PRODUCTS',
         'faq_upper'             => 'FAQ',
         'contact_us_upper'      => 'CONTACT US',
+
+        // Product UI
+        'navigation'             => 'Navigation',
+        'search_here'            => 'Search starts here',
+        'send_message'           => 'Send Us A Message',
+        'name'                   => 'Name',
+        'company'                => 'Company',
+        'message'                => 'Message',
+        'company_name'           => 'Company Name',
+
+        'all_categories'         => 'All Categories',
+        'product_parameters'     => 'Product Parameters',
+        'learn_more'             => 'Learn More',
+
+        // Product accessibility
+        'previous_thumbnails'    => 'Previous thumbnails',
+        'next_thumbnails'        => 'Next thumbnails',
+        'view_image'             => 'View image %d',
+        'previous_certificate'   => 'Previous certificate',
+        'next_certificate'       => 'Next certificate',
+        'previous_products'      => 'Previous products',
+        'next_products'          => 'Next products',
+        'video_not_supported'    => 'Your browser does not support the video tag.',
     );
 
     foreach ($strings as $key => $text) {

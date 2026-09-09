@@ -39,7 +39,7 @@ $email        = jc_get('company_email', '');
 
 // ---- banner（62 页 page_banner_img / page_banner_title）----
 $banner_img   = jc_g62('page_banner_img', $theme_uri . '/assets/images/banner-products.png');
-$banner_title = jc_g62('page_banner_title', 'PRODUCTS');
+$banner_title = jc_g62('page_banner_title', jc_t('PRODUCTS'));
 ?>
 
 <!-- ===================== PAGE BANNER（内容页公共横幅） ===================== -->
@@ -47,7 +47,7 @@ $banner_title = jc_g62('page_banner_title', 'PRODUCTS');
   <div class="page-banner-inner">
     <div class="page-banner-title"><?php echo esc_html($banner_title); ?></div>
     <div class="breadcrumb">
-      <a href="<?php echo esc_url(jc_home_url()); ?>">HOME</a> &gt;
+      <a href="<?php echo esc_url(jc_home_url()); ?>"><?php echo esc_html(jc_t('HOME')); ?></a> &gt;
       <span><?php echo esc_html($banner_title); ?></span>
     </div>
   </div>
@@ -59,12 +59,12 @@ $banner_title = jc_g62('page_banner_title', 'PRODUCTS');
   <!-- ============ 左侧快捷导航 ============ -->
   <aside class="page-sidebar">
     <div class="side-box">
-      <h3 class="side-title"><?php echo esc_html(jc_g62('side_nav_title', 'Navigation')); ?></h3>
+      <h3 class="side-title"><?php echo esc_html(jc_g62('side_nav_title', jc_t('Navigation'))); ?></h3>
 
       <!-- 搜索栏 -->
       <form class="side-search" action="<?php echo esc_url(jc_home_url()); ?>" method="get" role="search">
-        <input type="text" name="s" placeholder="Search starts here" autocomplete="off">
-        <button type="submit" aria-label="Search"><?php echo jc_icon('search'); ?></button>
+        <input type="text" name="s" placeholder="<?php echo esc_attr(jc_t('Search starts here')); ?>"autocomplete="off">
+        <button type="submit" aria-label="<?php echo esc_attr(jc_t('Search')); ?>"></button>
       </form>
 
       <!-- product_category 分类列表（sort_order 升序） -->
@@ -121,17 +121,17 @@ $banner_title = jc_g62('page_banner_title', 'PRODUCTS');
 
       <!-- 左栏询盘表单：[fluentform id="3"] -->
       <div class="side-form-box">
-        <h4 class="side-form-title">Send Us A Message</h4>
+        <h4 class="side-form-title"><?php echo esc_html(jc_t('Send Us A Message')); ?></h4>
         <?php if (shortcode_exists('fluentform')) {
             echo do_shortcode('[fluentform id="3"]');
         } else { ?>
           <form class="side-form" action="#" method="post">
-            <input type="text" name="name" placeholder="Name" required>
-            <input type="tel" name="whatsapp" placeholder="WhatsApp">
-            <input type="text" name="company" placeholder="Company">
-            <input type="email" name="email" placeholder="Email" required>
-            <textarea name="message" rows="4" placeholder="Message" required></textarea>
-            <button type="submit" class="btn-submit">Submit</button>
+            <input type="text" name="name" placeholder="<?php echo esc_attr(jc_t('Name')); ?>" required>
+            <input type="tel" name="whatsapp" placeholder="<?php echo esc_attr(jc_t('WhatsApp')); ?>">
+            <input type="text" name="company" placeholder="<?php echo esc_attr(jc_t('Company')); ?>">
+            <input type="email" name="email" placeholder="<?php echo esc_attr(jc_t('Email')); ?>" required>
+            <textarea name="message" rows="4" placeholder="<?php echo esc_attr(jc_t('Message')); ?>" required></textarea>
+            <button type="submit" class="btn-submit"><?php echo esc_html(jc_t('Submit')); ?></button>
           </form>
         <?php } ?>
       </div>
@@ -144,7 +144,7 @@ $banner_title = jc_g62('page_banner_title', 'PRODUCTS');
     <!-- 移动端分类导航条（仅移动端显示）：总列表 = "All Categories"，汉堡展开分类 -->
     <div class="pl-mnav" id="plMnav">
       <button type="button" class="pl-mnav-btn" id="plMnavBtn" aria-expanded="false" aria-controls="plMnavList">
-        <span class="pl-mnav-label">All Categories</span>
+        <span class="pl-mnav-label"><?php echo esc_html(jc_t('All Categories')); ?></span>
         <span class="pl-mnav-hamburger" aria-hidden="true"><span></span><span></span><span></span></span>
       </button>
       <ul class="pl-mnav-list" id="plMnavList" hidden>

@@ -37,7 +37,7 @@ $email = jc_get('company_email', '');
 
 // ---- banner（62 页 page_banner_img；标题=分类名）----
 $banner_img   = jc_g62('page_banner_img', $theme_uri . '/assets/images/banner-products.png');
-$banner_title = ($cur_term && !is_wp_error($cur_term) && !empty($cur_term->name)) ? $cur_term->name : 'PRODUCTS';
+$banner_title = ($cur_term && !is_wp_error($cur_term) && !empty($cur_term->name)) ? $cur_term->name : jc_t('PRODUCTS');
 
 // ---- reasons 字段（62 页 reason_title / reason_group）----
 $reason_title = jc_g62('reason_title', '');
@@ -49,8 +49,8 @@ $reason_group = function_exists('get_field') ? get_field('reason_group', jc_glob
   <div class="page-banner-inner">
     <div class="page-banner-title"><?php echo esc_html($banner_title); ?></div>
     <div class="breadcrumb">
-      <a href="<?php echo esc_url(jc_home_url()); ?>">HOME</a> &gt;
-      <a href="<?php echo esc_url(jc_products_url()); ?>">PRODUCTS</a> &gt;
+      <a href="<?php echo esc_url(jc_home_url()); ?>"><?php echo esc_html(jc_t('HOME')); ?></a> &gt;
+      <a href="<?php echo esc_url(jc_products_url()); ?>"><?php echo esc_html(jc_t('PRODUCTS')); ?></a> &gt;
       <span><?php echo esc_html($banner_title); ?></span>
     </div>
   </div>
@@ -62,12 +62,12 @@ $reason_group = function_exists('get_field') ? get_field('reason_group', jc_glob
   <!-- ============ 左侧快捷导航 ============ -->
   <aside class="page-sidebar">
     <div class="side-box">
-      <h3 class="side-title"><?php echo esc_html(jc_g62('side_nav_title', 'Navigation')); ?></h3>
+      <h3 class="side-title"><?php echo esc_html(jc_g62('side_nav_title', jc_t('Navigation'))); ?></h3>
 
       <!-- 搜索栏 -->
       <form class="side-search" action="<?php echo esc_url(jc_home_url()); ?>" method="get" role="search">
-        <input type="text" name="s" placeholder="Search starts here" autocomplete="off">
-        <button type="submit" aria-label="Search"><?php echo jc_icon('search'); ?></button>
+        <input type="text" name="s" placeholder="<?php echo esc_attr(jc_t('Search starts here')); ?>" autocomplete="off">
+        <button type="submit" aria-label="<?php echo esc_attr(jc_t('Search')); ?>"><?php echo jc_icon('search'); ?></button>
       </form>
 
       <!-- product_category 分类列表（sort_order 升序；当前分类高亮） -->
@@ -128,7 +128,7 @@ $reason_group = function_exists('get_field') ? get_field('reason_group', jc_glob
 
       <!-- 左栏询盘表单：[fluentform id="3"] -->
       <div class="side-form-box">
-        <h4 class="side-form-title">Send Us A Message</h4>
+        <h4 class="side-form-title"><?php echo esc_html(jc_t('Send Us A Message')); ?></h4>
         <?php if (shortcode_exists('fluentform')) : ?>
           <?php echo do_shortcode('[fluentform id="3"]'); ?>
         <?php endif; ?>

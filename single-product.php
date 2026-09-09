@@ -63,10 +63,10 @@ $banner_img = jc_g62('page_banner_img', $theme_uri . '/assets/images/banner-prod
 <!-- ===================== PAGE BANNER（内容页公共横幅） ===================== -->
 <section class="page-banner" style="background-image:url('<?php echo esc_url($banner_img); ?>');">
   <div class="page-banner-inner">
-    <div class="page-banner-title"><?php echo esc_html(jc_g62('page_banner_title', 'PRODUCTS')); ?></div>
+    <div class="page-banner-title"><?php echo esc_html(jc_g62('page_banner_title', jc_t('PRODUCTS'))); ?></div>
     <div class="breadcrumb">
-      <a href="<?php echo esc_url(jc_home_url()); ?>">HOME</a> &gt;
-      <a href="<?php echo esc_url(jc_products_url()); ?>">PRODUCTS</a> &gt;
+      <a href="<?php echo esc_url(jc_home_url()); ?>">jc_t('HOME')</a> &gt;
+      <a href="<?php echo esc_url(jc_products_url()); ?>">jc_t('PRODUCTS')</a> &gt;
       <?php if ($cur_cat) : ?><a href="<?php echo esc_url(get_term_link($cur_cat)); ?>"><?php echo esc_html($cur_cat->name); ?></a> &gt;<?php endif; ?>
       <span><?php echo esc_html($post_title); ?></span>
     </div>
@@ -79,12 +79,12 @@ $banner_img = jc_g62('page_banner_img', $theme_uri . '/assets/images/banner-prod
   <!-- ============ 左侧快捷导航 ============ -->
   <aside class="page-sidebar">
     <div class="side-box">
-      <h3 class="side-title"><?php echo esc_html(jc_g62('side_nav_title', 'Navigation')); ?></h3>
+      <h3 class="side-title"><?php echo esc_html(jc_g62('side_nav_title', jc_t('Navigation'))); ?></h3>
 
       <!-- 搜索栏 -->
       <form class="side-search" action="<?php echo esc_url(jc_home_url()); ?>" method="get" role="search">
-        <input type="text" name="s" placeholder="Search starts here" autocomplete="off">
-        <button type="submit" aria-label="Search"><?php echo jc_icon('search'); ?></button>
+        <input type="text" name="s" placeholder="<?php echo esc_attr(jc_t('Search starts here')); ?>" autocomplete="off">
+        <button type="submit" aria-label="<?php echo esc_attr(jc_t('Search')); ?>"><?php echo jc_icon('search'); ?></button>
       </form>
 
       <!-- product_category 分类列表（sort_order 升序） -->
@@ -116,17 +116,17 @@ $banner_img = jc_g62('page_banner_img', $theme_uri . '/assets/images/banner-prod
 
       <!-- 左栏询盘表单：[fluentform id="3"] -->
       <div class="side-form-box">
-        <h4 class="side-form-title">Send Us A Message</h4>
+        <h4 class="side-form-title"><?php echo esc_html(jc_t('Send Us A Message')); ?></h4>
         <?php if (shortcode_exists('fluentform')) {
             echo do_shortcode('[fluentform id="3"]');
         } else { ?>
           <form class="side-form" action="#" method="post">
-            <input type="text" name="name" placeholder="Name" required>
-            <input type="tel" name="whatsapp" placeholder="WhatsApp">
-            <input type="text" name="company" placeholder="Company">
-            <input type="email" name="email" placeholder="Email" required>
-            <textarea name="message" rows="4" placeholder="Message" required></textarea>
-            <button type="submit" class="btn-submit">Submit</button>
+            <input type="text" name="name" placeholder="<?php echo esc_attr(jc_t('Name')); ?>" required>
+            <input type="tel" name="whatsapp" placeholder="<?php echo esc_attr(jc_t('WhatsApp')); ?>">
+            <input type="text" name="company" placeholder="<?php echo esc_attr(jc_t('Company')); ?>">
+            <input type="email" name="email" placeholder="<?php echo esc_attr(jc_t('Email')); ?>" required>
+            <textarea name="message" rows="4" placeholder="<?php echo esc_attr(jc_t('Message')); ?>" required></textarea>
+            <button type="submit" class="btn-submit"><?php echo esc_html(jc_t('Submit')); ?></button>
           </form>
         <?php } ?>
       </div>
@@ -143,15 +143,15 @@ $banner_img = jc_g62('page_banner_img', $theme_uri . '/assets/images/banner-prod
           <img id="mainImage" src="<?php echo esc_url($main_img); ?>" alt="<?php echo esc_attr($post_title); ?>">
         </div>
         <div class="thumb-slider">
-          <button type="button" class="thumb-nav thumb-prev" aria-label="Previous thumbnails"><?php echo jc_icon('arrow-left'); ?></button>
+          <button type="button" class="thumb-nav thumb-prev" aria-label="<?php echo esc_attr(jc_t('Previous thumbnails')); ?>"><?php echo jc_icon('arrow-left'); ?></button>
           <div class="thumb-list" id="thumbList">
             <?php $i = 0; foreach ($thumbs as $th) : $i++; ?>
-              <button type="button" class="thumb<?php echo $i === 1 ? ' active' : ''; ?>" data-src="<?php echo esc_url($th); ?>" aria-label="View image <?php echo $i; ?>">
+              <button type="button" class="thumb<?php echo $i === 1 ? ' active' : ''; ?>" data-src="<?php echo esc_url($th); ?>" aria-label="<?php echo esc_attr(sprintf(jc_t('View image %d'),$i));?>">
                 <img src="<?php echo esc_url($th); ?>" alt="<?php echo esc_attr($post_title . ' ' . $i); ?>">
               </button>
             <?php endforeach; ?>
           </div>
-          <button type="button" class="thumb-nav thumb-next" aria-label="Next thumbnails"><?php echo jc_icon('arrow-right'); ?></button>
+          <button type="button" class="thumb-nav thumb-next" aria-label="<?php echo esc_attr(jc_t('Next thumbnails')); ?>"><?php echo jc_icon('arrow-right'); ?></button>
         </div>
       </div>
 
@@ -177,12 +177,12 @@ $banner_img = jc_g62('page_banner_img', $theme_uri . '/assets/images/banner-prod
           <div class="contact-row">
             <?php echo jc_icon('whatsapp'); ?>
             <a href="<?php echo esc_url($wa_href); ?>" target="_blank" rel="noopener" class="contact-value"><?php echo $wa_text !== '' ? esc_html($wa_text) : esc_html($wa_num); ?></a>
-            <span class="contact-label">WhatsApp</span>
+            <span class="contact-label"><?php echo esc_html(jc_t('WhatsApp')); ?></span>
           </div>
           <div class="contact-row">
             <?php echo jc_icon('mail'); ?>
             <a href="mailto:<?php echo esc_attr($email); ?>" class="contact-value"><?php echo esc_html($email); ?></a>
-            <span class="contact-label">Email</span>
+            <span class="contact-label"><?php echo esc_html(jc_t('Email')); ?></span>
           </div>
         </div>
 
@@ -199,7 +199,7 @@ $banner_img = jc_g62('page_banner_img', $theme_uri . '/assets/images/banner-prod
     <!-- Product Parameters：正文 the_content（富文本表格等） -->
     <?php if (trim(get_the_content()) !== '') : ?>
     <section class="detail-block">
-      <h2 class="detail-title"><span class="detail-mark"></span>Product Parameters</h2>
+      <h2 class="detail-title"><span class="detail-mark"></span><?php echo esc_html(jc_t('Product Parameters')); ?></h2>
       <div class="table-parent">
         <?php the_content(); ?>
       </div>
@@ -246,7 +246,7 @@ $banner_img = jc_g62('page_banner_img', $theme_uri . '/assets/images/banner-prod
         <?php else : ?>
           <video controls preload="none" <?php if ($video_poster !== '') : ?>poster="<?php echo esc_url($video_poster); ?>"<?php endif; ?>>
             <source src="<?php echo esc_url($video_file); ?>" type="video/mp4">
-            <?php esc_html_e('Your browser does not support the video tag.', 'northforging'); ?>
+            <?php echo esc_html(jc_t('Your browser does not support the video tag.'));?>
           </video>
         <?php endif; ?>
       </div>
@@ -283,8 +283,8 @@ $banner_img = jc_g62('page_banner_img', $theme_uri . '/assets/images/banner-prod
             <?php endwhile; wp_reset_postdata(); ?>
           </div>
         </div>
-        <button class="cert-prev" aria-label="Previous certificate"><?php echo jc_icon('arrow-left'); ?></button>
-        <button class="cert-next" aria-label="Next certificate"><?php echo jc_icon('arrow-right'); ?></button>
+        <button class="cert-prev" aria-label="<?php echo esc_attr(jc_t('Previous certificate')); ?>"><?php echo jc_icon('arrow-left'); ?></button>
+        <button class="cert-next" aria-label="<?php echo esc_attr(jc_t('Next certificate')); ?>"><?php echo jc_icon('arrow-right'); ?></button>
       </div>
     </section>
     <?php endif; ?>
@@ -299,15 +299,15 @@ $banner_img = jc_g62('page_banner_img', $theme_uri . '/assets/images/banner-prod
       } else { ?>
         <form class="quote-form" action="#" method="post">
           <div class="quote-row">
-            <input type="text" name="name" placeholder="Name" required>
-            <input type="tel" name="whatsapp" placeholder="WhatsApp">
+            <input type="text" name="name" placeholder="<?php echo esc_attr(jc_t('Name')); ?>" required>
+            <input type="tel" name="whatsapp" placeholder="<?php echo esc_attr(jc_t('WhatsApp')); ?>">
           </div>
           <div class="quote-row">
-            <input type="email" name="email" placeholder="Email" required>
-            <input type="text" name="company" placeholder="Company Name">
+            <input type="email" name="email" placeholder="<?php echo esc_attr(jc_t('Email')); ?>" required>
+            <input type="text" name="company" placeholder="<?php echo esc_attr(jc_t('Company Name')); ?>">
           </div>
-          <textarea name="message" rows="5" placeholder="Message" required></textarea>
-          <button type="submit" class="btn-submit">Submit</button>
+          <textarea name="message" rows="5" placeholder="<?php echo esc_attr(jc_t('Message')); ?>" required></textarea>
+          <button type="submit" class="btn-submit"><?php echo esc_html(jc_t('Submit')); ?></button>
         </form>
       <?php } ?>
     </section>
@@ -346,14 +346,14 @@ $banner_img = jc_g62('page_banner_img', $theme_uri . '/assets/images/banner-prod
                     <?php } ?>
                   </div>
                   <div class="related-name"><?php the_title(); ?></div>
-                  <span class="related-more">Learn More &gt;&gt;</span>
+                  <span class="related-more"><?php echo esc_html(jc_t('Learn More')); ?> &gt;&gt;</span>
                 </a>
               </div>
             <?php endwhile; wp_reset_postdata(); ?>
           </div>
         </div>
-        <button class="related-prev" aria-label="Previous products"><?php echo jc_icon('arrow-left'); ?></button>
-        <button class="related-next" aria-label="Next products"><?php echo jc_icon('arrow-right'); ?></button>
+        <button class="related-prev" aria-label="<?php echo esc_attr(jc_t('Previous products')); ?>"><?php echo jc_icon('arrow-left'); ?></button>
+        <button class="related-next" aria-label="<?php echo esc_attr(jc_t('Next products')); ?>"><?php echo jc_icon('arrow-right'); ?></button>
       </div>
     </section>
     <?php endif; ?>
