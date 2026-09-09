@@ -23,6 +23,6 @@ $jc_title = get_the_title();
   <a class="listBoxHref" href="<?php echo esc_url(get_permalink()); ?>">
     <div class="ImghidCont"><div class="imgHoverAn"><img loading="lazy" src="<?php echo esc_url($jc_img); ?>" alt="<?php echo esc_attr($jc_title); ?>"></div></div>
     <div class="listTxt"><div class="textLineP"><?php echo esc_html($jc_title); ?></div></div>
-    <div class="listTxt"><span class="card-more card-fill">Learn More &gt;&gt;</span></div>
+    <div class="listTxt"><span class="card-more card-fill"><?php echo esc_html(jc_t('Learn More')); ?> &gt;&gt;</span></div>
   </a>
 </li>
