@@ -91,8 +91,8 @@ $news_url = $posts_page_id
       </div>
       <?php endforeach; ?>
     </div>
-    <button class="hero-arrow hero-prev" aria-label="<?php echo esc_attr(jc_t('Previous slide')); ?>"></button>
-    <button class="hero-arrow hero-next" aria-label="<?php echo esc_attr(jc_t('Next slide')); ?>"></button>
+    <button class="hero-arrow hero-prev" aria-label="<?php echo esc_attr(jc_t('Previous slide')); ?>"><?php echo jc_icon('arrow-left'); ?></button>
+    <button class="hero-arrow hero-next" aria-label="<?php echo esc_attr(jc_t('Next slide')); ?>"><?php echo jc_icon('arrow-right'); ?></button>
     <div class="hero-dots"></div>
   </section>
 
@@ -270,7 +270,7 @@ $news_url = $posts_page_id
   <!-- ===================== APPLICATION ===================== -->
   <section class="application" id="application">
     <div class="section-head">
-      <h2 class="section-title" style="color:#101B4D;"><?php echo esc_html(jc_t('Application')); ?></h2>
+      <h2 class="section-title" style="color:#101B4D;"><?php echo esc_html(jc_t('application')); ?></h2>
       <p class="section-sub"><?php echo esc_html($hero_company); ?></p>
     </div>
     <div class="app-slider" id="appSlider">
@@ -362,7 +362,7 @@ $news_url = $posts_page_id
                 echo '<div class="newsDate">' . esc_html(get_the_date()) . '</div>';
                 echo '<h3>' . esc_html(get_the_title()) . '</h3>';
                 echo '<p class="newsDesc">' . esc_html(get_the_excerpt()) . '</p>';
-                echo '<span class="newsMore news-fill">Learn More +</span>';
+                echo '<span class="newsMore news-fill">' . esc_html(jc_t('Learn More')) . ' +</span>';
                 echo '</a></li>';
             }
             wp_reset_postdata();
@@ -380,7 +380,7 @@ $news_url = $posts_page_id
                 echo '<div class="newsDate">' . esc_html($jc_fbn[1]) . '</div>';
                 echo '<h3>' . esc_html($jc_fbn[2]) . '</h3>';
                 echo '<p class="newsDesc">' . esc_html($jc_fbn[3]) . '</p>';
-                echo '<span class="newsMore news-fill">' . esc_html(jc_t('Learn More')) . ' +</span>';</a></li>';
+                echo '<span class="newsMore news-fill">' . esc_html(jc_t('Learn More')) . ' +</span></a></li>';
             }
         }
         ?>
