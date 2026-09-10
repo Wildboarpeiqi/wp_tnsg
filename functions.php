@@ -47,7 +47,7 @@ function jc_assets() {
         'jc-main',
         $theme_uri . '/assets/css/style.css',
         array(),
-        '1.0.5'   // 改 CSS 后递增版本号，强制浏览器刷新缓存（2026-09-06：+ hero 视频媒体样式 .hero-video）
+        '1.0.6'   // 改 CSS 后递增版本号，强制浏览器刷新缓存（2026-09-10：+ 首页三个新板块 tour/customers/facility）
     );
 
     // 全站唯一公共 JS（滑块/计数器/菜单/弹窗，零依赖）
@@ -55,7 +55,7 @@ function jc_assets() {
         'jc-main',
         $theme_uri . '/assets/js/main.js',
         array(),
-        '1.0.5',
+        '1.0.6',
         true
     );
 
