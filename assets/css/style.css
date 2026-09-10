@@ -1983,3 +1983,327 @@ body.hero-ready .hero-slide-active .hero-btns {
   .page-banner { padding: 9rem 0 8rem; }
   .page-banner-title { font-size: 4rem; }
 }
+
+/* ==========================================================================
+   TAKE A TOUR — 车间实景轮播（front-page 板块）
+   静态版搬入 + 适配 WP 960px 断点体系；track 由 JS 负 translateX 移动，RTL 下需保持 LTR
+   ========================================================================== */
+.tour { background: var(--themeColor5); }
+.tour .section-head { padding-inline: 12%; }
+.tour .section-title { color: #101B4D; }
+.tour .section-sub { color: var(--text-muted); }
+.tour-slider {
+  position: relative;
+  overflow: hidden;
+  border-radius: 8px;
+  box-shadow: 0 8px 30px rgba(8, 18, 48, 0.14);
+}
+.tour-track {
+  display: flex;
+  transition: transform 0.7s ease;
+}
+.tour-slide {
+  flex: 0 0 100%;
+  position: relative;
+  min-height: 50rem;
+  display: flex;
+  align-items: flex-end;
+}
+.tour-slide-bg {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+}
+.tour-slide-bg::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(8,18,48,0.88) 0%, rgba(8,18,48,0.3) 50%, rgba(8,18,48,0.05) 100%);
+}
+.tour-slide-cap {
+  position: relative;
+  z-index: 2;
+  color: #fff;
+  font-family: var(--font-head);
+  font-size: 2.6rem;
+  padding: 3rem 5%;
+  display: flex;
+  align-items: center;
+  gap: 1.6rem;
+}
+.tour-slide-cap span {
+  font-size: 1.4rem;
+  color: var(--themeColorOrange);
+  border: 1px solid rgba(255,255,255,0.45);
+  border-radius: 50%;
+  width: 4.6rem;
+  height: 4.6rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+}
+.tour-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 5;
+  width: 5rem;
+  height: 5rem;
+  border-radius: 50%;
+  border: 1px solid rgba(255,255,255,0.5);
+  background: rgba(255,255,255,0.14);
+  color: #fff;
+  font-size: 2.2rem;
+  cursor: pointer;
+  transition: background 0.3s, border-color 0.3s;
+}
+.tour-arrow:hover { background: var(--themeColor1); border-color: var(--themeColor1); }
+.tour-prev { inset-inline-start: 2rem; }
+.tour-next { inset-inline-end: 2rem; }
+.tour-dots {
+  position: absolute;
+  bottom: 2rem;
+  inset-inline-end: 5%;
+  z-index: 5;
+  display: flex;
+  gap: 0.8rem;
+}
+.tour-dots button {
+  width: 1.1rem;
+  height: 1.1rem;
+  border-radius: 50%;
+  border: 1px solid rgba(255,255,255,0.6);
+  background: transparent;
+  padding: 0;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+.tour-dots button.is-active { background: var(--themeColorOrange); border-color: var(--themeColorOrange); }
+
+/* ==========================================================================
+   OUR FACILITIES — 横向图片手风琴（front-page 板块）
+   Flexbox + flex-grow 实现，hover 展开，JS 仅切 active 状态
+   ========================================================================== */
+.facility { background: var(--themeColor5); padding-bottom: 6rem; }
+.facility-accordion {
+  display: flex;
+  gap: 1.2rem;
+  width: 100%;
+  height: 60rem;
+  padding: 0;
+}
+.facility-item {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: flex 0.65s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.facility-item.is-active {
+  flex: 4;
+}
+.facility-item-bg {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  transition: transform 0.65s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.facility-item:hover .facility-item-bg,
+.facility-item.is-active .facility-item-bg {
+  transform: scale(1.05);
+}
+.facility-item-bg::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(8,18,48,0.88) 0%, rgba(8,18,48,0.35) 55%, rgba(8,18,48,0.08) 100%);
+}
+.facility-item-content {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  padding: 2.4rem;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-start;
+}
+.facility-item-title {
+  margin: 0 0 1rem;
+  font-family: var(--font-head);
+  font-size: 2rem;
+  color: #fff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.facility-item-desc {
+  margin: 0 0 1.4rem;
+  font-size: 1.5rem;
+  line-height: 1.8;
+  color: rgba(255,255,255,0.9);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+.facility-item-btn {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+  background: var(--themeColorOrange);
+  color: #101B4D;
+}
+.facility-item-btn:hover { background: #fff; color: var(--themeColor2); }
+.facility-item.is-active .facility-item-title {
+  font-weight: 700;
+}
+.facility-item.is-active .facility-item-desc {
+  opacity: 1;
+  transform: translateY(0);
+}
+.facility-item.is-active .facility-item-btn {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ==========================================================================
+   CUSTOMERS — 客户 logo 墙（front-page 板块）
+   ========================================================================== */
+.customers { background: #fff; }
+.customers-grid {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 2rem;
+}
+.cus-logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 9rem;
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background: #fff;
+  color: var(--themeColor2);
+  font-family: var(--font-head);
+  font-size: 1.6rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 1.2rem;
+  text-align: center;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+.cus-logo:hover { border-color: var(--themeColor1); box-shadow: 0 4px 14px rgba(23,42,136,0.12); }
+.cus-logo img { width: 100%; height: auto; }
+
+/* ==========================================================================
+   三新板块移动端适配 — 仅 max-width:960px 生效（并入 WP 主断点体系），不影响 PC
+   ========================================================================== */
+@media (max-width: 960px) {
+  /* ---------- Take a Tour：图片变横向宽图、标题落到图片下方 ---------- */
+  .tour { padding-top: 4.8rem; padding-bottom: 8rem; }
+  .tour .section-head { padding-inline: 0; margin-bottom: 3.2rem; }
+  .tour-slider {
+    display: flex;
+    flex-direction: column;
+    box-shadow: none;
+  }
+  .tour-slide {
+    flex-direction: column;
+    min-height: 0;
+    align-items: stretch;
+    background: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  .tour-slide-bg {
+    position: relative;
+    height: 26rem;
+  }
+  .tour-slide-bg::after {
+    background: linear-gradient(to top, rgba(8,18,48,0.5) 0%, rgba(8,18,48,0.08) 60%, transparent 100%);
+  }
+  .tour-slide-cap {
+    position: relative;
+    color: var(--themeColor2);
+    font-size: 1.8rem;
+    padding: 1.5rem 2rem;
+    gap: 1.1rem;
+  }
+  .tour-slide-cap span {
+    color: var(--themeColor1);
+    border-color: var(--themeColor1);
+    width: 3.6rem;
+    height: 3.6rem;
+    font-size: 1.2rem;
+  }
+  .tour-arrow {
+    top: 12rem;
+    width: 4rem;
+    height: 4rem;
+    font-size: 1.6rem;
+  }
+  .tour-dots {
+    position: static;
+    inset-inline-start: auto;
+    inset-inline-end: auto;
+    bottom: auto;
+    transform: none;
+    justify-content: center;
+    padding: 1.6rem 0 0;
+  }
+  .tour-dots button {
+    border-color: rgba(16, 27, 77, 0.35);
+  }
+  .tour-dots button.is-active { background: var(--themeColorOrange); border-color: var(--themeColorOrange); }
+
+  /* ---------- Customers：3 列布局 + 与上方拉开间距 ---------- */
+  .customers { padding-top: 3.2rem; }
+  .customers .section-head { margin-bottom: 2.8rem; }
+  .customers-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+  }
+  .cus-logo {
+    min-height: 6rem;
+    font-size: 0.85rem;
+    letter-spacing: 0.02em;
+    padding: 0.6rem 0.4rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* ---------- Our Facilities：白底标题区 + 与上方拉开间距 ---------- */
+  .facility { background: #fff; padding-top: 3.2rem; padding-bottom: 5rem; }
+  .facility .section-head { margin-bottom: 2.8rem; }
+  .facility-accordion {
+    flex-direction: column;
+    height: auto;
+    gap: 1.6rem;
+    padding: 0 1.6rem;
+  }
+  .facility-item,
+  .facility-item.is-active {
+    flex: none;
+    height: 26rem;
+  }
+  .facility-item-desc,
+  .facility-item-btn { max-height: 20rem; opacity: 1; transform: none; margin-bottom: 0.6rem; }
+  .facility-item-btn { margin-top: 1rem; }
+  .facility-item-title,
+  .facility-item.is-active .facility-item-title { font-size: 2rem; white-space: normal; }
+}
