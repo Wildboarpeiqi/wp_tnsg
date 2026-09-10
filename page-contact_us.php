@@ -142,7 +142,10 @@ $banner_title = get_the_title();
         <?php
         // ★★★ 表单 ID 待用户确认：联系页新建 Fluent Form 后，把下面 id="5" 换成实际 ID ★★★
         if (shortcode_exists('fluentform')) {
-            echo do_shortcode('[fluentform id="5"]');
+            $form_id = jc_form_id('contact');
+            echo do_shortcode(
+                '[fluentform id="' . $form_id . '"]'
+            );
         } else { ?>
         <!-- Fluent Forms 未启用时的兜底表单 -->
         <form id="contactForm" class="contact-form" action="#" method="post">

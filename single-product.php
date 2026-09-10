@@ -117,8 +117,15 @@ $banner_img = jc_g62('page_banner_img', $theme_uri . '/assets/images/banner-prod
       <!-- 左栏询盘表单：[fluentform id="3"] -->
       <div class="side-form-box">
         <h4 class="side-form-title"><?php echo esc_html(jc_t('Send Us A Message')); ?></h4>
-        <?php if (shortcode_exists('fluentform')) {
-            echo do_shortcode('[fluentform id="3"]');
+        <?php
+        if (shortcode_exists('fluentform')) {
+
+            $form_id = jc_form_id('side');
+
+            echo do_shortcode(
+                '[fluentform id="' . $form_id . '"]'
+            );
+
         } else { ?>
           <form class="side-form" action="#" method="post">
             <input type="text" name="name" placeholder="<?php echo esc_attr(jc_t('Name')); ?>" required>
@@ -294,8 +301,14 @@ $banner_img = jc_g62('page_banner_img', $theme_uri . '/assets/images/banner-prod
     <?php if ($quote_title !== '') : ?>
     <section class="detail-block quote-block" id="quote">
       <h2 class="detail-title"><span class="detail-mark"></span><?php echo esc_html($quote_title); ?></h2>
-      <?php if (shortcode_exists('fluentform')) {
-          echo '<div class="quote-form">' . do_shortcode('[fluentform id="4"]') . '</div>';
+      <?php
+      if (shortcode_exists('fluentform')) {
+          $form_id = jc_form_id('product_bottom');
+          echo '<div class="quote-form">' .
+               do_shortcode(
+                   '[fluentform id="' . $form_id . '"]'
+               ) .
+               '</div>';
       } else { ?>
         <form class="quote-form" action="#" method="post">
           <div class="quote-row">

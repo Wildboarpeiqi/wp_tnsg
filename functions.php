@@ -928,6 +928,60 @@ add_action(
     'jc_register_polylang_strings'
 );
 
+/**
+ * 根据当前位置和当前语言返回 Fluent Forms 表单 ID
+ */
+function jc_form_id($position) {
+
+    $lang = function_exists('pll_current_language')
+        ? pll_current_language('slug')
+        : 'en';
+
+    $forms = array(
+
+        'footer' => array(
+            'en' => 1,
+            'es' => 6,
+            'ar' => 11,
+        ),
+
+        'modal' => array(
+            'en' => 2,
+            'es' => 7,
+            'ar' => 12,
+        ),
+
+        'side' => array(
+            'en' => 3,
+            'es' => 8,
+            'ar' => 13,
+        ),
+
+        'product_bottom' => array(
+            'en' => 4,
+            'es' => 9,
+            'ar' => 14,
+        ),
+
+        'contact' => array(
+            'en' => 5,
+            'es' => 10,
+            'ar' => 15,
+        ),
+
+    );
+
+    if (!isset($forms[$position])) {
+        return 0;
+    }
+
+    if (isset($forms[$position][$lang])) {
+        return (int) $forms[$position][$lang];
+    }
+
+    // 新语言还没配置表单时，暂时回退英文
+    return (int) $forms[$position]['en'];
+}
 
 /**
  * 输出当前语言对应的主题固定 UI 文案。

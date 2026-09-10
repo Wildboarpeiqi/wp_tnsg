@@ -69,7 +69,8 @@ $related_query = new WP_Query(array(
       <div class="side-form-box">
         <h4 class="side-form-title"><?php echo esc_html(jc_t('Send Us A Message')); ?></h4>
         <?php if (shortcode_exists('fluentform')) {
-            echo do_shortcode('[fluentform id="3"]');
+            $form_id = jc_form_id('side');
+            echo do_shortcode('[fluentform id="' . $form_id . '"]');
         } else { ?>
           <form class="side-form" action="#" method="post">
             <input type="text" name="name" placeholder="<?php echo esc_attr(jc_t('Name')); ?>" required>

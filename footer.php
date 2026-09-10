@@ -139,7 +139,13 @@
           // Footer 表单：已接入 Fluent Forms（表单 ID 1）。
           // 用 shortcode_exists 检测短代码是否注册（比 function_exists 更可靠）
           if (shortcode_exists('fluentform')) {
-              echo do_shortcode('[fluentform id="1"]');
+
+              $form_id = jc_form_id('footer');
+
+              echo do_shortcode(
+                  '[fluentform id="' . $form_id . '"]'
+              );
+
           } else { ?>
           <!-- Fluent Forms 未启用时的兜底表单 -->
           <form id="footerForm" action="#" method="post">
@@ -195,9 +201,15 @@
         <?php
         // 弹窗表单：已接入 Fluent Forms（表单 ID 2）。
         // 用 shortcode_exists 检测短代码是否注册（比 function_exists 更可靠）
-        if (shortcode_exists('fluentform')) {
-            echo do_shortcode('[fluentform id="2"]');
-        } else { ?>
+          if (shortcode_exists('fluentform')) {
+
+              $form_id = jc_form_id('modal');
+
+              echo do_shortcode(
+                  '[fluentform id="' . $form_id . '"]'
+              );
+
+          } else { ?>
         <form id="contactForm" action="#" method="post">
           <input type="text" name="name" placeholder="<?php echo esc_attr(jc_t('Please enter your name')); ?>" required>
           <input type="tel" name="phone" placeholder="<?php echo esc_attr(jc_t('Please enter your phone number')); ?>">
