@@ -7,6 +7,12 @@
  * 字段还没建/没填时自动回退到静态默认内容，页面不会散架。
  */
 get_header();
+
+$posts_page_id = jc_posts_page_id();
+
+$news_url = $posts_page_id
+    ? get_permalink($posts_page_id)
+    : jc_home_url();
 ?>
 
   <!-- ===================== HERO SLIDER ===================== -->
@@ -39,7 +45,7 @@ get_header();
   );
   $hero_align_map = array('left' => '', 'center' => 'hero-content-center', 'right' => 'hero-content-right');
   ?>
-  <section class="hero-slider" id="heroSlider" aria-label="Hero">
+  <section class="hero-slider" id="heroSlider" aria-label="<?php echo esc_attr(jc_t('Hero')); ?>">
     <div class="hero-track">
       <?php $hc_i = 0; foreach ($hero_slides as $hc_slide) : $hc_i++; ?>
       <?php
@@ -49,8 +55,8 @@ get_header();
       $hc_ttl  = jc_get($hc_prefix . 'hero_' . $hc_i . '_title', $hc_slide['default_title']);
       $hc_dsc  = jc_get($hc_prefix . 'hero_' . $hc_i . '_desc', $hc_slide['default_desc']);
       $hc_alg  = jc_get($hc_prefix . 'hero_' . $hc_i . '_align', $hc_slide['default_align']);
-      $hc_btn  = jc_link($hc_prefix . 'hero_' . $hc_i . '_btn', jc_page_url('about_us'), 'Learn More');
-      $hc_btn2 = jc_link($hc_prefix . 'hero_' . $hc_i . '_btn2', jc_page_url('contact_us'), 'Contact Us');
+      $hc_btn  = jc_link($hc_prefix . 'hero_' . $hc_i . '_btn', jc_page_url('about_us'), jc_t('Learn More'));
+      $hc_btn2 = jc_link($hc_prefix . 'hero_' . $hc_i . '_btn2', jc_page_url('contact_us'), jc_t('Contact Us'));
       // 视频支持（2026-09-06）：hero_N_video_file（本地文件）优先，其次 hero_N_video_url（嵌入链接），都没有才用图片
       $hc_vfile = jc_get($hc_prefix . 'hero_' . $hc_i . '_video_file', '');
       $hc_vurl  = jc_get($hc_prefix . 'hero_' . $hc_i . '_video_url', '');
@@ -85,8 +91,8 @@ get_header();
       </div>
       <?php endforeach; ?>
     </div>
-    <button class="hero-arrow hero-prev" aria-label="Previous slide"><?php echo jc_icon('arrow-left'); ?></button>
-    <button class="hero-arrow hero-next" aria-label="Next slide"><?php echo jc_icon('arrow-right'); ?></button>
+    <button class="hero-arrow hero-prev" aria-label="<?php echo esc_attr(jc_t('Previous slide')); ?>"></button>
+    <button class="hero-arrow hero-next" aria-label="<?php echo esc_attr(jc_t('Next slide')); ?>"></button>
     <div class="hero-dots"></div>
   </section>
 
@@ -97,7 +103,7 @@ get_header();
         <p class="section-eyebrow"><?php echo esc_html(jc_get('product_section_products_eyebrow', 'Our Hot Products')); ?></p>
         <div class="products-head-row">
           <h2 class="section-title"><?php echo esc_html(jc_get('product_section_products_title', 'Meet Your Products Needs')); ?></h2>
-          <?php $jc_pmore = jc_link('product_section_products_more', jc_products_url(), 'Learn More'); ?>
+          <?php $jc_pmore = jc_link('product_section_products_more', jc_products_url(), jc_t('Learn More')); ?>
           <a href="<?php echo esc_url($jc_pmore['url']); ?>" class="btn-main ph-more btn-fill"><?php echo esc_html($jc_pmore['text']); ?></a>
         </div>
       </div>
@@ -173,7 +179,7 @@ get_header();
                 echo '<li class="listBox"><a class="listBoxHref" href="' . esc_url(jc_products_url()) . '">';
                 echo '<div class="ImghidCont"><div class="imgHoverAn"><img loading="lazy" src="' . esc_url(get_template_directory_uri() . '/assets/images/products/' . $jc_fbp[1]) . '" alt="' . esc_attr($jc_fbp[0]) . '"></div></div>';
                 echo '<div class="listTxt"><div class="textLineP">' . esc_html($jc_fbp[0]) . '</div></div>';
-                echo '<div class="listTxt"><span class="card-more card-fill">Learn More &gt;&gt;</span></div></a></li>';
+                echo '<div class="listTxt"><span class="card-more card-fill">' . esc_html(jc_t('Learn More')) . ' &gt;&gt;</span></div></a></li>';
             }
         }
         ?>
@@ -208,7 +214,7 @@ get_header();
           }
           ?>
         </div>
-        <?php $jc_about_btn = jc_link('about_section_about_btn', jc_page_url('about_us'), 'Learn More'); ?>
+        <?php $jc_about_btn = jc_link('about_section_about_btn', jc_page_url('about_us'), jc_t('Learn More')); ?>
         <a href="<?php echo esc_url($jc_about_btn['url']); ?>" class="btn-main btn-about btn-fill"><?php echo esc_html($jc_about_btn['text']); ?></a>
       </div>
     </div>
@@ -218,7 +224,7 @@ get_header();
   <section class="certificates section" id="certificates">
     <div class="container">
       <div class="section-head center">
-        <h2 class="section-title" style="color:#101B4D;">Certificate</h2>
+        <h2 class="section-title" style="color:#101B4D;"><?php echo esc_html(jc_t('Certificate')); ?></h2>
         <p class="section-sub"><?php echo esc_html($hero_company); ?></p>
       </div>
       <div class="cert-slider">
@@ -250,13 +256,13 @@ get_header();
                   '/assets/images/certs/cert-license-2.jpg',
               );
               foreach ($jc_certs as $jc_c) {
-                  echo '<figure class="cert-item"><img loading="lazy" src="' . esc_url(get_template_directory_uri() . $jc_c) . '" alt="Certificate"></figure>';
+                  echo '<figure class="cert-item"><img loading="lazy" src="' . esc_url(get_template_directory_uri() . $jc_c) . '" alt="' .esc_attr(jc_t('Certificate')) .'"></figure>';
               }
           }
           ?>
         </div>
-        <button class="slider-arrow cert-prev" aria-label="Previous"><?php echo jc_icon('arrow-left'); ?></button>
-        <button class="slider-arrow cert-next" aria-label="Next"><?php echo jc_icon('arrow-right'); ?></button>
+        <button class="slider-arrow cert-prev" aria-label="<?php echo esc_attr(jc_t('Previous')); ?>"><?php echo jc_icon('arrow-left'); ?></button>
+        <button class="slider-arrow cert-next" aria-label="<?php echo esc_attr(jc_t('Next')); ?>"><?php echo jc_icon('arrow-right'); ?></button>
       </div>
     </div>
   </section>
@@ -264,7 +270,7 @@ get_header();
   <!-- ===================== APPLICATION ===================== -->
   <section class="application" id="application">
     <div class="section-head">
-      <h2 class="section-title" style="color:#101B4D;">application</h2>
+      <h2 class="section-title" style="color:#101B4D;"><?php echo esc_html(jc_t('Application')); ?></h2>
       <p class="section-sub"><?php echo esc_html($hero_company); ?></p>
     </div>
     <div class="app-slider" id="appSlider">
@@ -290,7 +296,7 @@ get_header();
             echo '<div class="app-content">';
             echo '<h3>' . esc_html($jc_app_ttl) . '</h3>';
             echo '<p>' . esc_html($jc_app_dsc) . '</p>';
-            echo '<a href="' . esc_url(jc_products_url()) . '" class="btn-app">View more &gt;&gt;</a>';
+            echo '<a href="' . esc_url(jc_products_url()) . '" class="btn-app">' . esc_html(jc_t('View more')) . ' &gt;&gt;</a>';
             echo '</div></div>';
         }
         ?>
@@ -315,7 +321,8 @@ get_header();
               $jc_ind_icon = jc_img($jc_ind_prefix . 'ind_' . $jc_ii . '_icon', '/assets/images/icons/' . $jc_ind['icon'] . '.png');
               $jc_ind_icon_w = jc_img($jc_ind_prefix . 'ind_' . $jc_ii . '_icon_white', '/assets/images/icons/' . $jc_ind['icon'] . '-white.png');
               echo '<li class="industry-item" data-index="' . esc_attr($jc_ii - 1) . '">';
-              echo '<a href="' . esc_url($jc_ilink['url']) . '" class="industry-link" aria-label="View ' . esc_attr($jc_ind_label) . ' products">';
+              $jc_ind_aria = sprintf(jc_t('View %s products'), $jc_ind_label);
+              echo '<a href="' . esc_url($jc_ilink['url']) . '" class="industry-link" aria-label="' . esc_attr($jc_ind_aria) . '">';
               echo '<div class="industry-icon">';
               echo '<img src="' . esc_url($jc_ind_icon) . '" alt="" class="icon-normal">';
               echo '<img src="' . esc_url($jc_ind_icon_w) . '" alt="' . esc_attr($jc_ind_label) . '" class="icon-white">';
@@ -333,7 +340,7 @@ get_header();
   <section class="news section" id="news">
     <div class="container">
       <div class="section-head center">
-        <h2 class="section-title" style="color:#101B4D;">News</h2>
+        <h2 class="section-title" style="color:#101B4D;"><?php echo esc_html(jc_t('News')); ?></h2>
         <p class="section-sub"><?php echo esc_html($hero_company); ?></p>
       </div>
       <ul class="newsList">
@@ -352,7 +359,7 @@ get_header();
                 echo '<li class="newsBox">';
                 echo '<a href="' . esc_url(get_permalink()) . '">';
                 echo '<div class="newsImg"><img loading="lazy" src="' . esc_url($jc_news_img) . '" alt="' . esc_attr(get_the_title()) . '"></div>';
-                echo '<div class="newsDate">' . esc_html(date('M j, Y', get_the_time('U'))) . '</div>';
+                echo '<div class="newsDate">' . esc_html(get_the_date()) . '</div>';
                 echo '<h3>' . esc_html(get_the_title()) . '</h3>';
                 echo '<p class="newsDesc">' . esc_html(get_the_excerpt()) . '</p>';
                 echo '<span class="newsMore news-fill">Learn More +</span>';
@@ -368,12 +375,12 @@ get_header();
                 array('news-3.jpg', 'Jun 22, 2026', 'Service Process', 'The client provides product drawings, samples, or technical specifications (material, dimensions, quantity, surface treatment, etc.). Our technical team evaluates manufacturing feasibility and provides a preliminary proposal and quotation within 24 hours.'),
             );
             foreach ($jc_fb_news as $jc_fbn) {
-                echo '<li class="newsBox"><a href="' . esc_url(jc_page_url('news')) . '">';
+                echo '<li class="newsBox"><a href="' . esc_url($news_url) . '">';
                 echo '<div class="newsImg"><img loading="lazy" src="' . esc_url(get_template_directory_uri() . '/assets/images/news/' . $jc_fbn[0]) . '" alt=""></div>';
                 echo '<div class="newsDate">' . esc_html($jc_fbn[1]) . '</div>';
                 echo '<h3>' . esc_html($jc_fbn[2]) . '</h3>';
                 echo '<p class="newsDesc">' . esc_html($jc_fbn[3]) . '</p>';
-                echo '<span class="newsMore news-fill">Learn More +</span></a></li>';
+                echo '<span class="newsMore news-fill">' . esc_html(jc_t('Learn More')) . ' +</span>';</a></li>';
             }
         }
         ?>
@@ -385,13 +392,13 @@ get_header();
   <section class="service section" id="service">
     <div class="container">
       <div class="section-head center">
-        <h2 class="section-title" style="color:#101B4D;">Our service</h2>
+        <h2 class="section-title" style="color:#101B4D;"><?php echo esc_html(jc_t('Our service')); ?></h2>
         <p class="section-sub"><?php echo esc_html($hero_company); ?></p>
       </div>
       <div class="service-grid">
         <?php
         // CTA 联系卡：service_section > svc_cta_bg / svc_cta_text / svc_cta_link
-        $jc_cta = jc_link('service_section_svc_cta_link', jc_page_url('contact_us'), 'Contact Us');
+        $jc_cta = jc_link('service_section_svc_cta_link', jc_page_url('contact_us'), jc_t('Contact Us'));
         $jc_cta_bg = jc_img('service_section_svc_cta_bg', '/assets/images/service-bg.jpg');
         $jc_cta_text = jc_get('service_section_svc_cta_text', 'Please contact us as soon as possible for cooperation!');
         // 5 个服务卡：service_section > svc_1..svc_5（每个内含 svc_N_title / svc_N_desc / svc_N_link）
@@ -406,7 +413,7 @@ get_header();
         foreach ($jc_svcs as $jc_n => $jc_svc) {
             $jc_si++;
             $jc_svc_prefix = 'service_section_svc_' . $jc_si . '_';
-            $jc_slink = jc_link($jc_svc_prefix . 'svc_' . $jc_si . '_link', jc_page_url($jc_svc['url']), 'Learn More');
+            $jc_slink = jc_link($jc_svc_prefix . 'svc_' . $jc_si . '_link', jc_page_url($jc_svc['url']), jc_t('Learn More'));
             $jc_svc_ttl = jc_get($jc_svc_prefix . 'svc_' . $jc_si . '_title', $jc_svc['title']);
             $jc_svc_dsc = jc_get($jc_svc_prefix . 'svc_' . $jc_si . '_desc', $jc_svc['desc']);
             echo '<div class="service-card">';

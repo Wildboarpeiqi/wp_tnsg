@@ -55,8 +55,17 @@ function jc_assets() {
         'jc-main',
         $theme_uri . '/assets/js/main.js',
         array(),
-        '1.0.4',   // 2026-09-06：修正嵌入视频 cover 尺寸计算（宽屏下不再左右留白）
-        true      // 放在 </body> 前加载
+        '1.0.5',
+        true
+    );
+
+    wp_localize_script(
+        'jc-main',
+        'jcThemeI18n',
+        array(
+            'goToSlide' => jc_t('Go to slide %d'),
+            'sent'      => jc_t('Sent!'),
+        )
     );
 
     // 产品详情页专属样式 + 脚本（仅 single-product.php，即 CPT product 单页）
@@ -895,6 +904,14 @@ function jc_register_polylang_strings() {
         'our_service'            => 'Our service',
         'certificate'            => 'Certificate',
         'factory'                => 'factory',
+
+        // Homepage / JS UI
+        'hero'                  => 'Hero',
+        'application_lower'     => 'application',
+        'view_more'             => 'View more',
+        'view_products'         => 'View %s products',
+        'go_to_slide'           => 'Go to slide %d',
+        'sent'                  => 'Sent!',
     );
 
     foreach ($strings as $key => $text) {
