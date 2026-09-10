@@ -206,7 +206,24 @@ function jc_assets() {
     }
 }
 add_action('wp_enqueue_scripts', 'jc_assets');
+/**
+ * RTL languages
+ * Arabic and any future RTL language automatically load rtl.css.
+ */
+function jc_rtl_assets() {
 
+    if (!is_rtl()) {
+        return;
+    }
+
+    wp_enqueue_style(
+        'jc-rtl',
+        get_template_directory_uri() . '/assets/css/rtl.css',
+        array('jc-main'),
+        '1.0.0'
+    );
+}
+add_action('wp_enqueue_scripts', 'jc_rtl_assets', 100);
 /* 产品列表：archive-product / taxonomy-product_category 每页 9 条
    PC 3×3 = 9 个/页，有多页时显示分页。 */
 function jc_product_archive_per_page($query) {
