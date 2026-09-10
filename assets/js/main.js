@@ -244,6 +244,85 @@
     }
   }
 
+  /* ---------- Take a Tour slider ---------- */
+  var tourSlider = $('#tourSlider');
+  if (tourSlider) {
+    var tourTrack = $('.tour-track', tourSlider);
+    var tourSlides = $$('.tour-slide', tourSlider);
+    var tourPrev = $('.tour-prev', tourSlider);
+    var tourNext = $('.tour-next', tourSlider);
+    var tourDotsWrap = $('.tour-dots', tourSlider);
+    var tourCount = tourSlides.length;
+    if (tourTrack && tourCount > 0) {
+      var tourCurrent = 0;
+      var tourTimer = null;
+      var tourDots = [];
+      var ti;
+      // build dots
+      for (ti = 0; ti < tourCount; ti++) {
+        var td = document.createElement('button');
+        td.className = 'tour-dot' + (ti === 0 ? ' is-active' : '');
+        td.setAttribute('aria-label', jcText('goToSlide', 'Go to slide %d').replace('%d', ti + 1));
+        (function (idx, dot) {
+          dot.addEventListener('click', function () { tourGoTo(idx); tourRestart(); });
+        })(ti, td);
+        tourDotsWrap.appendChild(td);
+        tourDots.push(td);
+      }
+      function tourGoTo(i) {
+        if (i < 0) i = tourCount - 1;
+        if (i > tourCount - 1) i = 0;
+        tourCurrent = i;
+        tourTrack.style.transform = 'translateX(' + (-100 * tourCurrent) + '%)';
+        tourSlides.forEach(function (s, idx) { s.classList.toggle('is-active', idx === tourCurrent); });
+        tourDots.forEach(function (d, idx) { d.classList.toggle('is-active', idx === tourCurrent); });
+      }
+      function tourNextF() { tourGoTo(tourCurrent + 1); }
+      function tourPrevF() { tourGoTo(tourCurrent - 1); }
+      function tourRestart() {
+        if (tourTimer) clearInterval(tourTimer);
+        tourTimer = setInterval(tourNextF, 5000);
+      }
+      if (tourPrev) tourPrev.addEventListener('click', function (e) { e.preventDefault(); tourPrevF(); tourRestart(); });
+      if (tourNext) tourNext.addEventListener('click', function (e) { e.preventDefault(); tourNextF(); tourRestart(); });
+      tourSlider.addEventListener('mouseenter', function () { if (tourTimer) clearInterval(tourTimer); });
+      tourSlider.addEventListener('mouseleave', tourRestart);
+      var tourSX = 0;
+      tourSlider.addEventListener('touchstart', function (e) { tourSX = e.touches[0].clientX; }, { passive: true });
+      tourSlider.addEventListener('touchend', function (e) {
+        var dx = e.changedTouches[0].clientX - tourSX;
+        if (Math.abs(dx) > 40) { if (dx < 0) tourNextF(); else tourPrevF(); tourRestart(); }
+      }, { passive: true });
+      tourRestart();
+    }
+  }
+
+  /* ---------- Our Facilities accordion ---------- */
+  var facilityAcc = $('#facilityAccordion');
+  if (facilityAcc) {
+    var facilityItems = $$('.facility-item', facilityAcc);
+    var facilityTouch = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
+    function facilitySetActive(target) {
+      facilityItems.forEach(function (it) { it.classList.toggle('is-active', it === target); });
+    }
+    facilityItems.forEach(function (item) {
+      // desktop: hover expands
+      item.addEventListener('mouseenter', function () {
+        if (facilityTouch) return;
+        facilitySetActive(item);
+      });
+      // touch / click: tap to switch
+      item.addEventListener('click', function () {
+        facilitySetActive(item);
+      });
+    });
+    // leaving the whole accordion returns to the first (default) item
+    facilityAcc.addEventListener('mouseleave', function () {
+      if (facilityTouch) return;
+      facilitySetActive(facilityItems[0]);
+    });
+  }
+
   /* ---------- Application slider ---------- */
   var appTrack = $('#appTrack');
   var industryTabs = $('#industryTabs');
