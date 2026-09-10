@@ -1,0 +1,195 @@
+/* ==========================================================================
+   RTL
+   Loaded only when WordPress is using an RTL language.
+   ========================================================================== */
+
+
+/* ---------- Base ---------- */
+
+html[dir="rtl"] body {
+    direction: rtl;
+    text-align: right;
+    font-family: Tahoma, Arial, sans-serif;
+}
+
+html[dir="rtl"] input,
+html[dir="rtl"] textarea,
+html[dir="rtl"] select {
+    direction: rtl;
+    text-align: right;
+}
+
+
+/* ---------- Keep intentionally centered content centered ---------- */
+
+html[dir="rtl"] .section-head.center {
+    text-align: center;
+}
+
+
+/* ---------- Header ---------- */
+
+html[dir="rtl"] .header-bar {
+    direction: rtl;
+}
+
+html[dir="rtl"] .mainNav {
+    direction: rtl;
+}
+
+html[dir="rtl"] .mainNavLiA,
+html[dir="rtl"] .nav-submenuA {
+    text-align: right;
+}
+
+html[dir="rtl"] .lang-dropdown {
+    right: auto;
+    left: 0;
+}
+
+html[dir="rtl"] .lang-dropdown a {
+    direction: rtl;
+    text-align: right;
+}
+
+
+/* ---------- Hero ---------- */
+
+html[dir="rtl"] .hero-content {
+    direction: rtl;
+    text-align: right;
+}
+
+html[dir="rtl"] .hero-content-center {
+    text-align: center;
+}
+
+
+/*
+ * Slider tracks must stay LTR.
+ * main.js moves them with negative translateX values.
+ * Letting RTL reverse these tracks can break slide movement.
+ */
+
+html[dir="rtl"] .hero-track,
+html[dir="rtl"] .app-track,
+html[dir="rtl"] .cert-track,
+html[dir="rtl"] .related-track,
+html[dir="rtl"] .thumb-list {
+    direction: ltr;
+}
+
+
+/* ---------- Application ---------- */
+
+html[dir="rtl"] .app-content {
+    direction: rtl;
+    text-align: right;
+}
+
+html[dir="rtl"] .industry-grid {
+    direction: rtl;
+}
+
+html[dir="rtl"] .industry-link {
+    direction: rtl;
+}
+
+
+/* ---------- Product / Content layouts ---------- */
+
+html[dir="rtl"] .page-wrap,
+html[dir="rtl"] .product-head {
+    direction: rtl;
+}
+
+html[dir="rtl"] .page-sidebar,
+html[dir="rtl"] .side-box,
+html[dir="rtl"] .product-info,
+html[dir="rtl"] .article,
+html[dir="rtl"] .article-content {
+    direction: rtl;
+    text-align: right;
+}
+
+html[dir="rtl"] .breadcrumb {
+    direction: rtl;
+    text-align: right;
+}
+
+
+/* ---------- Forms ---------- */
+
+html[dir="rtl"] .ff-el-group,
+html[dir="rtl"] .fluentform,
+html[dir="rtl"] .fluentform form {
+    direction: rtl;
+    text-align: right;
+}
+
+html[dir="rtl"] .fluentform input,
+html[dir="rtl"] .fluentform textarea,
+html[dir="rtl"] .fluentform select {
+    direction: rtl;
+    text-align: right;
+}
+
+
+/* ---------- Footer ---------- */
+
+html[dir="rtl"] .footer-top,
+html[dir="rtl"] .footer-contacts,
+html[dir="rtl"] .footer-columns {
+    direction: rtl;
+}
+
+html[dir="rtl"] .footer-col,
+html[dir="rtl"] .footer-contact-info {
+    text-align: right;
+}
+
+
+/* ---------- Contact modal ---------- */
+
+html[dir="rtl"] .contact-modal {
+    direction: rtl;
+}
+
+html[dir="rtl"] .contact-modal-left,
+html[dir="rtl"] .contact-modal-right {
+    direction: rtl;
+    text-align: right;
+}
+
+
+/* ---------- Contact page ---------- */
+
+html[dir="rtl"] .contact-body-grid,
+html[dir="rtl"] .contact-cards {
+    direction: rtl;
+}
+
+html[dir="rtl"] .contact-form-wrap,
+html[dir="rtl"] .contact-card {
+    text-align: right;
+}
+
+
+/* ---------- Mobile ---------- */
+
+@media (max-width: 960px) {
+
+    html[dir="rtl"] .nav {
+        direction: rtl;
+        text-align: right;
+    }
+
+    html[dir="rtl"] .mainNav {
+        direction: rtl;
+        text-align: right;
+    }
+
+    html[dir="rtl"] .mobile-bottom-bar {
+        direction: rtl;
+    }
+}
