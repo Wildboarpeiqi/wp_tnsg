@@ -9,6 +9,15 @@
   function $(sel, ctx) { return (ctx || document).querySelector(sel); }
   function $$(sel, ctx) { return Array.prototype.slice.call((ctx || document).querySelectorAll(sel)); }
 
+  var jcI18n = window.jcThemeI18n || {};
+
+  function jcText(key, fallback) {
+    return (
+      typeof jcI18n[key] === 'string'
+      && jcI18n[key] !== ''
+    ) ? jcI18n[key] : fallback;
+  }
+
   /* ---------- Generic slider factory ---------- */
   function createSlider(root, opts) {
     var track = $('.slider-track', root) || root.querySelector('[class$="-track"]');
@@ -78,7 +87,8 @@
       for (var d = 0; d < count; d++) {
         var dot = document.createElement('button');
         dot.className = 'dot' + (d === 0 ? ' active' : '');
-        dot.setAttribute('aria-label', 'Go to slide ' + (d + 1));
+        var goToSlideText = jcText('goToSlide', 'Go to slide %d');
+        dot.setAttribute('aria-label', goToSlideText.replace('%d', String(d + 1)));
         (function (idx) {
           dot.addEventListener('click', function () { goTo(idx); });
         })(d);
@@ -462,7 +472,7 @@
       var btn = f.querySelector('button[type="submit"]');
       if (btn) {
         var orig = btn.textContent;
-        btn.textContent = 'Sent!';
+        btn.textContent = jcText('sent', 'Sent!');
         setTimeout(function () { btn.textContent = orig; }, 2000);
       }
     });
