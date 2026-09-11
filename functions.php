@@ -220,7 +220,7 @@ function jc_rtl_assets() {
         'jc-rtl',
         get_template_directory_uri() . '/assets/css/rtl.css',
         array('jc-main'),
-        '1.0.0'
+        '1.0.1'
     );
 }
 add_action('wp_enqueue_scripts', 'jc_rtl_assets', 100);
