@@ -187,45 +187,7 @@ $news_url = $posts_page_id
     </div>
   </section>
 
-  <!-- ===================== TAKE A TOUR ===================== -->
-  <section class="tour section" id="tour">
-    <div class="container">
-      <div class="section-head center">
-        <h2 class="section-title"><?php echo esc_html(jc_get('tour_section_tour_title', 'Take a Tour of Our Forging Facility')); ?></h2>
-        <p class="section-sub"><?php echo esc_html(jc_get('tour_section_tour_subtitle', 'Step Inside Our Workshop: See Every Stage of the Forging Process')); ?></p>
-      </div>
-      <div class="tour-slider" id="tourSlider">
-        <div class="tour-track" id="tourTrack">
-          <?php
-          // 6 个 slide：tour_section > slide_1..6 > slide_N_image / slide_N_caption
-          // Image 字段留空时回退到主题默认车间图（jc_img 主题路径 fallback）
-          $jc_tour_slides = array(
-              1 => array('caption' => 'Precision Forging Press Line',   'img' => '/assets/images/workshops/forging-1.png'),
-              2 => array('caption' => 'High-Temperature Die Forging',   'img' => '/assets/images/workshops/forging-3.png'),
-              3 => array('caption' => 'CNC Precision Machining',        'img' => '/assets/images/workshops/cnc-1.png'),
-              4 => array('caption' => 'Automated Turning & Finishing',  'img' => '/assets/images/workshops/cnc-3.png'),
-              5 => array('caption' => 'Metallurgical Testing Lab',      'img' => '/assets/images/workshops/testing-2.jpg'),
-              6 => array('caption' => 'Quality Assurance & Inspection', 'img' => '/assets/images/workshops/testing-4.jpg'),
-          );
-          foreach ($jc_tour_slides as $jc_ti => $jc_ts) {
-              // 子字段名带 slide_N_ 前缀（与 hero1 > hero_1_title 同款惯例）
-              // 实际 key：tour_section_slide_1_slide_1_image / tour_section_slide_1_slide_1_caption
-              $jc_t_prefix = 'tour_section_slide_' . $jc_ti . '_slide_' . $jc_ti . '_';
-              $jc_t_img = jc_img($jc_t_prefix . 'image', $jc_ts['img']);
-              $jc_t_cap = jc_get($jc_t_prefix . 'caption', $jc_ts['caption']);
-              echo '<div class="tour-slide' . ($jc_ti === 1 ? ' is-active' : '') . '">';
-              echo '<div class="tour-slide-bg" style="background-image:url(\'' . esc_url($jc_t_img) . '\');"></div>';
-              echo '<div class="tour-slide-cap"><span>' . esc_html(str_pad((string)$jc_ti, 2, '0', STR_PAD_LEFT)) . '</span>' . esc_html($jc_t_cap) . '</div>';
-              echo '</div>';
-          }
-          ?>
-        </div>
-        <button class="tour-arrow tour-prev" aria-label="<?php echo esc_attr(jc_t('Previous')); ?>">&#10094;</button>
-        <button class="tour-arrow tour-next" aria-label="<?php echo esc_attr(jc_t('Next')); ?>">&#10095;</button>
-        <div class="tour-dots"></div>
-      </div>
-    </div>
-  </section>
+  <?php get_template_part('template-parts/section-tour'); ?>
 
   <!-- ===================== ABOUT ===================== -->
   <section class="about" id="about">
@@ -376,73 +338,9 @@ $news_url = $posts_page_id
     </div>
   </section>
 
-  <!-- ===================== CUSTOMERS ===================== -->
-  <section class="customers section" id="customers">
-    <div class="container">
-      <div class="section-head center">
-        <h2 class="section-title"><?php echo esc_html(jc_get('customers_section_customers_title', 'Customers')); ?></h2>
-        <p class="section-sub"><?php echo esc_html(jc_get('customers_section_customers_subtitle', 'We work for some of the leading companies in the mobility, energy, machinery and engineering sectors.')); ?></p>
-      </div>
-      <ul class="customers-grid">
-        <?php
-        // 10 个客户 logo：customers_section > logo_1..logo_10（Image，无默认图）
-        // Image 留空时回退占位文字 Customer 01..10，页面不散架
-        for ($jc_li = 1; $jc_li <= 10; $jc_li++) {
-            $jc_logo = function_exists('get_field')
-                ? get_field('customers_section_logo_' . $jc_li, jc_field_id('customers_section_logo_' . $jc_li))
-                : '';
-            if (is_array($jc_logo) && !empty($jc_logo['url'])) { $jc_logo = $jc_logo['url']; }
-            $jc_has = ($jc_logo !== '' && $jc_logo !== null && $jc_logo !== false);
-            $jc_name = 'Customer ' . str_pad((string)$jc_li, 2, '0', STR_PAD_LEFT);
-            echo '<li>';
-            if ($jc_has) {
-                echo '<img class="cus-logo" src="' . esc_url($jc_logo) . '" alt="' . esc_attr($jc_name) . '" loading="lazy">';
-            } else {
-                echo '<span class="cus-logo" data-name="' . esc_attr($jc_name) . '">' . esc_html($jc_name) . '</span>';
-            }
-            echo '</li>';
-        }
-        ?>
-      </ul>
-    </div>
-  </section>
+  <?php get_template_part('template-parts/section-customers'); ?>
 
-  <!-- ===================== OUR FACILITIES ===================== -->
-  <section class="facility section" id="facility">
-    <div class="container">
-      <div class="section-head center">
-        <h2 class="section-title"><?php echo esc_html(jc_get('facility_section_facility_title', 'Our Facilities')); ?></h2>
-        <p class="section-sub"><?php echo esc_html(jc_get('facility_section_facility_subtitle', 'A Vertically Integrated Forging Facility from Raw Material to Finished Part')); ?></p>
-      </div>
-    </div>
-    <div class="facility-accordion" id="facilityAccordion">
-      <?php
-      // 4 个设施：facility_section > item_1..4 > item_N_name / item_N_image / item_N_desc / item_N_link（Link 字段，文字填在 Title）
-      $jc_facilities = array(
-          1 => array('name' => 'Forging Workshop',       'img' => '/assets/images/workshops/forging-2.png', 'desc' => 'Equipped with advanced forging presses for producing high-precision automotive and industrial forgings.'),
-          2 => array('name' => 'CNC Machining',          'img' => '/assets/images/workshops/cnc-2.png',      'desc' => 'Multi-axis CNC centers ensure tight tolerances and consistent quality on every finished part.'),
-          3 => array('name' => 'Die & Tooling',          'img' => '/assets/images/workshops/forging-4.png',  'desc' => 'In-house die design and maintenance shorten lead times and improve forging repeatability.'),
-          4 => array('name' => 'Testing & Validation',   'img' => '/assets/images/workshops/testing-3.jpg',  'desc' => 'Laboratory testing validates material properties and product integrity at every stage.'),
-      );
-      foreach ($jc_facilities as $jc_fi => $jc_fc) {
-          // 子字段名带 item_N_ 前缀（与 hero1 > hero_1_title 同款惯例）
-          // 实际 key：facility_section_item_1_item_1_image / item_1_name / item_1_desc / item_1_link
-          $jc_f_prefix = 'facility_section_item_' . $jc_fi . '_item_' . $jc_fi . '_';
-          $jc_f_img  = jc_img($jc_f_prefix . 'image', $jc_fc['img']);
-          $jc_f_name = jc_get($jc_f_prefix . 'name', $jc_fc['name']);
-          $jc_f_desc = jc_get($jc_f_prefix . 'desc', $jc_fc['desc']);
-          $jc_f_link = jc_link($jc_f_prefix . 'link', jc_home_url(), 'Explore Now');
-          echo '<div class="facility-item' . ($jc_fi === 1 ? ' is-active' : '') . '" data-facility="' . esc_attr($jc_fi) . '">';
-          echo '<div class="facility-item-bg" style="background-image:url(\'' . esc_url($jc_f_img) . '\');"></div>';
-          echo '<div class="facility-item-content">';
-          echo '<h3 class="facility-item-title">' . esc_html($jc_f_name) . '</h3>';
-          echo '<p class="facility-item-desc">' . esc_html($jc_f_desc) . '</p>';
-          echo '<a href="' . esc_url($jc_f_link['url']) . '" class="facility-item-btn btn-main btn-fill">' . esc_html($jc_f_link['text']) . ' &rarr;</a>';
-          echo '</div></div>';
-      }
-      ?>
-    </div>
-  </section>
+  <?php get_template_part('template-parts/section-facility'); ?>
 
   <!-- ===================== NEWS ===================== -->
   <section class="news section" id="news">

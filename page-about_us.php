@@ -103,6 +103,10 @@ $banner_title = get_the_title();
     </div>
   </section>
 
+  <?php get_template_part('template-parts/section-tour'); ?>
+
+  <?php get_template_part('template-parts/section-customers'); ?>
+
   <!-- ===================== CNC MACHINING（左轮播右文 + 询盘弹窗） ===================== -->
   <?php
   $cnc_title = $pf('cnc_title', 'CNC Machining');
@@ -153,6 +157,62 @@ $banner_title = get_the_title();
         <h2 class="cnc-title"><?php echo esc_html($cnc_title); ?></h2>
         <div class="cnc-desc"><?php echo wpautop(wp_kses_post($cnc_desc)); ?></div>
         <button class="btn-main btn-quote" data-lightbox="contactModal"><?php echo esc_html($cnc_quote); ?></button>
+      </div>
+    </div>
+  </section>
+
+  <?php get_template_part('template-parts/section-facility'); ?>
+
+  
+
+  <!-- ===================== TESTING EQUIPMENT 检测设备（左大图 + 右缩略图联动） ===================== -->
+  <?php
+  $test_title = $pf('test_title', 'Testing equipment');
+  // test_imgs Group：img_1~img_6（图）+ name_1~name_6（设备名，同一组；空则隐藏名称）
+  $test_imgs = function_exists('get_field') ? get_field('test_imgs', $page_id) : array();
+  if (!is_array($test_imgs)) { $test_imgs = array(); }
+  $test_fb = array(
+      array('/assets/images/workshops/testing-1.jpg', 'Universal Materials Testing Machine'),
+      array('/assets/images/workshops/testing-2.jpg', 'UV Notched Tensile Tester'),
+      array('/assets/images/workshops/testing-3.jpg', 'Brinell hardness tester'),
+      array('/assets/images/workshops/testing-4.jpg', 'Impact testing machine'),
+      array('/assets/images/workshops/testing-5.jpg', 'Metallographic Analysis System'),
+      array('/assets/images/workshops/testing-6.jpg', 'Metallographic Polishing Machine &ndash; Notch Tester'),
+  );
+  ?>
+  <section class="test-section section" id="testEquipment">
+    <div class="container">
+      <div class="section-head">
+        <h2 class="section-title" style="color:#101B4D;"><?php echo esc_html($test_title); ?></h2>
+      </div>
+      <div class="test-stage">
+        <!-- 左：大图 + 图下标题（无背景）；JS 从这里的 6 个 figure 提取数据渲染右侧缩略图 -->
+        <div class="test-featured" id="testFeatured">
+          <div class="test-featured-track" id="testMainTrack">
+            <?php for ($ti = 1; $ti <= 6; $ti++) :
+                $t_img  = isset($test_imgs['img_' . $ti]) ? $pimg($test_imgs['img_' . $ti]) : '';
+                if ($t_img === '') { $t_img = $theme_uri . $test_fb[$ti - 1][0]; }
+                $t_name = isset($test_imgs['name_' . $ti]) && $test_imgs['name_' . $ti] !== '' ? $test_imgs['name_' . $ti] : $test_fb[$ti - 1][1];
+                if (is_array($t_name) && isset($t_name['text'])) { $t_name = $t_name['text']; }
+            ?>
+            <figure class="test-featured-slide">
+              <div class="test-img"><img loading="lazy" src="<?php echo esc_url($t_img); ?>" alt="<?php echo esc_attr($t_name); ?>"></div>
+              <figcaption class="test-caption"><?php echo esc_html($t_name); ?></figcaption>
+            </figure>
+            <?php endfor; ?>
+          </div>
+        </div>
+
+        <!-- 右：缩略图窗口（JS 渲染：当前大图的下一张起 2 张，轨道 flex 露边）+ 底部左右箭头 -->
+        <div class="test-side">
+          <div class="test-thumbs-viewport">
+            <ul class="test-thumbs-track" id="testThumbs"></ul>
+          </div>
+          <div class="test-controls">
+            <button class="test-arrow test-prev" aria-label="<?php echo esc_attr(jc_t('Previous equipment')); ?>"><?php echo jc_icon('arrow-left'); ?></button>
+            <button class="test-arrow test-next" aria-label="<?php echo esc_attr(jc_t('Next equipment')); ?>"><?php echo jc_icon('arrow-right'); ?></button>
+          </div>
+        </div>
       </div>
     </div>
   </section>
@@ -208,58 +268,6 @@ $banner_title = get_the_title();
         </div>
         <button class="slider-arrow cert-prev" aria-label="<?php echo esc_attr(jc_t('Previous')); ?>"><?php echo jc_icon('arrow-left'); ?></button>
         <button class="slider-arrow cert-next" aria-label="<?php echo esc_attr(jc_t('Next')); ?>"><?php echo jc_icon('arrow-right'); ?></button>
-      </div>
-    </div>
-  </section>
-
-  <!-- ===================== TESTING EQUIPMENT 检测设备（左大图 + 右缩略图联动） ===================== -->
-  <?php
-  $test_title = $pf('test_title', 'Testing equipment');
-  // test_imgs Group：img_1~img_6（图）+ name_1~name_6（设备名，同一组；空则隐藏名称）
-  $test_imgs = function_exists('get_field') ? get_field('test_imgs', $page_id) : array();
-  if (!is_array($test_imgs)) { $test_imgs = array(); }
-  $test_fb = array(
-      array('/assets/images/workshops/testing-1.jpg', 'Universal Materials Testing Machine'),
-      array('/assets/images/workshops/testing-2.jpg', 'UV Notched Tensile Tester'),
-      array('/assets/images/workshops/testing-3.jpg', 'Brinell hardness tester'),
-      array('/assets/images/workshops/testing-4.jpg', 'Impact testing machine'),
-      array('/assets/images/workshops/testing-5.jpg', 'Metallographic Analysis System'),
-      array('/assets/images/workshops/testing-6.jpg', 'Metallographic Polishing Machine &ndash; Notch Tester'),
-  );
-  ?>
-  <section class="test-section section" id="testEquipment">
-    <div class="container">
-      <div class="section-head">
-        <h2 class="section-title" style="color:#101B4D;"><?php echo esc_html($test_title); ?></h2>
-      </div>
-      <div class="test-stage">
-        <!-- 左：大图 + 图下标题（无背景）；JS 从这里的 6 个 figure 提取数据渲染右侧缩略图 -->
-        <div class="test-featured" id="testFeatured">
-          <div class="test-featured-track" id="testMainTrack">
-            <?php for ($ti = 1; $ti <= 6; $ti++) :
-                $t_img  = isset($test_imgs['img_' . $ti]) ? $pimg($test_imgs['img_' . $ti]) : '';
-                if ($t_img === '') { $t_img = $theme_uri . $test_fb[$ti - 1][0]; }
-                $t_name = isset($test_imgs['name_' . $ti]) && $test_imgs['name_' . $ti] !== '' ? $test_imgs['name_' . $ti] : $test_fb[$ti - 1][1];
-                if (is_array($t_name) && isset($t_name['text'])) { $t_name = $t_name['text']; }
-            ?>
-            <figure class="test-featured-slide">
-              <div class="test-img"><img loading="lazy" src="<?php echo esc_url($t_img); ?>" alt="<?php echo esc_attr($t_name); ?>"></div>
-              <figcaption class="test-caption"><?php echo esc_html($t_name); ?></figcaption>
-            </figure>
-            <?php endfor; ?>
-          </div>
-        </div>
-
-        <!-- 右：缩略图窗口（JS 渲染：当前大图的下一张起 2 张，轨道 flex 露边）+ 底部左右箭头 -->
-        <div class="test-side">
-          <div class="test-thumbs-viewport">
-            <ul class="test-thumbs-track" id="testThumbs"></ul>
-          </div>
-          <div class="test-controls">
-            <button class="test-arrow test-prev" aria-label="<?php echo esc_attr(jc_t('Previous equipment')); ?>"><?php echo jc_icon('arrow-left'); ?></button>
-            <button class="test-arrow test-next" aria-label="<?php echo esc_attr(jc_t('Next equipment')); ?>"><?php echo jc_icon('arrow-right'); ?></button>
-          </div>
-        </div>
       </div>
     </div>
   </section>
