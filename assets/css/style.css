@@ -2301,6 +2301,7 @@ body.hero-ready .hero-slide-active .hero-btns {
     flex: none;
     height: 26rem;
   }
+  .facility-item-desc { white-space: normal; overflow: visible; max-width: 100%; }
   .facility-item-desc,
   .facility-item-btn { max-height: 20rem; opacity: 1; transform: none; margin-bottom: 0.6rem; }
   .facility-item-btn { margin-top: 1rem; }
