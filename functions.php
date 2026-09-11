@@ -47,7 +47,7 @@ function jc_assets() {
         'jc-main',
         $theme_uri . '/assets/css/style.css',
         array(),
-        '1.0.6'   // 改 CSS 后递增版本号，强制浏览器刷新缓存（2026-09-10：+ 首页三个新板块 tour/customers/facility）
+        '1.0.7'   // 改 CSS 后递增版本号，强制浏览器刷新缓存（2026-09-11：+ facility 移动端 desc 换行修复）
     );
 
     // 全站唯一公共 JS（滑块/计数器/菜单/弹窗，零依赖）
@@ -153,7 +153,7 @@ function jc_assets() {
             'jc-about',
             $theme_uri . '/assets/css/about.css',
             array('jc-main'),
-            '1.0.1'   // 2026-09-06：移动端 CNC 一屏 2 张 + 隐藏轮播箭头
+            '1.0.2'   // 2026-09-11：About 页 facility 白底覆盖（背景交替）
         );
         wp_enqueue_script(
             'jc-about',
