@@ -364,3 +364,10 @@
   .cnc-arrow { display: none; }
   .cert-prev, .cert-next { display: none; }
 }
+
+/* ==========================================================================
+   About 页：OUR FACILITIES 桌面白底覆盖
+   （公共 style.css 里 facility 是浅灰；About 页改为白底，
+    保证 intro白→tour灰→customers白→cnc灰→facility白→test灰→cert白→service灰 背景交替）
+   ========================================================================== */
+.facility { background: #fff; }
