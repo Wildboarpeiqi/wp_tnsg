@@ -208,7 +208,9 @@ $news_url = $posts_page_id
               6 => array('caption' => 'Quality Assurance & Inspection', 'img' => '/assets/images/workshops/testing-4.jpg'),
           );
           foreach ($jc_tour_slides as $jc_ti => $jc_ts) {
-              $jc_t_prefix = 'tour_section_slide_' . $jc_ti . '_';
+              // 子字段名带 slide_N_ 前缀（与 hero1 > hero_1_title 同款惯例）
+              // 实际 key：tour_section_slide_1_slide_1_image / tour_section_slide_1_slide_1_caption
+              $jc_t_prefix = 'tour_section_slide_' . $jc_ti . '_slide_' . $jc_ti . '_';
               $jc_t_img = jc_img($jc_t_prefix . 'image', $jc_ts['img']);
               $jc_t_cap = jc_get($jc_t_prefix . 'caption', $jc_ts['caption']);
               echo '<div class="tour-slide' . ($jc_ti === 1 ? ' is-active' : '') . '">';
@@ -423,7 +425,9 @@ $news_url = $posts_page_id
           4 => array('name' => 'Testing & Validation',   'img' => '/assets/images/workshops/testing-3.jpg',  'desc' => 'Laboratory testing validates material properties and product integrity at every stage.'),
       );
       foreach ($jc_facilities as $jc_fi => $jc_fc) {
-          $jc_f_prefix = 'facility_section_item_' . $jc_fi . '_';
+          // 子字段名带 item_N_ 前缀（与 hero1 > hero_1_title 同款惯例）
+          // 实际 key：facility_section_item_1_item_1_image / item_1_name / item_1_desc / item_1_link
+          $jc_f_prefix = 'facility_section_item_' . $jc_fi . '_item_' . $jc_fi . '_';
           $jc_f_img  = jc_img($jc_f_prefix . 'image', $jc_fc['img']);
           $jc_f_name = jc_get($jc_f_prefix . 'name', $jc_fc['name']);
           $jc_f_desc = jc_get($jc_f_prefix . 'desc', $jc_fc['desc']);
