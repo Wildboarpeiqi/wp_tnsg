@@ -2188,6 +2188,13 @@ body.hero-ready .hero-slide-active .hero-btns {
   grid-template-columns: repeat(5, 1fr);
   gap: 2rem;
 }
+
+.customers-grid img {
+  -webkit-user-drag: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
 .cus-logo {
   display: flex;
   align-items: center;
