@@ -27,7 +27,7 @@
           $jc_name = 'Customer ' . str_pad((string)$jc_li, 2, '0', STR_PAD_LEFT);
           echo '<li>';
           if ($jc_has) {
-              echo '<img class="cus-logo" src="' . esc_url($jc_logo) . '" alt="' . esc_attr($jc_name) . '" loading="lazy">';
+              echo '<img class="cus-logo" src="' . esc_url($jc_logo) . '" alt="' . esc_attr($jc_name) . '" loading="lazy" draggable="false">';
           } else {
               echo '<span class="cus-logo" data-name="' . esc_attr($jc_name) . '">' . esc_html($jc_name) . '</span>';
           }
