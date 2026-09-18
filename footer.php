@@ -3,7 +3,7 @@
  * Footer — 公共底部
  * 包含 <footer>…</footer>、悬浮侧栏、弹窗、移动端底栏、</body></html>（按笔记约定）
  * 钩子：wp_footer（页尾 JS / 表单脚本 / 统计代码）
- * 联系方式全部来自公共字段（首页上创建）：company_email / company_whatsapp / company_phone
+ * 联系方式来自当前语言对应的全局公共字段页：company_email / company_whatsapp / company_phone
  */
 ?>
   <!-- ===================== FOOTER ===================== -->
@@ -136,7 +136,7 @@
         <div class="footer-col footer-contact-form">
           <h4><?php echo esc_html(jc_t('Contact Us')); ?></h4>
           <?php
-          // Footer 表单：已接入 Fluent Forms（表单 ID 1）。
+          // Footer 表单：通过 jc_form_id('footer') 按当前语言选择 Fluent Forms 表单。
           // 用 shortcode_exists 检测短代码是否注册（比 function_exists 更可靠）
           if (shortcode_exists('fluentform')) {
 
@@ -199,7 +199,7 @@
       <div class="contact-modal-left">
         <h3><?php echo esc_html(jc_t('Please give us a message')); ?></h3>
         <?php
-        // 弹窗表单：已接入 Fluent Forms（表单 ID 2）。
+        // 联系弹窗：通过 jc_form_id('modal') 按当前语言选择 Fluent Forms 表单。
         // 用 shortcode_exists 检测短代码是否注册（比 function_exists 更可靠）
           if (shortcode_exists('fluentform')) {
 

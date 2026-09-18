@@ -1,6 +1,6 @@
 <?php
 /**
- * Category — 分类归档页（news 的三个分类共用）
+ * Category — 分类归档页（News 分类归档页共用）
  * 模板命名：category.php（WP 官方：分类归档模板）
  * 说明：
  *   - 本模板 = 静态版 news/index.html 分类过滤的 WP 落地（每个分类独立 URL，SEO 独立落地页）

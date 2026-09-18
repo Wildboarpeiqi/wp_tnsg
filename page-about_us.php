@@ -6,10 +6,10 @@
  * WordPress 按页面 slug = about_us 自动匹配本模板（后台无需手动选模板）。
  * 静态版对照：E:\jingxiang\site\about.html
  *
- * 字段读取规则（与《ACF字段清单.md》十 一致）：
+ * 字段读取规则（与《ACF字段清单.md》一致）：
  *  - 本页专属字段（site_banner / about_intro_* / cnc_* / about_cert_* / test_*）
  *    挂在 About Us 页面自己身上（位置规则：页面 == About Us），用 $page_id 读取。
- *  - 公司名 about_company：公共字段页 62（首页 About 区块同款），兜底读首页 about_section_about_company。
+ *  - 公司名 about_company：当前语言对应的全局公共字段页（首页 About 区块同款），兜底读首页 about_section_about_company。
  *  - Our service 区块：复用首页 svc_1~5 + svc_cta_*（jc_get 自动读首页 ID，About 页零重复录入）。
  *  - Certificate 轮播：certificate CPT（与首页同一套），无图片字段。
  * 不散架原则：字段没建/没填 → 回退静态默认内容。
@@ -38,7 +38,7 @@ $pf = function ($key, $default = '') use ($page_id, $pimg) {
     return ($v !== '' && $v !== null && $v !== false) ? $v : $default;
 };
 
-/* 公司名：优先公共字段页 62 的 about_company，其次首页 About 区块，最后硬编码兜底 */
+/* 公司名：优先当前语言对应的全局公共字段页 的 about_company，其次首页 About 区块，最后硬编码兜底 */
 $about_company = function_exists('get_field') ? get_field('about_company', jc_global_field_id()) : '';
 if ($about_company === '' || $about_company === null || $about_company === false) {
     $about_company = jc_get('about_section_about_company', '');

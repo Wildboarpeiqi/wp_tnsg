@@ -32,8 +32,9 @@ if (is_array($banner) && !empty($banner['url'])) { $banner = $banner['url']; }
 if (!$banner) { $banner = $theme_uri . '/assets/images/banner-news.jpg'; }
 
 // ---- 新闻分类（tab 用）：不卡 slug，列出所有分类（排除 WP 默认 Uncategorized），
-// 建了就能显示；顺序优先 product-knowledge / buying-guide / industry-news（静态版顺序），
-// 其余分类按名称排后面。 ----后面改了，代码都删了，前面说的没用了。
+// 当前语言 News 分类：
+// 排除默认 Uncategorized，按 ACF sort_order 升序，
+// 未设置 sort_order 的分类排后，同值按名称排序。
 $news_cats = jc_get_sorted_news_categories();
 ?>
 

@@ -2,7 +2,7 @@
 /**
  * Template Name: Privacy Policy
  * page-privacy_policy.php — 隐私政策页
- * WordPress 按页面 slug = privacy_policy 自动匹配本模板（后台无需手动选模板）；
+ * WordPress 按模板 = page-privacy_policy.php 自动匹配本模板（后台无需手动选模板）；
  * 若 slug 不同，可在后台「页面属性 → 模板」手动选择 "Privacy Policy"。
  * 静态版对照：E:\jingxiang\site\privacy-policy.html
  *
@@ -12,7 +12,7 @@
  *     把 site_banner 字段组的位置规则加上「页面 == Privacy Policy」即可。
  *   - 正文：直接用后台页面编辑器写（the_content），标题 = 页面标题（唯一 H1）。
  *     内容建议按原站结构录入：Intro / Collection（4 项列表）/ Use / Disclosure。
- * CSS：assets/css/pp.css 在 functions.php jc_assets() 里 is_page('privacy_policy') 条件加载
+ * CSS：assets/css/pp.css 在 functions.php jc_assets() 里 is_page_template('page-privacy_policy.php') 条件加载
  */
 get_header();
 

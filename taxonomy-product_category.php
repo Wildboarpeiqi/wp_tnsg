@@ -126,12 +126,12 @@ $reason_group = function_exists('get_field') ? get_field('reason_group', jc_glob
         <a href="mailto:<?php echo esc_attr($side_email); ?>" class="side-email"><?php echo esc_html($side_email); ?></a>
       <?php endif; ?>
 
-      <!-- 左栏询盘表单：[fluentform id="3"] -->
+      <!-- 左栏询盘表单：按当前语言调用对应 Fluent Forms 表单 -->
       <div class="side-form-box">
         <h4 class="side-form-title"><?php echo esc_html(jc_t('Send Us A Message')); ?></h4>
-        <?php if (shortcode_exists('fluentform')) : ?>
-          <?php echo do_shortcode('[fluentform id="3"]'); ?>
-        <?php endif; ?>
+        <?php if (shortcode_exists('fluentform')) {
+          $form_id = jc_form_id('side');echo do_shortcode('[fluentform id="' . $form_id . '"]');
+          } ?>
       </div>
     </div>
   </aside>

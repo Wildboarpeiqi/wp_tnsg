@@ -124,11 +124,11 @@ $banner_title = jc_g62('page_banner_title', jc_t('PRODUCTS'));
         <a href="mailto:<?php echo esc_attr($side_email); ?>" class="side-email"><?php echo esc_html($side_email); ?></a>
       <?php endif; ?>
 
-      <!-- 左栏询盘表单：[fluentform id="3"] -->
+      <!-- 左栏询盘表单：按当前语言调用对应 Fluent Forms 表单 -->
       <div class="side-form-box">
         <h4 class="side-form-title"><?php echo esc_html(jc_t('Send Us A Message')); ?></h4>
         <?php if (shortcode_exists('fluentform')) {
-            echo do_shortcode('[fluentform id="3"]');
+            $form_id = jc_form_id('side');echo do_shortcode('[fluentform id="' . $form_id . '"]');
         } else { ?>
           <form class="side-form" action="#" method="post">
             <input type="text" name="name" placeholder="<?php echo esc_attr(jc_t('Name')); ?>" required>

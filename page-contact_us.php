@@ -10,7 +10,7 @@
  *  - 本页专属字段（site_banner / contact_eyebrow / contact_title / contact_desc /
  *    contact_form_note / contact_map_embed）挂在 Contact Us 页面自己身上，
  *    用 $page_id 读取（$pf 闭包，空则回退静态默认值）。
- *  - 4 张联系卡的值 = 公共字段页 62（JC_GLOBAL_FIELD_ID）的 company_whatsapp /
+ *  - 4 张联系卡的值 = 当前语言对应的全局公共字段页（JC_GLOBAL_FIELD_ID）的 company_whatsapp /
  *    company_phone / company_email / company_address（jc_get 自动读取，与
  *    header/footer/弹窗同一套数据，改一处全站生效）。
  *  - 表单：Fluent Form ID=5（用户 2026-09-06 已确认）；未装插件时显示静态占位表单
@@ -91,7 +91,7 @@ $banner_title = get_the_title();
     </div>
   </section>
 
-  <!-- ===================== 联系卡 4 列（值 = 公共字段页 62） ===================== -->
+  <!-- ===================== 联系卡 4 列（值 = 当前语言对应的全局公共字段页） ===================== -->
   <section class="contact-cards" id="contactCards">
     <div class="container contact-cards-grid">
 
@@ -140,7 +140,7 @@ $banner_title = get_the_title();
       <div class="contact-form-wrap">
         <p class="contact-form-note"><?php echo esc_html($form_note); ?></p>
         <?php
-        // ★★★ 表单 ID 待用户确认：联系页新建 Fluent Form 后，把下面 id="5" 换成实际 ID ★★★
+        // 改了
         if (shortcode_exists('fluentform')) {
             $form_id = jc_form_id('contact');
             echo do_shortcode(
