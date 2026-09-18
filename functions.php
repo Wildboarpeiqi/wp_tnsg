@@ -1,8 +1,11 @@
 <?php
 /* ==========================================================================
+/* ==========================================================================
    Xiaobai Basic — functions.php
-   Liaocheng TNSG (northforging.com) 首页主题
-   结构约定见主题根目录《ACF字段清单.md》：用户在 ACF 后台建字段，本文件只负责调用。
+   TNSG (northforging.com) WordPress 主题公共功能
+   ACF 字段结构约定见主题根目录《ACF字段清单.md》。
+   本文件负责主题功能、资源加载、查询与排序、多语言辅助、
+   表单映射、导航、分页及其他全站公共逻辑。
    ========================================================================== */
 
 /* =========================
@@ -114,7 +117,7 @@ function jc_assets() {
         );
     }
 
-    // 文章列表页 / 分类归档页专属样式（home.php 文章列表页 + category.php 三个 news 分类）
+    // News 列表页 / 分类归档页专属样式（home.php + category.php）
     // 注意：静态版 news-list.js 的前端过滤/分页在 WP 端由分类归档 URL + 服务器渲染承担，
     // 因此不再加载该脚本（避免空跑请求，2h2g 性能原则）；仅加载样式。
     if (is_home() || is_category()) {
@@ -388,27 +391,38 @@ function jc_body_class($classes) {
 add_filter('body_class', 'jc_body_class');
 
 /* =========================
-   3. CPT + TAXONOMY（产品/证书）
-   —— 全部统一由 ACF 管理（ACF 后台 > 文章类型 / 分类法 创建）。
-   —— 这里【绝不】注册任何 CPT/分类法，否则会和你在 ACF 里建的冲突：
-      * certificate 创建时提示"关键字已被 ACF 以外使用"就是因此
-      * product 你改标签不生效也是因此（functions.php 的大写标签占住了）
-   —— 前端对不存在的 CPT 会自动回退到静态演示内容，不会报错；ACF 建好后自动生效。
-   ========================= */
+   3. CPT + TAXONOMY
 
-// 注：CPT/分类法注册已完全移除，统一由 ACF 管理。
-// 需要在此兜底时，请确认 ACF 未创建同名类型，否则会冲突。
+   CPT 与 Taxonomy 统一由 ACF 后台管理。
+   functions.php 不重复注册 Post Type 或 Taxonomy，
+   避免与 ACF 中的注册配置发生冲突。
+
+   当前主题会调用的内容类型包括：
+   - product
+   - project
+   - faq
+
+   主要自定义分类法：
+   - product_category
 
 /* =========================
-   4. ACF 辅助函数（所有字段调用的统一入口）
-   —— 免费版 ACF 没有 Options Page，公共字段按你的笔记约定：
-      字段组挂在"前台首页"上，代码用首页 ID 直调。
-   —— 你已把「全局公共字段」（Company Phone/Mob/WhatsApp/Email/Address/Slogan 等）
-      单独建组放在一个空白页面（页面 ID 62）上，代码会自动从该页面读取。
-   —— 每个字段都有静态兜底值：字段还没建/没填时，前台照样显示默认内容，不散架。
+   4. ACF 辅助函数
+
+   ACF Free 没有 Options Page，因此主题采用普通 Page 存储公共字段：
+
+   - 首页专属字段：
+     从当前语言对应的静态首页读取。
+
+   - 全局公共字段：
+     默认语言基准页面为 JC_GLOBAL_FIELD_ID（ID 62），
+     Polylang 启用后自动读取当前语言对应的翻译页面。
+
+   - helper 支持调用方传入 fallback；
+     是否使用 fallback 由具体模板决定。
    ========================= */
 
-/* 全局公共字段所在页面 ID（你在后台建的"公共字段"空白页，可随时改这里） */
+/* 默认语言全局公共字段页的基准 ID；
+   实际读取时 jc_global_field_id() 会转换为当前语言对应页面 ID。 */
 if (!defined('JC_GLOBAL_FIELD_ID')) {
     define('JC_GLOBAL_FIELD_ID', 62);
 }
@@ -453,8 +467,10 @@ function jc_global_field_id() {
 }
 
 
-/* 当前前台首页 ID（静态首页=该页面；博客列表首页=0 时退回当前 ID）
-   更健壮的探测：静态首页未设置时，遍历页面找 slug=home 或第一个页面 */
+/* 获取当前语言的前台首页 ID。
+   优先使用 WordPress 设置的静态首页，并通过 Polylang 转为当前语言页面；
+   未设置静态首页时依次尝试 slug=home、首个已发布页面，
+   最后回退当前对象 ID。 */
 function jc_front_id() {
     $id = (int) get_option('page_on_front');
     if ($id > 0) {
@@ -539,9 +555,12 @@ function jc_video_embed_url($url) {
     return $url;
 }
 
-/* 读公共字段页 62（JC_GLOBAL_FIELD_ID）上的字段。
-   详情页的 page_banner_*、ws_*、side_*、quote_*、related_*、btn_* 等全局字段都挂在 62 页，
-   但 jc_is_global_key() 只把 company_ 前缀归 62，所以这些字段要用本函数读，避免误读首页。
+/* 读取当前语言对应的全局公共字段页。
+   JC_GLOBAL_FIELD_ID=62 仅作为默认语言基准 ID，
+   jc_global_field_id() 会通过 Polylang 自动转换为当前语言对应页面。
+
+   page_banner_*、ws_*、side_*、quote_*、related_*、btn_* 等
+   全局字段均通过本函数读取。
    用法：
      jc_g62('ws_video_title', 'Production Workshop Video')          → 简单文本/选择/URL 字段
      jc_g62('ws_forging_imgs', 'img_1', '')                          → Group 内子字段（拼完整路径）
@@ -604,7 +623,8 @@ function jc_home_url() {
     return home_url('/');
 }
 
-/* 按页面 slug 取页面链接（页面还没建时返回 #，前台不出现 404 死链） */
+/* 按基准页面 slug 查找页面，再通过 Polylang 转为当前语言页面 URL；
+   基准页面不存在时返回 #。 */
 function jc_page_url($slug) {
 
     $page = get_page_by_path($slug);
@@ -759,7 +779,11 @@ add_filter(
 
 
 /**
- * Product Category 的结构字段。
+ * Taxonomy Term 的结构排序字段。
+ *
+ * 当前用于：
+ * - product_category
+ * - WordPress 原生 category（News 分类）
  */
 function jc_pll_copy_term_metas($metas) {
 
@@ -780,8 +804,8 @@ add_filter(
 /* =========================================================
    Polylang：主题固定 UI 文案
    ---------------------------------------------------------
-   这里仅放 PHP 模板中固定出现的界面文字。
-   ACF 内容、文章标题、产品标题、分类名称等不放这里。
+   这里仅注册主题固定 UI 文案，包括 PHP 模板和前端 JS 使用的界面文字。
+   ACF 内容、文章标题、产品标题、分类名称等业务内容不在这里注册。
    ========================================================= */
 
 /**
