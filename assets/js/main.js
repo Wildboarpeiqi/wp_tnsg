@@ -297,6 +297,230 @@
     }
   }
 
+  /* ---------- Customers paged slider ---------- */
+
+  $$('.customers-slider').forEach(function (customersSlider) {
+
+    var customersTrack = $('.customers-track', customersSlider);
+    var customersGrid = $('.customers-grid', customersSlider);
+
+    var customersPrev = $('.customers-prev', customersSlider);
+    var customersNext = $('.customers-next', customersSlider);
+    var customersNav = $('.customers-nav', customersSlider);
+
+    if (!customersTrack || !customersGrid) return;
+
+    /*
+     * 保存原始 Logo 节点。
+     * 后续分页只是重新分组这些节点，不复制 Logo。
+     */
+    var customerItems = Array.prototype.slice.call(
+      customersGrid.children
+    );
+
+    if (customerItems.length === 0) return;
+
+    var customersCurrent = 0;
+    var customersPerPage = 0;
+    var customersPageCount = 1;
+    var customersResizeTimer = null;
+
+    /*
+     * PC：5列 × 2行 = 10
+     * ≤960px：3列 × 4行 = 12
+     */
+    function customersGetPerPage() {
+      return window.matchMedia('(max-width: 960px)').matches
+        ? 12
+        : 10;
+    }
+
+    /*
+     * 更新当前页位置及左右按钮状态。
+     */
+    function customersUpdate(animate) {
+
+      if (customersCurrent < 0) {
+        customersCurrent = 0;
+      }
+
+      if (customersCurrent > customersPageCount - 1) {
+        customersCurrent = customersPageCount - 1;
+      }
+
+      customersTrack.style.transition = animate === false
+        ? 'none'
+        : 'transform 0.45s ease';
+
+      customersTrack.style.transform =
+        'translateX(' + (-100 * customersCurrent) + '%)';
+
+      if (customersPrev) {
+        customersPrev.disabled = customersCurrent === 0;
+      }
+
+      if (customersNext) {
+        customersNext.disabled =
+          customersCurrent >= customersPageCount - 1;
+      }
+
+      if (customersNav) {
+        customersNav.hidden = customersPageCount <= 1;
+      }
+
+      /*
+       * 首次建立页面时先无动画定位，
+       * 再恢复 transition。
+       */
+      if (animate === false) {
+        void customersTrack.offsetWidth;
+
+        customersTrack.style.transition =
+          'transform 0.45s ease';
+      }
+    }
+
+    /*
+     * 根据当前设备重新建立分页。
+     *
+     * Logo 节点本身不会复制，
+     * 只是移动到对应 customers-page 中。
+     */
+    function customersBuild() {
+
+      customersPerPage = customersGetPerPage();
+
+      customersTrack.innerHTML = '';
+
+      customersPageCount = Math.max(
+        1,
+        Math.ceil(
+          customerItems.length / customersPerPage
+        )
+      );
+
+      for (
+        var pageIndex = 0;
+        pageIndex < customersPageCount;
+        pageIndex++
+      ) {
+
+        var page = document.createElement('ul');
+
+        page.className =
+          'customers-grid customers-page';
+
+        var start =
+          pageIndex * customersPerPage;
+
+        var end = Math.min(
+          start + customersPerPage,
+          customerItems.length
+        );
+
+        for (
+          var itemIndex = start;
+          itemIndex < end;
+          itemIndex++
+        ) {
+          page.appendChild(
+            customerItems[itemIndex]
+          );
+        }
+
+        customersTrack.appendChild(page);
+      }
+
+      /*
+       * PC / Mobile 模式发生切换时，
+       * 回到第一页，避免分页数量改变后错位。
+       */
+      customersCurrent = 0;
+
+      customersUpdate(false);
+    }
+
+    function customersGoTo(index) {
+
+      if (
+        index < 0
+        || index >= customersPageCount
+      ) {
+        return;
+      }
+
+      customersCurrent = index;
+
+      customersUpdate(true);
+    }
+
+    if (customersPrev) {
+
+      customersPrev.addEventListener(
+        'click',
+        function (e) {
+
+          e.preventDefault();
+
+          customersGoTo(
+            customersCurrent - 1
+          );
+        }
+      );
+    }
+
+    if (customersNext) {
+
+      customersNext.addEventListener(
+        'click',
+        function (e) {
+
+          e.preventDefault();
+
+          customersGoTo(
+            customersCurrent + 1
+          );
+        }
+      );
+    }
+
+    /*
+     * 只有跨越 960px 断点时才需要重新分页。
+     * 普通窗口尺寸变化不会不断重建 DOM。
+     */
+    window.addEventListener(
+      'resize',
+      function () {
+
+        if (customersResizeTimer) {
+          clearTimeout(
+            customersResizeTimer
+          );
+        }
+
+        customersResizeTimer =
+          setTimeout(
+            function () {
+
+              var nextPerPage =
+                customersGetPerPage();
+
+              if (
+                nextPerPage
+                !== customersPerPage
+              ) {
+                customersBuild();
+              }
+
+            },
+            150
+          );
+      }
+    );
+
+    customersBuild();
+  });
+
   /* ---------- Our Facilities accordion ---------- */
   var facilityAcc = $('#facilityAccordion');
   if (facilityAcc) {
