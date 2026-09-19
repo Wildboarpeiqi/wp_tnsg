@@ -2197,6 +2197,7 @@ body.hero-ready .hero-slide-active .hero-btns {
 
 .customers-track {
   display: flex;
+  align-items: flex-start;
   width: 100%;
   transition: transform 0.45s ease;
   will-change: transform;
@@ -2206,6 +2207,13 @@ body.hero-ready .hero-slide-active .hero-btns {
   flex: 0 0 100%;
   width: 100%;
   min-width: 0;
+  align-self: flex-start;
+  align-content: start;
+}
+
+.customers-grid img.cus-logo {
+  height: auto;
+  object-fit: contain;
 }
 
 .customers-grid {
