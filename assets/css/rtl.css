@@ -216,6 +216,14 @@ html[dir="rtl"] .facility-item-content {
     text-align: right;
 }
 
+html[dir="rtl"] .customers-track {
+    direction: ltr;
+}
+
+html[dir="rtl"] .customers-nav {
+    direction: ltr;
+}
+
 html[dir="rtl"] .customers-grid {
     direction: rtl;
 }

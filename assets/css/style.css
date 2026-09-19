@@ -2177,9 +2177,38 @@ body.hero-ready .hero-slide-active .hero-btns {
 }
 
 /* ==========================================================================
-   CUSTOMERS — 客户 logo 墙（front-page 板块）
+/* ==========================================================================
+   CUSTOMERS — 客户 Logo 墙（首页 + About 页共用）
+   PC：5 列 × 2 行 = 每页最多 10 个
+   Mobile：3 列 × 4 行 = 每页最多 12 个
    ========================================================================== */
-.customers { background: #fff; }
+
+.customers {
+  background: #fff;
+}
+
+.customers-slider {
+  position: relative;
+}
+
+.customers-viewport {
+  width: 100%;
+  overflow: hidden;
+}
+
+.customers-track {
+  display: flex;
+  width: 100%;
+  transition: transform 0.45s ease;
+  will-change: transform;
+}
+
+.customers-page {
+  flex: 0 0 100%;
+  width: 100%;
+  min-width: 0;
+}
+
 .customers-grid {
   list-style: none;
   margin: 0;
@@ -2211,10 +2240,81 @@ body.hero-ready .hero-slide-active .hero-btns {
   letter-spacing: 0.05em;
   padding: 1.2rem;
   text-align: center;
-  transition: border-color 0.3s, box-shadow 0.3s;
+  transition:
+    border-color 0.3s,
+    box-shadow 0.3s;
 }
-.cus-logo:hover { border-color: var(--themeColor1); box-shadow: 0 4px 14px rgba(23,42,136,0.12); }
-.cus-logo img { width: 100%; height: auto; }
+
+.cus-logo:hover {
+  border-color: var(--themeColor1);
+  box-shadow: 0 4px 14px rgba(23, 42, 136, 0.12);
+}
+
+/* ---------- Customers navigation ---------- */
+
+.customers-nav {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.customers-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 5;
+
+  width: 4.4rem;
+  height: 4.4rem;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 0;
+
+  border: 1px solid var(--border);
+  border-radius: 50%;
+
+  background: #fff;
+  color: var(--themeColor1);
+
+  box-shadow: 0 4px 14px rgba(8, 18, 48, 0.12);
+
+  cursor: pointer;
+  pointer-events: auto;
+
+  transition:
+    background 0.3s,
+    color 0.3s,
+    border-color 0.3s,
+    opacity 0.3s;
+}
+
+.customers-arrow .jc-icon {
+  width: 2rem;
+  height: 2rem;
+}
+
+.customers-arrow:hover:not(:disabled) {
+  background: var(--themeColor1);
+  border-color: var(--themeColor1);
+  color: #fff;
+}
+
+.customers-arrow:disabled {
+  opacity: 0.28;
+  cursor: default;
+  box-shadow: none;
+}
+
+.customers-prev {
+  left: -2.2rem;
+}
+
+.customers-next {
+  right: -2.2rem;
+}
 
 /* ==========================================================================
    三新板块移动端适配 — 仅 max-width:960px 生效（并入 WP 主断点体系），不影响 PC
@@ -2277,22 +2377,56 @@ body.hero-ready .hero-slide-active .hero-btns {
   }
   .tour-dots button.is-active { background: var(--themeColorOrange); border-color: var(--themeColorOrange); }
 
-  /* ---------- Customers：3 列布局 + 与上方拉开间距 ---------- */
-  .customers { padding-top: 3.2rem; }
-  .customers .section-head { margin-bottom: 2.8rem; }
-  .customers-grid {
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1rem;
-  }
-  .cus-logo {
-    min-height: 6rem;
-    font-size: 0.85rem;
-    letter-spacing: 0.02em;
-    padding: 0.6rem 0.4rem;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
+  /* ---------- Customers：3 列 × 最多 4 行 / 页 ---------- */
+
+.customers {
+  padding-top: 3.2rem;
+}
+
+.customers .section-head {
+  margin-bottom: 2.8rem;
+}
+
+.customers-grid {
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+}
+
+.cus-logo {
+  min-height: 6rem;
+  font-size: 0.85rem;
+  letter-spacing: 0.02em;
+  padding: 0.6rem 0.4rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* 手机端箭头放在 Logo 区域下方 */
+
+.customers-nav {
+  position: static;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.4rem;
+  margin-top: 1.8rem;
+  pointer-events: auto;
+}
+
+.customers-arrow {
+  position: static;
+  transform: none;
+
+  width: 4rem;
+  height: 4rem;
+}
+
+.customers-prev,
+.customers-next {
+  left: auto;
+  right: auto;
+}
 
   /* ---------- Our Facilities：白底标题区 + 与上方拉开间距 ---------- */
   .facility { background: #fff; padding-top: 3.2rem; padding-bottom: 5rem; }
