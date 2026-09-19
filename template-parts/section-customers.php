@@ -2,16 +2,88 @@
 /**
  * Section: Customers — 客户 Logo 墙（首页 + About 页共用）
  *
- * 当前数据：
- * customers_section > customers_title / customers_subtitle / logo_1..10
+ * 标题 / 副标题：
+ * 从当前语言首页 ACF customers_section 读取。
  *
- * 前端：
+ * 客户数据：
+ * Customer CPT
+ * - Title          = 客户名称
+ * - Featured Image = 客户 Logo
+ * - customer_sort  = 显示顺序
+ *
+ * 前端分页：
  * PC 每页最多 10 个（5 列 × 2 行）
  * 移动端每页最多 12 个（3 列 × 4 行）
  *
  * 调用：
  * get_template_part('template-parts/section-customers')
  */
+
+
+/* =========================================================
+   Customer CPT
+   ========================================================= */
+
+$jc_customers = get_posts(array(
+    'post_type'      => 'customer',
+    'post_status'    => 'publish',
+    'posts_per_page' => -1,
+    'no_found_rows'  => true,
+));
+
+
+/*
+ * 排序规则：
+ *
+ * 1. customer_sort 数字越小越靠前
+ * 2. 未填写 customer_sort 的客户排到最后
+ * 3. 排序值相同时按客户名称排序
+ */
+usort($jc_customers, function ($a, $b) {
+
+    $a_sort = get_post_meta(
+        $a->ID,
+        'customer_sort',
+        true
+    );
+
+    $b_sort = get_post_meta(
+        $b->ID,
+        'customer_sort',
+        true
+    );
+
+    $a_sort = (
+        $a_sort !== ''
+        && is_numeric($a_sort)
+    )
+        ? (int) $a_sort
+        : PHP_INT_MAX;
+
+    $b_sort = (
+        $b_sort !== ''
+        && is_numeric($b_sort)
+    )
+        ? (int) $b_sort
+        : PHP_INT_MAX;
+
+    if ($a_sort !== $b_sort) {
+        return $a_sort <=> $b_sort;
+    }
+
+    return strcasecmp(
+        $a->post_title,
+        $b->post_title
+    );
+});
+
+
+/*
+ * 没有 Customer 时不输出整个板块。
+ */
+if (empty($jc_customers)) {
+    return;
+}
 ?>
 
 <!-- ===================== CUSTOMERS ===================== -->
@@ -19,6 +91,7 @@
   <div class="container">
 
     <div class="section-head center">
+
       <h2 class="section-title">
         <?php
         echo esc_html(
@@ -40,76 +113,78 @@
         );
         ?>
       </p>
+
     </div>
+
 
     <div class="customers-slider">
 
       <div class="customers-viewport">
+
         <div class="customers-track">
 
           <ul class="customers-grid">
 
-            <?php
-            for ($jc_li = 1; $jc_li <= 10; $jc_li++) {
+            <?php foreach ($jc_customers as $jc_customer) : ?>
 
-                $jc_logo = function_exists('get_field')
-                    ? get_field(
-                        'customers_section_logo_' . $jc_li,
-                        jc_field_id('customers_section_logo_' . $jc_li)
+              <?php
+              $jc_logo_id = get_post_thumbnail_id(
+                  $jc_customer->ID
+              );
+
+              /*
+               * 没有特色图片的 Customer 不输出，
+               * 避免前端出现空白卡片。
+               */
+              if (!$jc_logo_id) {
+                  continue;
+              }
+
+              $jc_customer_name = get_the_title(
+                  $jc_customer->ID
+              );
+
+              /*
+               * 优先使用媒体库中的 Alt Text；
+               * 没填写时使用 Customer 标题。
+               */
+              $jc_logo_alt = get_post_meta(
+                  $jc_logo_id,
+                  '_wp_attachment_image_alt',
+                  true
+              );
+
+              if ($jc_logo_alt === '') {
+                  $jc_logo_alt = $jc_customer_name;
+              }
+              ?>
+
+              <li>
+
+                <?php
+                echo wp_get_attachment_image(
+                    $jc_logo_id,
+                    'full',
+                    false,
+                    array(
+                        'class'     => 'cus-logo',
+                        'alt'       => $jc_logo_alt,
+                        'loading'   => 'lazy',
+                        'draggable' => 'false',
                     )
-                    : '';
-
-                if (
-                    is_array($jc_logo)
-                    && !empty($jc_logo['url'])
-                ) {
-                    $jc_logo = $jc_logo['url'];
-                }
-
-                $jc_has = (
-                    $jc_logo !== ''
-                    && $jc_logo !== null
-                    && $jc_logo !== false
                 );
-
-                $jc_name = 'Customer '
-                    . str_pad(
-                        (string) $jc_li,
-                        2,
-                        '0',
-                        STR_PAD_LEFT
-                    );
                 ?>
 
-                <li>
-                  <?php if ($jc_has) : ?>
+              </li>
 
-                    <img
-                      class="cus-logo"
-                      src="<?php echo esc_url($jc_logo); ?>"
-                      alt="<?php echo esc_attr($jc_name); ?>"
-                      loading="lazy"
-                      draggable="false"
-                    >
-
-                  <?php else : ?>
-
-                    <span
-                      class="cus-logo"
-                      data-name="<?php echo esc_attr($jc_name); ?>"
-                    >
-                      <?php echo esc_html($jc_name); ?>
-                    </span>
-
-                  <?php endif; ?>
-                </li>
-
-            <?php } ?>
+            <?php endforeach; ?>
 
           </ul>
 
         </div>
+
       </div>
+
 
       <div class="customers-nav" hidden>
 
