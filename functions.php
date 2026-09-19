@@ -49,7 +49,7 @@ function jc_assets() {
         'jc-main',
         $theme_uri . '/assets/css/style.css',
         array(),
-        '1.0.7'   // 改 CSS 后递增版本号，强制浏览器刷新缓存（2026-09-11：+ facility 移动端 desc 换行修复）
+        '1.0.8'   // 改 CSS 后递增版本号，强制浏览器刷新缓存（2026-09-11：+ facility 移动端 desc 换行修复）
     );
 
     // 全站唯一公共 JS（滑块/计数器/菜单/弹窗，零依赖）
@@ -57,7 +57,7 @@ function jc_assets() {
         'jc-main',
         $theme_uri . '/assets/js/main.js',
         array(),
-        '1.0.6',
+        '1.0.7',
         true
     );
 
@@ -112,7 +112,7 @@ function jc_assets() {
             'jc-news-single',
             $theme_uri . '/assets/css/news-single.css',
             array('jc-main'),
-            '1.0.1'
+            '1.0.2'
         );
     }
 
@@ -222,7 +222,7 @@ function jc_rtl_assets() {
         'jc-rtl',
         get_template_directory_uri() . '/assets/css/rtl.css',
         array('jc-main'),
-        '1.0.1'
+        '1.0.2'
     );
 }
 add_action('wp_enqueue_scripts', 'jc_rtl_assets', 100);
@@ -952,6 +952,8 @@ function jc_register_polylang_strings() {
         'view_products'         => 'View %s products',
         'go_to_slide'           => 'Go to slide %d',
         'sent'                  => 'Sent!',
+        'previous_customers'   => 'Previous customers',
+        'next_customers'       => 'Next customers',
     );
 
     foreach ($strings as $key => $text) {
