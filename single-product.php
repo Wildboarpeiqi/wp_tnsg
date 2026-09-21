@@ -16,6 +16,96 @@ $post_id           = get_the_ID();
 $post_title        = get_the_title();
 $theme_uri         = get_template_directory_uri();
 
+/*
+ * 统一解析 WordPress / ACF 图片数据。
+ *
+ * 支持：
+ * - ACF Image 返回 Array
+ * - ACF Image 返回 Attachment ID
+ * - ACF Image 返回 URL
+ *
+ * ALT 优先级：
+ * 1. WordPress 媒体库 Alt Text
+ * 2. ACF Array 中的 alt
+ * 3. 调用时提供的 fallback alt
+ */
+$jc_image_data = function ($value, $fallback_alt = '') {
+
+    $image_id  = 0;
+    $image_url = '';
+    $image_alt = '';
+
+    /* ACF Image 返回 Array */
+    if (is_array($value)) {
+
+        if (!empty($value['ID'])) {
+            $image_id = (int) $value['ID'];
+        } elseif (!empty($value['id'])) {
+            $image_id = (int) $value['id'];
+        }
+
+        if (!empty($value['url'])) {
+            $image_url = $value['url'];
+        }
+
+        if (!empty($value['alt'])) {
+            $image_alt = $value['alt'];
+        }
+
+    /* ACF Image 返回 Attachment ID */
+    } elseif (is_numeric($value)) {
+
+        $image_id = (int) $value;
+
+    /* ACF Image 返回 URL */
+    } elseif (is_string($value) && $value !== '') {
+
+        $image_url = $value;
+
+        $image_id = attachment_url_to_postid(
+            $image_url
+        );
+    }
+
+    /* 有 ID 但还没有 URL */
+    if (
+        $image_url === ''
+        && $image_id > 0
+    ) {
+        $image_url = wp_get_attachment_image_url(
+            $image_id,
+            'full'
+        );
+    }
+
+    /*
+     * 有 Attachment ID 时，以媒体库 Alt Text 为准。
+     */
+    if ($image_id > 0) {
+
+        $media_alt = get_post_meta(
+            $image_id,
+            '_wp_attachment_image_alt',
+            true
+        );
+
+        if ($media_alt !== '') {
+            $image_alt = $media_alt;
+        }
+    }
+
+    /* 最后才使用代码 fallback */
+    if ($image_alt === '') {
+        $image_alt = $fallback_alt;
+    }
+
+    return array(
+        'id'  => $image_id,
+        'url' => $image_url,
+        'alt' => $image_alt,
+    );
+};
+
 // ---- 当前产品的第一个分类（左栏高亮 + Related 筛选用）----
 $cur_cats = get_the_terms($post_id, 'product_category');
 $cur_cat  = ($cur_cats && !is_wp_error($cur_cats)) ? $cur_cats[0] : null;
@@ -36,17 +126,107 @@ if (!is_wp_error($all_cats)) {
     $all_cats = array();
 }
 
-// ---- 产品图集：product_gallery Group (img_1 ~ img_6)，主图=img_1 或特色图，缩略图=全部非空 ----
-$gallery   = function_exists('get_field') ? get_field('product_gallery', $post_id) : null;
-$gallery   = is_array($gallery) ? $gallery : array();
-$gallery   = array_filter($gallery, function ($v) { return !empty($v); });       // 去掉空值，重置索引稍后处理
-$gallery   = array_values($gallery);                                              // 保证 0,1,2...
-$thumb_url = get_the_post_thumbnail_url($post_id, 'large');
+// ---- 产品图集：product_gallery Group (img_1 ~ img_6) ----
 
-// 主图优先取图集 img_1，否则取特色图，否则主题默认产品图
-$main_img = !empty($gallery[0]) ? $gallery[0] : ($thumb_url ? $thumb_url : $theme_uri . '/assets/images/products/main-1.jpg');
-// 缩略图：图集非空取图集，否则用特色图兜底
-$thumbs   = !empty($gallery) ? $gallery : (($thumb_url) ? array($thumb_url) : array($theme_uri . '/assets/images/products/main-1.jpg'));
+$gallery_raw = function_exists('get_field')
+    ? get_field('product_gallery', $post_id)
+    : null;
+
+$gallery_raw = is_array($gallery_raw)
+    ? $gallery_raw
+    : array();
+
+$gallery_raw = array_values(
+    array_filter(
+        $gallery_raw,
+        function ($v) {
+            return !empty($v);
+        }
+    )
+);
+
+
+/*
+ * 把 ACF 图片统一转换为：
+ *
+ * array(
+ *   'id'  => Attachment ID,
+ *   'url' => 图片 URL,
+ *   'alt' => 媒体库 Alt Text
+ * )
+ */
+$gallery = array();
+
+$gallery_index = 0;
+
+foreach ($gallery_raw as $gallery_image) {
+
+    $gallery_index++;
+
+    $image_data = $jc_image_data(
+        $gallery_image,
+        $post_title . ' ' . $gallery_index
+    );
+
+    if ($image_data['url'] !== '') {
+        $gallery[] = $image_data;
+    }
+}
+
+
+/* 产品特色图片 */
+$featured_id = get_post_thumbnail_id(
+    $post_id
+);
+
+$featured_image = $featured_id
+    ? $jc_image_data(
+        $featured_id,
+        $post_title
+    )
+    : array();
+
+
+/* 主题默认图片 */
+$fallback_image = array(
+    'id'  => 0,
+    'url' => $theme_uri . '/assets/images/products/main-1.jpg',
+    'alt' => $post_title,
+);
+
+
+/*
+ * 图片优先级：
+ *
+ * 1. product_gallery
+ * 2. 产品特色图片
+ * 3. 主题默认图片
+ */
+if (!empty($gallery)) {
+
+    $thumbs = $gallery;
+
+} elseif (
+    !empty($featured_image['url'])
+) {
+
+    $thumbs = array(
+        $featured_image
+    );
+
+} else {
+
+    $thumbs = array(
+        $fallback_image
+    );
+}
+
+
+/* 第一张作为主图 */
+$main_image = $thumbs[0];
+
+$main_img = $main_image['url'];
+$main_alt = $main_image['alt'];
 
 // ---- 联系方式（公共字段 company_whatsapp / company_email，jc_get 自动读 62 页）----
 $wa_text      = jc_get('company_whatsapp_text', '');
@@ -146,18 +326,59 @@ $banner_img = jc_g62('page_banner_img', $theme_uri . '/assets/images/banner-prod
     <!-- 产品头部：主图 + 缩略图 | 标题 + 联系方式 + 按钮 -->
     <div class="product-head">
       <div class="product-gallery" id="productGallery">
-        <div class="main-image">
-          <img id="mainImage" src="<?php echo esc_url($main_img); ?>" alt="<?php echo esc_attr($post_title); ?>">
-        </div>
-        <div class="thumb-slider">
-          <button type="button" class="thumb-nav thumb-prev" aria-label="<?php echo esc_attr(jc_t('Previous thumbnails')); ?>"><?php echo jc_icon('arrow-left'); ?></button>
-          <div class="thumb-list" id="thumbList">
-            <?php $i = 0; foreach ($thumbs as $th) : $i++; ?>
-              <button type="button" class="thumb<?php echo $i === 1 ? ' active' : ''; ?>" data-src="<?php echo esc_url($th); ?>" aria-label="<?php echo esc_attr(sprintf(jc_t('View image %d'),$i));?>">
-                <img src="<?php echo esc_url($th); ?>" alt="<?php echo esc_attr($post_title . ' ' . $i); ?>">
-              </button>
-            <?php endforeach; ?>
-          </div>
+<div class="main-image">
+
+  <img
+    id="mainImage"
+    src="<?php echo esc_url($main_img); ?>"
+    alt="<?php echo esc_attr($main_alt); ?>"
+  >
+
+</div>
+
+<div class="thumb-slider">
+
+  <button
+    type="button"
+    class="thumb-nav thumb-prev"
+    aria-label="<?php echo esc_attr(jc_t('Previous thumbnails')); ?>"
+  >
+    <?php echo jc_icon('arrow-left'); ?>
+  </button>
+
+  <div class="thumb-list" id="thumbList">
+
+    <?php
+    $i = 0;
+
+    foreach ($thumbs as $th) :
+
+        $i++;
+    ?>
+
+      <button
+        type="button"
+        class="thumb<?php echo $i === 1 ? ' active' : ''; ?>"
+        data-src="<?php echo esc_url($th['url']); ?>"
+        data-alt="<?php echo esc_attr($th['alt']); ?>"
+        aria-label="<?php echo esc_attr(
+            sprintf(
+                jc_t('View image %d'),
+                $i
+            )
+        ); ?>"
+      >
+
+        <img
+          src="<?php echo esc_url($th['url']); ?>"
+          alt="<?php echo esc_attr($th['alt']); ?>"
+        >
+
+      </button>
+
+    <?php endforeach; ?>
+
+  </div>
           <button type="button" class="thumb-nav thumb-next" aria-label="<?php echo esc_attr(jc_t('Next thumbnails')); ?>"><?php echo jc_icon('arrow-right'); ?></button>
         </div>
       </div>
@@ -214,28 +435,87 @@ $banner_img = jc_g62('page_banner_img', $theme_uri . '/assets/images/banner-prod
     <?php endif; ?>
 
     <?php
-    // ---- 车间图组渲染辅助：ws_forging_imgs / ws_cnc_imgs / ws_testing_imgs（62 页 Group img_1~img_6）----
-    function jc_render_workshop_group($imgs_group, $title, $group_name) {
-        if ($title === '' || !is_array($imgs_group) || empty($imgs_group)) {
-            return;
-        }
-        $imgs = array_filter($imgs_group, function ($v) { return !empty($v); });
-        if (empty($imgs)) { return; }
-        ?>
-        <section class="detail-block">
-          <h2 class="detail-title"><span class="detail-mark"></span><?php echo esc_html($title); ?></h2>
-          <ul class="workshop-grid">
-            <?php $n = 0; foreach ($imgs as $url) : $n++; ?>
-              <li>
-                <a href="<?php echo esc_url($url); ?>" class="lightbox" data-lightbox="<?php echo esc_attr($group_name); ?>">
-                  <img loading="lazy" src="<?php echo esc_url($url); ?>" alt="<?php echo esc_attr($title . ' ' . $n); ?>">
-                </a>
-              </li>
-            <?php endforeach; ?>
-          </ul>
-        </section>
-        <?php
+// ---- 车间图组渲染辅助：ws_forging_imgs / ws_cnc_imgs / ws_testing_imgs ----
+
+$jc_render_workshop_group = function (
+    $imgs_group,
+    $title,
+    $group_name
+) use ($jc_image_data) {
+
+    if (
+        $title === ''
+        || !is_array($imgs_group)
+        || empty($imgs_group)
+    ) {
+        return;
     }
+
+    $imgs = array_filter(
+        $imgs_group,
+        function ($v) {
+            return !empty($v);
+        }
+    );
+
+    if (empty($imgs)) {
+        return;
+    }
+    ?>
+
+    <section class="detail-block">
+
+      <h2 class="detail-title">
+        <span class="detail-mark"></span>
+        <?php echo esc_html($title); ?>
+      </h2>
+
+      <ul class="workshop-grid">
+
+        <?php
+        $n = 0;
+
+        foreach ($imgs as $image_value) :
+
+            $n++;
+
+            $image = $jc_image_data(
+                $image_value,
+                $title . ' ' . $n
+            );
+
+            if ($image['url'] === '') {
+                continue;
+            }
+        ?>
+
+          <li>
+
+            <a
+              href="<?php echo esc_url($image['url']); ?>"
+              class="lightbox"
+              data-lightbox="<?php echo esc_attr($group_name); ?>"
+              data-alt="<?php echo esc_attr($image['alt']); ?>"
+            >
+
+              <img
+                loading="lazy"
+                src="<?php echo esc_url($image['url']); ?>"
+                alt="<?php echo esc_attr($image['alt']); ?>"
+              >
+
+            </a>
+
+          </li>
+
+        <?php endforeach; ?>
+
+      </ul>
+
+    </section>
+
+    <?php
+};
 
     // ---- 车间视频：ws_video_embed（有值优先）否则 ws_video_file ----
     $video_embed = jc_g62('ws_video_embed', '');
@@ -261,9 +541,9 @@ $banner_img = jc_g62('page_banner_img', $theme_uri . '/assets/images/banner-prod
     <?php endif;
 
     // ---- 三个车间图组（标题可空隐藏，整块空则隐藏）----
-    jc_render_workshop_group(jc_g62('ws_forging_imgs'), jc_g62('ws_forging_title', 'Forging workshop'), 'forging');
-    jc_render_workshop_group(jc_g62('ws_cnc_imgs'),     jc_g62('ws_cnc_title', 'CNC Machining Workshop'), 'cnc');
-    jc_render_workshop_group(jc_g62('ws_testing_imgs'), jc_g62('ws_testing_title', 'Testing equipment'), 'testing');
+    $jc_render_workshop_group(jc_g62('ws_forging_imgs'), jc_g62('ws_forging_title', 'Forging workshop'), 'forging');
+    $jc_render_workshop_group(jc_g62('ws_cnc_imgs'),     jc_g62('ws_cnc_title', 'CNC Machining Workshop'), 'cnc');
+    $jc_render_workshop_group(jc_g62('ws_testing_imgs'), jc_g62('ws_testing_title', 'Testing equipment'), 'testing');
     ?>
 
     <!-- Certificate：certificate CPT 轮播（标题 62 页字段，内容自动拉取） -->
