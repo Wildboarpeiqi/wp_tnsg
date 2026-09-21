@@ -13,8 +13,9 @@
   var mainImage = $('#mainImage');
   var thumbs = $$('#thumbList .thumb');
   if (mainImage && thumbs.length) {
-    function setMain(src, activeThumb) {
+    function setMain(src, alt, activeThumb) {
       mainImage.src = src;
+      mainImage.alt = alt || '';
       mainImage.classList.remove('zoomed');
       var mb = mainImage.parentNode;
       if (mb) mb.classList.remove('zooming');
@@ -25,7 +26,7 @@
     thumbs.forEach(function (thumb) {
       // hover switches image (desktop)
       thumb.addEventListener('mouseenter', function () {
-        setMain(thumb.getAttribute('data-src'), thumb);
+        setMain(thumb.getAttribute('data-src'), thumb.getAttribute('data-alt'), thumb);
       });
       // click also switches (touch / keyboard accessibility)
       thumb.addEventListener('click', function () {
