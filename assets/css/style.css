@@ -2163,7 +2163,6 @@ body.hero-ready .hero-slide-active .hero-btns {
   background: var(--themeColorOrange);
   color: #101B4D;
 }
-.facility-item-btn:hover { background: #fff; color: var(--themeColor2); }
 .facility-item.is-active .facility-item-title {
   font-weight: 700;
 }
