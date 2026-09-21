@@ -68,16 +68,35 @@ $news_label = $posts_page_id ? get_the_title($posts_page_id) : jc_t('NEWS');
     <!-- 文章网格（主循环：当前分类下的文章，按发布时间倒序） -->
     <ul class="news-grid" id="newsGrid">
       <?php while (have_posts()) : the_post();
-        $thumb = get_the_post_thumbnail_url(get_the_ID(), 'jc-card');
-        if (!$thumb) {
-            $thumb = $theme_uri . '/assets/images/news/news-' . (($wp_query->current_post % 3) + 1) . '.jpg';
-        }
+$thumb_id = get_post_thumbnail_id(
+    get_the_ID()
+);
+
+if ($thumb_id) {
+
+    $thumb = jc_image_data(
+        $thumb_id,
+        get_the_title(),
+        'jc-card'
+    );
+
+} else {
+
+    $thumb = array(
+        'url' => $theme_uri
+            . '/assets/images/news/news-'
+            . (($wp_query->current_post % 3) + 1)
+            . '.jpg',
+
+        'alt' => get_the_title(),
+    );
+}
         $cats = get_the_category();
         $first_cat = !empty($cats) ? $cats[0] : null;
       ?>
         <li class="news-card">
           <a href="<?php the_permalink(); ?>" class="news-card-link">
-            <div class="news-card-thumb"><img loading="lazy" src="<?php echo esc_url($thumb); ?>" alt="<?php echo esc_attr(get_the_title()); ?>"></div>
+            <div class="news-card-thumb"><img loading="lazy" src="<?php echo esc_url($thumb['url']); ?>" alt="<?php echo esc_attr($thumb['alt']); ?>"></div>
             <div class="news-card-body">
               <div class="news-card-meta">
                 <time datetime="<?php echo esc_attr(get_the_time('Y-m-d')); ?>"><?php echo esc_html(get_the_date()); ?></time>

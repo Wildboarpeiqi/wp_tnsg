@@ -43,14 +43,33 @@ $banner_title = jc_g62('project_banner_title',jc_t('PROJECTS'));
     <ul class="project-grid">
       <?php while (have_posts()) : the_post();
         // 特色图：优先特色图（jc-card 尺寸），没有则兜底轮换示例图（news-1/2/3.jpg）
-        $thumb = get_the_post_thumbnail_url(get_the_ID(), 'jc-card');
-        if (!$thumb) {
-            $thumb = $theme_uri . '/assets/images/news/news-' . (($wp_query->current_post % 3) + 1) . '.jpg';
-        }
+$thumb_id = get_post_thumbnail_id(
+    get_the_ID()
+);
+
+if ($thumb_id) {
+
+    $thumb = jc_image_data(
+        $thumb_id,
+        get_the_title(),
+        'jc-card'
+    );
+
+} else {
+
+    $thumb = array(
+        'url' => $theme_uri
+            . '/assets/images/news/news-'
+            . (($wp_query->current_post % 3) + 1)
+            . '.jpg',
+
+        'alt' => get_the_title(),
+    );
+}
       ?>
         <li class="project-card">
           <a href="<?php the_permalink(); ?>" class="project-card-link" title="<?php echo esc_attr(get_the_title()); ?>">
-            <div class="project-card-thumb"><img loading="lazy" src="<?php echo esc_url($thumb); ?>" alt="<?php echo esc_attr(get_the_title()); ?>"></div>
+            <div class="project-card-thumb"><img loading="lazy" src="<?php echo esc_url($thumb['url']); ?>" alt="<?php echo esc_attr($thumb['alt']); ?>"></div>
             <div class="project-card-body">
               <h3 class="project-card-title"><?php the_title(); ?></h3>
               <p class="project-card-desc"><?php echo esc_html(get_the_excerpt()); ?></p>

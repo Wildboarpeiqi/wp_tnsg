@@ -515,6 +515,110 @@ function jc_img($key, $default_path) {
     return ($v !== '' && $v !== null && $v !== false) ? $v : get_template_directory_uri() . $default_path;
 }
 
+/**
+ * 统一解析 WordPress / ACF 图片。
+ *
+ * 支持：
+ * - Attachment ID
+ * - ACF Image Array
+ * - 图片 URL
+ *
+ * ALT 优先级：
+ * 1. WordPress 媒体库 Alt Text
+ * 2. ACF Array 自带 alt
+ * 3. $fallback_alt
+ *
+ * @param mixed  $value        Attachment ID / ACF Array / URL
+ * @param string $fallback_alt ALT 兜底文字
+ * @param string $size         WordPress 图片尺寸
+ *
+ * @return array
+ */
+function jc_image_data($value, $fallback_alt = '', $size = 'full') {
+
+    $image_id  = 0;
+    $image_url = '';
+    $image_alt = '';
+
+    /* ACF Image 返回 Array */
+    if (is_array($value)) {
+
+        if (!empty($value['ID'])) {
+            $image_id = (int) $value['ID'];
+        } elseif (!empty($value['id'])) {
+            $image_id = (int) $value['id'];
+        }
+
+        if (!empty($value['url'])) {
+            $image_url = $value['url'];
+        }
+
+        if (!empty($value['alt'])) {
+            $image_alt = $value['alt'];
+        }
+
+    /* Attachment ID */
+    } elseif (is_numeric($value)) {
+
+        $image_id = (int) $value;
+
+    /* 图片 URL */
+    } elseif (
+        is_string($value)
+        && $value !== ''
+    ) {
+
+        $image_url = $value;
+
+        $image_id = attachment_url_to_postid(
+            $image_url
+        );
+    }
+
+
+    /*
+     * 能找到媒体附件 ID 时，
+     * 优先按指定尺寸取得 WordPress 图片地址。
+     */
+    if ($image_id > 0) {
+
+        $sized_url = wp_get_attachment_image_url(
+            $image_id,
+            $size
+        );
+
+        if ($sized_url) {
+            $image_url = $sized_url;
+        }
+
+        /*
+         * 媒体库 Alt Text 优先级最高。
+         */
+        $media_alt = get_post_meta(
+            $image_id,
+            '_wp_attachment_image_alt',
+            true
+        );
+
+        if ($media_alt !== '') {
+            $image_alt = $media_alt;
+        }
+    }
+
+
+    /* 最后才使用代码提供的兜底 ALT */
+    if ($image_alt === '') {
+        $image_alt = $fallback_alt;
+    }
+
+
+    return array(
+        'id'  => $image_id,
+        'url' => $image_url,
+        'alt' => $image_alt,
+    );
+}
+
 /* 取 Link 字段（返回格式选"数组 Array"：url+title），空则用兜底 URL/文案
    兼容返回数组、字符串 URL、false 三种情况 */
 function jc_link($key, $default_url, $default_text) {

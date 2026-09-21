@@ -1,7 +1,8 @@
 <?php
 /**
  * front-page.php — 前台首页
- * 所有区块数据都通过 jc_* 辅助函数读取 ACF 字段（挂在"前台首页"页面 ID 39 下）。
+ * 首页区块通过 jc_* 辅助函数读取当前语言对应的静态首页 ACF 字段。
+ * 默认语言首页 ID 不作为前端固定读取目标。
  * 字段按嵌套 Group 结构组织（homepage_slides / product_section / about_section /
  * application_section / service_section），读取时用下划线拼全路径。
  * 字段还没建/没填时自动回退到静态默认内容，页面不会散架。
@@ -242,10 +243,26 @@ $news_url = $posts_page_id
           if ($jc_certs_q->have_posts()) {
               while ($jc_certs_q->have_posts()) {
                   $jc_certs_q->the_post();
-                  $jc_cert_img = get_the_post_thumbnail_url(get_the_ID(), 'large');
-                  if ($jc_cert_img) {
-                      echo '<figure class="cert-item"><img loading="lazy" src="' . esc_url($jc_cert_img) . '" alt="' . esc_attr(get_the_title()) . '"></figure>';
-                  }
+$jc_cert_id = get_post_thumbnail_id(
+    get_the_ID()
+);
+
+if ($jc_cert_id) {
+
+    $jc_cert_img = jc_image_data(
+        $jc_cert_id,
+        get_the_title(),
+        'large'
+    );
+
+    echo '<figure class="cert-item">'
+        . '<img loading="lazy" src="'
+        . esc_url($jc_cert_img['url'])
+        . '" alt="'
+        . esc_attr($jc_cert_img['alt'])
+        . '">'
+        . '</figure>';
+}
               }
               wp_reset_postdata();
           } else {
@@ -358,13 +375,32 @@ $news_url = $posts_page_id
         if ($jc_news->have_posts()) {
             while ($jc_news->have_posts()) {
                 $jc_news->the_post();
-                $jc_news_img = get_the_post_thumbnail_url(get_the_ID(), 'jc-card');
-                if (!$jc_news_img) {
-                    $jc_news_img = get_template_directory_uri() . '/assets/images/news/news-' . ($jc_news->current_post % 3 + 1) . '.jpg';
-                }
+$jc_news_img_id = get_post_thumbnail_id(
+    get_the_ID()
+);
+
+if ($jc_news_img_id) {
+
+    $jc_news_img = jc_image_data(
+        $jc_news_img_id,
+        get_the_title(),
+        'jc-card'
+    );
+
+} else {
+
+    $jc_news_img = array(
+        'url' => get_template_directory_uri()
+            . '/assets/images/news/news-'
+            . ($jc_news->current_post % 3 + 1)
+            . '.jpg',
+
+        'alt' => get_the_title(),
+    );
+}
                 echo '<li class="newsBox">';
                 echo '<a href="' . esc_url(get_permalink()) . '">';
-                echo '<div class="newsImg"><img loading="lazy" src="' . esc_url($jc_news_img) . '" alt="' . esc_attr(get_the_title()) . '"></div>';
+                echo '<div class="newsImg">' . '<img loading="lazy" src="' . esc_url($jc_news_img['url']) . '" alt="' . esc_attr($jc_news_img['alt']) . '">' . '</div>';
                 echo '<div class="newsDate">' . esc_html(get_the_date()) . '</div>';
                 echo '<h3>' . esc_html(get_the_title()) . '</h3>';
                 echo '<p class="newsDesc">' . esc_html(get_the_excerpt()) . '</p>';
