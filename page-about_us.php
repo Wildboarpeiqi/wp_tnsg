@@ -71,8 +71,28 @@ $banner_title = get_the_title();
   if ($intro_desc === '') {
       $intro_desc = 'Established in 2015, Liaocheng Jiucheng Auto Parts Co., Ltd. is a high-tech enterprise integrating R&D, production, and sales. The company specializes in the manufacturing and processing of precision-forged automotive synchronizer blanks, high-precision gear blanks, and large-specification chain sleeves. It has a registered capital of RMB 1 million, fixed assets of RMB 10 million, a total building area of 8,000 m&sup2; (including 6,000 m&sup2; of workshop space), and dedicated workshops for precision forging and machining. The workforce consists of 45 employees, including one senior engineer, three mechanical engineers, one quality engineer, eight quality inspectors, and one electrical engineer. The company focuses on producing high-end automotive components and precision forgings, with a product portfolio that includes automotive synchronizer sleeves, synchronizer hubs, differential housings, and various other gear forgings.';
   }
-  $intro_img   = $pf('about_intro_img', '');
-  if ($intro_img === '') { $intro_img = $theme_uri . '/assets/images/about-intro.png'; }
+/* About Intro 图片：媒体库 ALT 优先 */
+$intro_img_raw = function_exists('get_field')
+    ? get_field('about_intro_img', $page_id)
+    : '';
+
+if (!empty($intro_img_raw)) {
+
+    $intro_image = jc_image_data(
+        $intro_img_raw,
+        $about_company . ' ' . jc_t('factory'),
+        'full'
+    );
+
+} else {
+
+    $intro_image = array(
+        'url' => $theme_uri . '/assets/images/about-intro.png',
+        'alt' => $about_company . ' ' . jc_t('factory'),
+    );
+}
+
+$intro_img = $intro_image['url'];
   $intro_embed = $pf('about_intro_video_embed', '');   // 有值优先（YouTube iframe 等）
   $intro_file  = $pf('about_intro_video_file', '');    // mp4（embed 空时用）
   ?>
@@ -94,7 +114,7 @@ $banner_title = get_the_title();
           <?php else : ?>
             <img
               src="<?php echo esc_url($intro_img); ?>"
-              alt="<?php echo esc_attr($about_company . ' ' . jc_t('factory')); ?>"
+              alt="<?php echo esc_attr($intro_image['alt']); ?>"
               class="intro-media-img"
             >
           <?php endif; ?>
@@ -134,17 +154,54 @@ $banner_title = get_the_title();
       <div class="cnc-slider" id="cncSlider">
         <div class="cnc-viewport">
           <div class="cnc-track" id="cncTrack">
-            <?php for ($ci = 1; $ci <= 6; $ci++) :
-                $img = isset($cnc_imgs['img_' . $ci]) ? $pimg($cnc_imgs['img_' . $ci]) : '';
-                if ($img === '') { $img = $theme_uri . $cnc_fb[$ci - 1]; }
-            ?>
-            <div class="cnc-slide">
-              <figure class="cnc-figure">
-                <div class="cnc-img"><img loading="lazy" src="<?php echo esc_url($img); ?>" alt="<?php echo esc_attr(jc_t('CNC Machining Workshop')); ?>"></div>
-                <figcaption class="cnc-caption"><?php echo esc_html(jc_t('CNC Machining Workshop')); ?></figcaption>
-              </figure>
-            </div>
-            <?php endfor; ?>
+<?php for ($ci = 1; $ci <= 6; $ci++) :
+
+    $cnc_img_raw = isset(
+        $cnc_imgs['img_' . $ci]
+    )
+        ? $cnc_imgs['img_' . $ci]
+        : '';
+
+    if (!empty($cnc_img_raw)) {
+
+        $cnc_image = jc_image_data(
+            $cnc_img_raw,
+            jc_t('CNC Machining Workshop'),
+            'full'
+        );
+
+    } else {
+
+        $cnc_image = array(
+            'url' => $theme_uri . $cnc_fb[$ci - 1],
+            'alt' => jc_t('CNC Machining Workshop'),
+        );
+    }
+?>
+
+<div class="cnc-slide">
+
+  <figure class="cnc-figure">
+
+    <div class="cnc-img">
+
+      <img
+        loading="lazy"
+        src="<?php echo esc_url($cnc_image['url']); ?>"
+        alt="<?php echo esc_attr($cnc_image['alt']); ?>"
+      >
+
+    </div>
+
+    <figcaption class="cnc-caption">
+      <?php echo esc_html(jc_t('CNC Machining Workshop')); ?>
+    </figcaption>
+
+  </figure>
+
+</div>
+
+<?php endfor; ?>
           </div>
         </div>
         <button class="cnc-arrow cnc-prev" aria-label="<?php echo esc_attr(jc_t('Previous slide')); ?>"><?php echo jc_icon('arrow-left'); ?></button>
@@ -189,17 +246,74 @@ $banner_title = get_the_title();
         <!-- 左：大图 + 图下标题（无背景）；JS 从这里的 6 个 figure 提取数据渲染右侧缩略图 -->
         <div class="test-featured" id="testFeatured">
           <div class="test-featured-track" id="testMainTrack">
-            <?php for ($ti = 1; $ti <= 6; $ti++) :
-                $t_img  = isset($test_imgs['img_' . $ti]) ? $pimg($test_imgs['img_' . $ti]) : '';
-                if ($t_img === '') { $t_img = $theme_uri . $test_fb[$ti - 1][0]; }
-                $t_name = isset($test_imgs['name_' . $ti]) && $test_imgs['name_' . $ti] !== '' ? $test_imgs['name_' . $ti] : $test_fb[$ti - 1][1];
-                if (is_array($t_name) && isset($t_name['text'])) { $t_name = $t_name['text']; }
-            ?>
-            <figure class="test-featured-slide">
-              <div class="test-img"><img loading="lazy" src="<?php echo esc_url($t_img); ?>" alt="<?php echo esc_attr($t_name); ?>"></div>
-              <figcaption class="test-caption"><?php echo esc_html($t_name); ?></figcaption>
-            </figure>
-            <?php endfor; ?>
+<?php for ($ti = 1; $ti <= 6; $ti++) :
+
+    /*
+     * 设备名称：
+     * ACF name_N → 默认设备名
+     */
+    $t_name = (
+        isset($test_imgs['name_' . $ti])
+        && $test_imgs['name_' . $ti] !== ''
+    )
+        ? $test_imgs['name_' . $ti]
+        : $test_fb[$ti - 1][1];
+
+    if (
+        is_array($t_name)
+        && isset($t_name['text'])
+    ) {
+        $t_name = $t_name['text'];
+    }
+
+
+    /*
+     * 图片：
+     * 媒体库 ALT 优先；
+     * 没填写 ALT 时使用设备名称。
+     */
+    $test_img_raw = isset(
+        $test_imgs['img_' . $ti]
+    )
+        ? $test_imgs['img_' . $ti]
+        : '';
+
+    if (!empty($test_img_raw)) {
+
+        $test_image = jc_image_data(
+            $test_img_raw,
+            $t_name,
+            'full'
+        );
+
+    } else {
+
+        $test_image = array(
+            'url' => $theme_uri . $test_fb[$ti - 1][0],
+            'alt' => $t_name,
+        );
+    }
+?>
+
+<figure class="test-featured-slide">
+
+  <div class="test-img">
+
+    <img
+      loading="lazy"
+      src="<?php echo esc_url($test_image['url']); ?>"
+      alt="<?php echo esc_attr($test_image['alt']); ?>"
+    >
+
+  </div>
+
+  <figcaption class="test-caption">
+    <?php echo esc_html($t_name); ?>
+  </figcaption>
+
+</figure>
+
+<?php endfor; ?>
           </div>
         </div>
 
@@ -245,10 +359,26 @@ $banner_title = get_the_title();
           if ($jc_certs_q->have_posts()) {
               while ($jc_certs_q->have_posts()) {
                   $jc_certs_q->the_post();
-                  $jc_cert_img = get_the_post_thumbnail_url(get_the_ID(), 'large');
-                  if ($jc_cert_img) {
-                      echo '<figure class="cert-item"><img loading="lazy" src="' . esc_url($jc_cert_img) . '" alt="' . esc_attr(get_the_title()) . '"></figure>';
-                  }
+$jc_cert_id = get_post_thumbnail_id(
+    get_the_ID()
+);
+
+if ($jc_cert_id) {
+
+    $jc_cert_img = jc_image_data(
+        $jc_cert_id,
+        get_the_title(),
+        'large'
+    );
+
+    echo '<figure class="cert-item">'
+        . '<img loading="lazy" src="'
+        . esc_url($jc_cert_img['url'])
+        . '" alt="'
+        . esc_attr($jc_cert_img['alt'])
+        . '">'
+        . '</figure>';
+}
               }
               wp_reset_postdata();
           } else {
