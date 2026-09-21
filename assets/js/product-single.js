@@ -29,9 +29,13 @@
         setMain(thumb.getAttribute('data-src'), thumb.getAttribute('data-alt'), thumb);
       });
       // click also switches (touch / keyboard accessibility)
-      thumb.addEventListener('click', function () {
-        setMain(thumb.getAttribute('data-src'), thumb);
-      });
+thumb.addEventListener('click', function () {
+  setMain(
+    thumb.getAttribute('data-src'),
+    thumb.getAttribute('data-alt'),
+    thumb
+  );
+});
     });
   }
 
