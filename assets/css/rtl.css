@@ -82,9 +82,20 @@ html[dir="rtl"] .thumb-list {
 
 /* ---------- Application ---------- */
 
+/* ---------- Application ---------- */
+
 html[dir="rtl"] .app-content {
     direction: rtl;
     text-align: right;
+    left: auto;
+    right: 10%;
+    max-width: 52rem;
+}
+
+html[dir="rtl"] .app-content h3 {
+    white-space: normal;
+    overflow-wrap: break-word;
+    word-break: normal;
 }
 
 html[dir="rtl"] .industry-grid {
@@ -93,6 +104,14 @@ html[dir="rtl"] .industry-grid {
 
 html[dir="rtl"] .industry-link {
     direction: rtl;
+}
+
+@media (max-width: 960px) {
+    html[dir="rtl"] .app-content {
+        right: 8%;
+        left: auto;
+        max-width: 80%;
+    }
 }
 
 
