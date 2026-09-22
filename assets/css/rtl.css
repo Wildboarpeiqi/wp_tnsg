@@ -75,10 +75,29 @@ html[dir="rtl"] .hero-track,
 html[dir="rtl"] .app-track,
 html[dir="rtl"] .cert-track,
 html[dir="rtl"] .related-track,
-html[dir="rtl"] .thumb-list {
+html[dir="rtl"] .thumb-list,
+html[dir="rtl"] .cnc-track,
+html[dir="rtl"] .test-featured-track,
+html[dir="rtl"] .test-thumbs-track {
     direction: ltr;
 }
+/* ---------- About: CNC / Testing ---------- */
 
+html[dir="rtl"] .cnc-slide,
+html[dir="rtl"] .cnc-text,
+html[dir="rtl"] .test-featured-slide,
+html[dir="rtl"] .test-thumb {
+    direction: rtl;
+    text-align: right;
+}
+
+/* 阿语标题允许正常换行 */
+html[dir="rtl"] .cnc-caption,
+html[dir="rtl"] .test-caption,
+html[dir="rtl"] .test-thumb-name {
+    white-space: normal;
+    overflow-wrap: break-word;
+}
 
 /* ---------- Application ---------- */
 
