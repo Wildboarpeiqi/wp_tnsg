@@ -1,0 +1,307 @@
+/* ==========================================================================
+   RTL
+   Loaded only when WordPress is using an RTL language.
+   ========================================================================== */
+
+
+/* ---------- Base ---------- */
+
+html[dir="rtl"] body {
+    direction: rtl;
+    text-align: right;
+    font-family: Tahoma, Arial, sans-serif;
+}
+
+html[dir="rtl"] input,
+html[dir="rtl"] textarea,
+html[dir="rtl"] select {
+    direction: rtl;
+    text-align: right;
+}
+
+
+/* ---------- Keep intentionally centered content centered ---------- */
+
+html[dir="rtl"] .section-head.center {
+    text-align: center;
+}
+
+
+/* ---------- Header ---------- */
+
+html[dir="rtl"] .header-bar {
+    direction: rtl;
+}
+
+html[dir="rtl"] .mainNav {
+    direction: rtl;
+}
+
+html[dir="rtl"] .mainNavLiA,
+html[dir="rtl"] .nav-submenuA {
+    text-align: right;
+}
+
+html[dir="rtl"] .lang-dropdown {
+    right: auto;
+    left: 0;
+}
+
+html[dir="rtl"] .lang-dropdown a {
+    direction: rtl;
+    text-align: right;
+}
+
+
+/* ---------- Hero ---------- */
+
+html[dir="rtl"] .hero-content {
+    direction: rtl;
+    text-align: right;
+}
+
+html[dir="rtl"] .hero-content-center {
+    text-align: center;
+}
+
+
+/*
+ * Slider tracks must stay LTR.
+ * main.js moves them with negative translateX values.
+ * Letting RTL reverse these tracks can break slide movement.
+ */
+
+html[dir="rtl"] .hero-track,
+html[dir="rtl"] .app-track,
+html[dir="rtl"] .cert-track,
+html[dir="rtl"] .related-track,
+html[dir="rtl"] .thumb-list,
+html[dir="rtl"] .cnc-track,
+html[dir="rtl"] .test-featured-track,
+html[dir="rtl"] .test-thumbs-track {
+    direction: ltr;
+}
+/* ---------- About: CNC / Testing ---------- */
+
+html[dir="rtl"] .cnc-slide,
+html[dir="rtl"] .cnc-text,
+html[dir="rtl"] .test-featured-slide,
+html[dir="rtl"] .test-thumb {
+    direction: rtl;
+    text-align: right;
+}
+
+/* 阿语标题允许正常换行 */
+html[dir="rtl"] .cnc-caption,
+html[dir="rtl"] .test-caption,
+html[dir="rtl"] .test-thumb-name {
+    white-space: normal;
+    overflow-wrap: break-word;
+}
+
+/* ---------- Application ---------- */
+
+/* ---------- Application ---------- */
+
+html[dir="rtl"] .app-content {
+    direction: rtl;
+    text-align: right;
+    left: auto;
+    right: 10%;
+    max-width: 52rem;
+}
+
+html[dir="rtl"] .app-content h3 {
+    white-space: normal;
+    overflow-wrap: break-word;
+    word-break: normal;
+}
+
+html[dir="rtl"] .industry-grid {
+    direction: rtl;
+}
+
+html[dir="rtl"] .industry-link {
+    direction: rtl;
+}
+
+@media (max-width: 960px) {
+    html[dir="rtl"] .app-content {
+        right: 8%;
+        left: auto;
+        max-width: 80%;
+    }
+}
+
+
+/* ---------- Product / Content layouts ---------- */
+
+html[dir="rtl"] .page-wrap,
+html[dir="rtl"] .product-head {
+    direction: rtl;
+}
+
+html[dir="rtl"] .page-sidebar,
+html[dir="rtl"] .side-box,
+html[dir="rtl"] .product-info,
+html[dir="rtl"] .article,
+html[dir="rtl"] .article-content {
+    direction: rtl;
+    text-align: right;
+}
+
+html[dir="rtl"] .breadcrumb {
+    direction: rtl;
+    text-align: right;
+}
+
+/* 产品侧边栏 Email：
+   字符本身保持 LTR，但整体靠右显示 */
+html[dir="rtl"] .side-email {
+    direction: ltr;
+    unicode-bidi: isolate;
+    text-align: right;
+}
+
+/* ---------- Forms ---------- */
+
+html[dir="rtl"] .ff-el-group,
+html[dir="rtl"] .fluentform,
+html[dir="rtl"] .fluentform form {
+    direction: rtl;
+    text-align: right;
+}
+
+html[dir="rtl"] .fluentform input,
+html[dir="rtl"] .fluentform textarea,
+html[dir="rtl"] .fluentform select {
+    direction: rtl;
+    text-align: right;
+}
+
+
+/* ---------- Footer ---------- */
+
+html[dir="rtl"] .footer-top,
+html[dir="rtl"] .footer-contacts,
+html[dir="rtl"] .footer-columns {
+    direction: rtl;
+}
+
+html[dir="rtl"] .footer-col,
+html[dir="rtl"] .footer-contact-info {
+    text-align: right;
+}
+
+
+/* ---------- Contact modal ---------- */
+
+html[dir="rtl"] .contact-modal {
+    direction: rtl;
+}
+
+html[dir="rtl"] .contact-modal-left,
+html[dir="rtl"] .contact-modal-right {
+    direction: rtl;
+    text-align: right;
+}
+
+html[dir="rtl"] .contact-modal-company {
+    direction: ltr;
+    unicode-bidi: isolate;
+}
+
+/* ---------- Contact page ---------- */
+
+html[dir="rtl"] .contact-body-grid,
+html[dir="rtl"] .contact-cards {
+    direction: rtl;
+}
+
+html[dir="rtl"] .contact-form-wrap,
+html[dir="rtl"] .contact-card {
+    text-align: right;
+}
+
+/* ---------- Phone / WhatsApp / Email values ---------- */
+
+/*
+ * 只让“号码本身”保持 LTR，
+ * 不要把包含图标和阿语标签的整个链接改成 LTR。
+ */
+html[dir="rtl"] .footer-contact-info a[href^="tel:"],
+html[dir="rtl"] .footer-contact-info a[href*="wa.me"],
+html[dir="rtl"] .footer-contact-info a[href^="mailto:"],
+
+html[dir="rtl"] .contact-card[href^="tel:"] .contact-card-value,
+html[dir="rtl"] .contact-card[href*="wa.me"] .contact-card-value,
+html[dir="rtl"] .contact-card[href^="mailto:"] .contact-card-value,
+
+html[dir="rtl"] .contact-map-row a[href^="tel:"],
+
+html[dir="rtl"] .contact-value[href*="wa.me"],
+html[dir="rtl"] .contact-value[href^="mailto:"] {
+    direction: ltr;
+    unicode-bidi: isolate;
+}
+
+
+
+/* 联系弹窗整行仍保持 RTL：图标在右，文字向左排列 */
+html[dir="rtl"] .contact-modal-link {
+    direction: rtl;
+    text-align: right;
+}
+
+/* ---------- Mobile ---------- */
+
+@media (max-width: 960px) {
+
+    html[dir="rtl"] .nav {
+        direction: rtl;
+        text-align: right;
+    }
+
+    html[dir="rtl"] .mainNav {
+        direction: rtl;
+        text-align: right;
+    }
+
+    html[dir="rtl"] .mobile-bottom-bar {
+        direction: rtl;
+    }
+}
+
+
+/* ---------- Home: Take a Tour / Customers / Our Facilities ---------- */
+
+/* tour slider moves via negative translateX in main.js: track must stay LTR */
+html[dir="rtl"] .tour-track {
+    direction: ltr;
+}
+
+html[dir="rtl"] .tour-slide-cap {
+    direction: rtl;
+    text-align: right;
+}
+
+html[dir="rtl"] .tour-dots {
+    direction: ltr;
+}
+
+html[dir="rtl"] .facility-item-content {
+    direction: rtl;
+    text-align: right;
+}
+
+html[dir="rtl"] .customers-track {
+    direction: ltr;
+}
+
+html[dir="rtl"] .customers-nav {
+    direction: ltr;
+}
+
+html[dir="rtl"] .customers-grid {
+    direction: rtl;
+}
