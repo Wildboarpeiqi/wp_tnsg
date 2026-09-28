@@ -224,9 +224,16 @@ html[dir="rtl"] .contact-card {
  */
 html[dir="rtl"] .footer-contact-info a[href^="tel:"],
 html[dir="rtl"] .footer-contact-info a[href*="wa.me"],
-html[dir="rtl"] .contact-card-value,
+html[dir="rtl"] .footer-contact-info a[href^="mailto:"],
+
+html[dir="rtl"] .contact-card[href^="tel:"] .contact-card-value,
+html[dir="rtl"] .contact-card[href*="wa.me"] .contact-card-value,
+html[dir="rtl"] .contact-card[href^="mailto:"] .contact-card-value,
+
 html[dir="rtl"] .contact-map-row a[href^="tel:"],
-html[dir="rtl"] .contact-value[href*="wa.me"] {
+
+html[dir="rtl"] .contact-value[href*="wa.me"],
+html[dir="rtl"] .contact-value[href^="mailto:"] {
     direction: ltr;
     unicode-bidi: isolate;
 }
