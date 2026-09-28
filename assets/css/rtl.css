@@ -199,6 +199,10 @@ html[dir="rtl"] .contact-modal-right {
     text-align: right;
 }
 
+html[dir="rtl"] .contact-modal-company {
+    direction: ltr;
+    unicode-bidi: isolate;
+}
 
 /* ---------- Contact page ---------- */
 
@@ -212,14 +216,25 @@ html[dir="rtl"] .contact-card {
     text-align: right;
 }
 
-/* ---------- Phone / WhatsApp numbers ---------- */
+/* ---------- Phone / WhatsApp / Email values ---------- */
 
-html[dir="rtl"] a[href^="tel:"],
-html[dir="rtl"] a[href*="wa.me"],
-html[dir="rtl"] .contact-card-value {
+/*
+ * 只让“号码本身”保持 LTR，
+ * 不要把包含图标和阿语标签的整个链接改成 LTR。
+ */
+html[dir="rtl"] .footer-contact-info a[href^="tel:"],
+html[dir="rtl"] .footer-contact-info a[href*="wa.me"],
+html[dir="rtl"] .contact-card-value,
+html[dir="rtl"] .contact-map-row a[href^="tel:"],
+html[dir="rtl"] .contact-value[href*="wa.me"] {
     direction: ltr;
     unicode-bidi: isolate;
-    text-align: left;
+}
+
+/* 联系弹窗整行仍保持 RTL：图标在右，文字向左排列 */
+html[dir="rtl"] .contact-modal-link {
+    direction: rtl;
+    text-align: right;
 }
 
 /* ---------- Mobile ---------- */
