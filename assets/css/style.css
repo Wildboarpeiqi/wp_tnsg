@@ -9,13 +9,19 @@
 @font-face {
   font-family: 'KumbhSans';
   font-display: swap;
-  src: url('../fonts/KumbhSans-VariableFont_wght.ttf') format('truetype');
+  font-style: normal;
+  font-weight: 100 900;
+  src: url('../fonts/KumbhSans-Latin.woff2') format('woff2');
 }
+
 @font-face {
   font-family: 'LeagueGothic';
   font-display: swap;
-  src: url('../fonts/LeagueGothic-Regular-VariableFont_wdth.ttf') format('truetype');
+  font-style: normal;
+  font-weight: 400;
+  src: url('../fonts/LeagueGothic-Latin.woff2') format('woff2');
 }
+
 @font-face {
   font-family: 'NotoSans';
   font-display: swap;
