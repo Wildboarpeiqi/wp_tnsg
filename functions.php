@@ -368,18 +368,16 @@ function jc_get_sorted_product_ids($term_id = 0) {
     return $sorted_ids;
 }
 
-/* 字体预加载（与静态版一致，加快首屏字体渲染） */
+/* 字体预加载 */
 function jc_preload_fonts() {
+
     $uri = get_template_directory_uri();
-    $fonts = array(
-        'KumbhSans-VariableFont_wght.ttf',
-        'LeagueGothic-Regular-VariableFont_wdth.ttf',
-        'NotoSans-Regular.ttf',
-    );
-    foreach ($fonts as $f) {
-        echo '<link rel="preload" as="font" type="font/ttf" href="' . esc_url($uri . '/assets/fonts/' . $f) . '" crossorigin>' . "\n";
-    }
+
+    echo '<link rel="preload" as="font" type="font/woff2" href="'
+        . esc_url($uri . '/assets/fonts/NotoSans-Latin.woff2')
+        . '" crossorigin>' . "\n";
 }
+
 add_action('wp_head', 'jc_preload_fonts', 2);
 
 /* body 补充静态模板依赖的 class（CSS/JS 判断用） */
