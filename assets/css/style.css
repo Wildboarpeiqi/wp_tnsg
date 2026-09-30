@@ -19,7 +19,9 @@
 @font-face {
   font-family: 'NotoSans';
   font-display: swap;
-  src: url('../fonts/NotoSans-Regular.ttf') format('truetype');
+  font-style: normal;
+  font-weight: 400;
+  src: url('../fonts/NotoSans-Latin.woff2') format('woff2');
 }
 /* 图标统一使用内联 SVG（class="jc-icon"），由 jc_icon() 输出，零外部依赖、无版权问题 */
 .jc-icon {
