@@ -1894,8 +1894,11 @@ body.hero-ready .hero-slide-active .hero-btns {
 .table-parent ul,
 .table-parent ol {
   margin: 0 0 1.6rem;
-  padding-left: 1.6rem;
+  padding-left: 0;
+  padding-inline-start: 2.6rem;
+  list-style-position: outside;
 }
+
 .article-content ul,
 .table-parent ul { list-style-type: disc; }
 .article-content ol,
