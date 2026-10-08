@@ -211,6 +211,26 @@ h1, h2, h3, h4, h5, h6 { font-family: var(--font-head); font-weight: bold; }
 .mainNavLiA.selected { color: var(--themeColor1); }
 .mainNavLiA .jc-icon { font-size: 1.2rem; }
 
+/* Spanish desktop navigation:
+   prevent long labels from wrapping and slightly tighten spacing */
+@media (min-width: 961px) and (max-width: 1650px) {
+
+  html[lang^="es"] .header-bar {
+    gap: 1.6rem;
+  }
+
+  html[lang^="es"] .mainNavLiA {
+    white-space: nowrap;
+    padding-left: 1.6rem;
+    padding-right: 1.6rem;
+    font-size: 1.7rem;
+  }
+
+  html[lang^="es"] .header-actions {
+    gap: 0.8rem;
+  }
+}
+
 .nav-submenu {
   position: absolute;
   top: 100%;
