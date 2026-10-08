@@ -208,7 +208,7 @@ h1, h2, h3, h4, h5, h6 { font-family: var(--font-head); font-weight: bold; }
   transition: color 0.3s;
 }
 .mainNavLiA:hover,
-.mainNavLiA.selected { color: var(--themeColor1); }
+.mainNavLiA.selected { color: var(--themeColorOrange); }
 .mainNavLiA .jc-icon { font-size: 1.2rem; }
 
 /* Spanish desktop navigation:
@@ -237,7 +237,8 @@ h1, h2, h3, h4, h5, h6 { font-family: var(--font-head); font-weight: bold; }
   left: 50%;
   transform: translateX(-50%);
   min-width: 25rem;
-  background: #C5CAD3;
+  background: #F7F8FA;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
   padding: 0.8rem 0;
   opacity: 0;
   visibility: hidden;
@@ -254,7 +255,7 @@ h1, h2, h3, h4, h5, h6 { font-family: var(--font-head); font-weight: bold; }
   color: #333;
   transition: background 0.3s, color 0.3s;
 }
-.nav-submenuA:hover { background: var(--themeColor1); color: #fff; }
+.nav-submenuA:hover { background: var(--themeColorOrange); color: var(--themeColor2); }
 
 .header-actions { display: flex; align-items: center; gap: 1.2rem; flex-shrink: 0; }
 /* desktop: WhatsApp icon is mobile-only; Resources nav item is mobile-only */
@@ -1441,7 +1442,7 @@ body.hero-ready .hero-slide-active .hero-btns {
   .nav.open { transform: translateX(0); }
   .mainNav { flex-direction: column; gap: 0; }
   .mainNavLiA { color: #333; padding: 1.6rem 0; border-bottom: 1px solid #eee; }
-  .mainNavLiA:hover, .mainNavLiA.selected { color: var(--themeColor1); }
+  .mainNavLiA:hover, .mainNavLiA.selected { color: var(--themeColorOrange); }
   .nav-submenu {
     position: static;
     transform: none;
@@ -1557,7 +1558,7 @@ body.hero-ready .hero-slide-active .hero-btns {
     border-bottom: 1px solid #eee;
     display: flex;
   }
-  .mainNavLiA:hover, .mainNavLiA.selected { color: var(--themeColor1); }
+  .mainNavLiA:hover, .mainNavLiA.selected { color: var(--themeColorOrange); }
   /* 5. product submenu collapsed by default, expands via JS .expanded */
   .nav-submenu {
     position: static;
